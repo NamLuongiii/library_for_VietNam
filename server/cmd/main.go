@@ -1,7 +1,7 @@
 package main
 
 import (
-    "github.com/gofiber/fiber/v2"
+    "github.com/gofiber/fiber/v3"
     "github.com/NamLuongiii/library_for_VietNam/database"
 )
 

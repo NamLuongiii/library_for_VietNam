@@ -1,21 +1,21 @@
 package handlers
 
 import (
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 )
 
-func BookIndex(c *fiber.Ctx) error {
+func BookIndex(c fiber.Ctx) error {
 	return c.SendString("BookIndex")
 }
 
-func BookStore(c *fiber.Ctx) error {
+func BookStore(c fiber.Ctx) error {
 	return c.SendString("BookStore")
 }
 
-func BookUpdate(c *fiber.Ctx) error {
+func BookUpdate(c fiber.Ctx) error {
 	return c.SendString("BookIndex")
 }
 
-func BookDestroy(c *fiber.Ctx) error {
+func BookDestroy(c fiber.Ctx) error {
 	return c.SendString("BookIndex")
 }
