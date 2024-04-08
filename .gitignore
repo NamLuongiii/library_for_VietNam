@@ -19,3 +19,7 @@
 
 # Go workspace file
 go.work
+
+/server/tmp
+/server/tmp/*
+.env
