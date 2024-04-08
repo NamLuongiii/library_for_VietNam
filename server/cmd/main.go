@@ -1,13 +1,16 @@
 package main
 
-import "github.com/gofiber/fiber/v2"
+import (
+    "github.com/gofiber/fiber/v2"
+    "github.com/NamLuongiii/library_for_VietNam/database"
+)
 
 func main() {
+    database.ConnectDb()
+
     app := fiber.New()
 
-    app.Get("/", func(c *fiber.Ctx) error {
-        return c.SendString("Hello, Div Vlibrary@@!")
-    })
+    setupRoutes(app)
 
-    app.Listen(":3000")
+    app.Listen(":8080")
 }
