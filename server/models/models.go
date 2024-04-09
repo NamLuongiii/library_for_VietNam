@@ -12,7 +12,7 @@ type Book struct {
     gorm.Model 
     Isbn string `gorm: "size:256; default:null"`
     Name string `gorm: "size:256; unique; not null;"`
-    EnNam string `gorm: "size:256; unique; default:null"`
+    EnName string `gorm: "size:256; unique; default:null"`
     OriginName string `gorm: "size:256; default:null"`
     Cover string `gorm: "size:256; not null"`
     Preface string `gorm: "size:500; not null"`
@@ -32,10 +32,10 @@ type Book struct {
     Nation string `gorm: "size:256; default: null"`
     Status string `gorm: "size:256; not null; default:0"`
     Show uint8 `gorm: "not null; default:1"`
-    Hard uint8 `gorm: "dault:50"`
+    Level uint8 `gorm: "dault:50"`
     
     Authors []Author `gorm:"many2many:book_authors;"`
-    Translators []Author `gorm:"many2many:book_tranlsators;"`
+    Translators []Author `gorm:"many2many:book_translators;"`
     Categories []Category `gorm:"many2many:book_categories;"`
 }
 

@@ -8,7 +8,11 @@ import (
 func main() {
     database.ConnectDb()
 
-    app := fiber.New()
+    app := fiber.New(fiber.Config{})
+
+    app.Use("/api", func(c fiber.Ctx) error {
+        return c.Next()
+    })
 
     setupRoutes(app)
 

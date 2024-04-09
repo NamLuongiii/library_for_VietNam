@@ -12,7 +12,22 @@ func setupRoutes(app *fiber.App) {
 	app.Post("/facts", handlers.CreateFact)
 
 	app.Get("/books", handlers.BookIndex)
+	app.Get("/books/:id", handlers.BookShow)
 	app.Post("/books", handlers.BookStore)
-	app.Put("/books", handlers.BookUpdate)
-	app.Delete("/books", handlers.BookDestroy)
+	app.Put("/books/:id", handlers.BookUpdate)
+	app.Delete("/books/:id", handlers.BookDestroy)
+
+
+	app.Get("/authors", handlers.AuthorIndex)
+	app.Get("/authors/:id", handlers.AuthorShow)
+	app.Post("/authors", handlers.AuthorStore)
+	app.Put("/authors/:id", handlers.AuthorUpdate)
+	app.Delete("/authors/:id", handlers.AuthorDestroy)
+
+
+	app.Get("/bookshelves", handlers.BookShelfIndex)
+	app.Get("/bookshelves/:id", handlers.BookShelfShow)
+	app.Post("/bookshelves", handlers.BookShelfStore)
+	app.Put("/bookshelves/:id", handlers.BookShelfUpdate)
+	app.Delete("/bookshelves/:id", handlers.BookShelfDestroy)
 }

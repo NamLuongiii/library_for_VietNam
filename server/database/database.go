@@ -11,11 +11,7 @@ import (
     "gorm.io/gorm/logger"
 )
 
-type Dbinstance struct {
-    Db *gorm.DB
-}
-
-var DB Dbinstance
+var DB *gorm.DB
 
 func ConnectDb() {
     dsn := fmt.Sprintf(
@@ -46,7 +42,5 @@ func ConnectDb() {
         &models.BookShelf{},
     )
 
-    DB = Dbinstance{
-        Db: db,
-    }
+    DB = db
 }
