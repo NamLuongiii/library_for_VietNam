@@ -3,10 +3,12 @@ package main
 import (
     "github.com/gofiber/fiber/v3"
     "github.com/NamLuongiii/library_for_VietNam/database"
+    "github.com/NamLuongiii/library_for_VietNam/helpers"
 )
 
 func main() {
     database.ConnectDb()
+    helpers.SetupValidator()
 
     app := fiber.New(fiber.Config{})
 

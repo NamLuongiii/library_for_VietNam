@@ -1,18 +1,11 @@
 package helpers
 
 import (
-    "github.com/go-playground/validator/v10"
-    "sync"
+	"github.com/go-playground/validator/v10"
 )
 
-// Singleton instance of validator
-var instance *validator.Validate
-var once sync.Once
+var Validate *validator.Validate
 
-// GetValidator returns a singleton instance of validator
-func ValidatorInstance() *validator.Validate {
-    once.Do(func() {
-        instance = validator.New()
-    })
-    return instance
+func SetupValidator() {
+	Validate = validator.New(validator.WithRequiredStructEnabled())
 }
