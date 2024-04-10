@@ -1,22 +1,22 @@
 package main
 
 import (
-    "github.com/gofiber/fiber/v3"
-    "github.com/NamLuongiii/library_for_VietNam/database"
-    "github.com/NamLuongiii/library_for_VietNam/helpers"
+	"github.com/NamLuongiii/library_for_VietNam/database"
+	"github.com/NamLuongiii/library_for_VietNam/helpers"
+	"github.com/gofiber/fiber/v3"
 )
 
 func main() {
-    database.ConnectDb()
-    helpers.SetupValidator()
+	database.ConnectDb()
+	helpers.SetupValidator()
 
-    app := fiber.New(fiber.Config{})
+	app := fiber.New(fiber.Config{})
 
-    app.Use("/api", func(c fiber.Ctx) error {
-        return c.Next()
-    })
+	app.Use("/api", func(c fiber.Ctx) error {
+		return c.Next()
+	})
 
-    setupRoutes(app)
+	setupRoutes(app)
 
-    app.Listen(":8080")
+	app.Listen(":8080")
 }

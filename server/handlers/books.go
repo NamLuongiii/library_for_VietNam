@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	"github.com/NamLuongiii/library_for_VietNam/database"
@@ -9,32 +10,62 @@ import (
 	"github.com/NamLuongiii/library_for_VietNam/models"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v3"
+	"gorm.io/gorm"
 )
 
 type BookStoreInputValidate struct {
-	Isbn            string   `json:"isbn" validate:"max=256"`
+	Isbn            string   `json:"isbn" validate:"omitempty,max=256"`
 	Name            string   `json:"name" validate:"required,max=256"`
-	EnName          string   `json:"en_name" validate:"max=256"`
-	OriginName      string   `json:"origin_name" validate:"max=256"`
+	EnName          string   `json:"en_name" validate:"omitempty,max=256"`
+	OriginName      string   `json:"origin_name" validate:"omitempty,max=256"`
 	Cover           string   `json:"cover" validate:"required,url,max=256"`
 	Preface         string   `json:"preface" validate:"required,max=500"`
-	ComposeAt       string   `json:"compose_at" validate:"max=256"`
-	Release         string   `json:"release" validate:"max=256"`
-	Publisher       string   `json:"publisher" validate:"max=256"`
-	GlobalPublisher string   `json:"global_publisher" validate:"max=256"`
-	Page            uint64   `json:"page" validate:"gte=0,lte=100000"`
-	Location        uint64   `json:"location" validate:"gte=0,lte=100000"`
-	Chapter         uint8    `json:"chapter" validate:"gte=0,lt=256"`
+	ComposeAt       string   `json:"compose_at" validate:"omitempty,max=256"`
+	Release         string   `json:"release" validate:"omitempty,max=256"`
+	Publisher       string   `json:"publisher" validate:"omitempty,max=256"`
+	GlobalPublisher string   `json:"global_publisher" validate:"omitempty,max=256"`
+	Page            uint64   `json:"page" validate:"omitempty,gte=0,lte=100000"`
+	Location        uint64   `json:"location" validate:"omitempty,gte=0,lte=100000"`
+	Chapter         uint8    `json:"chapter" validate:"omitempty,gte=0,lt=256"`
 	Lang            string   `json:"lang" validate:"required,max=256,oneof=vietnamese english chinese greek japanese other"`
-	OriginLang      string   `json:"origin_lang" validate="max=256,oneof=vietnamese english chinese greek japanese other"`
-	ProjectUrl      string   `json:"project_url" validate="max=256,url"`
-	ResourceUrl     string   `json:"resource_url" validate="max=256,url"`
-	FileUrl         string   `json:"file_url" validate="required,max=256,url"`
-	FileName        string   `json:"file_name" validate="required,max=256,url"`
-	Nation          string   `json:"nation" validate="max=256"`
-	Status          uint8    `json:"status" validate="oneof= 0 1 2 3 4 5 6 7"`
-	Show            uint8    `json:"show" validate="oneof=0 1"`
-	Level           uint8    `json:"level" validate="gte=0,lte=100"`
+	OriginLang      string   `json:"origin_lang" validate:"omitempty,oneof=vietnamese english chinese greek japanese other"`
+	ProjectUrl      string   `json:"project_url" validate:"omitempty,max=256,url"`
+	ResourceUrl     string   `json:"resource_url" validate:"omitempty,max=256,url"`
+	FileUrl         string   `json:"file_url" validate:"required,max=256,url"`
+	FileName        string   `json:"file_name" validate:"required,max=256"`
+	Nation          string   `json:"nation" validate:"omitempty,max=256"`
+	Status          uint8    `json:"status" validate:"omitempty,oneof= 0 1 2 3 4 5 6 7"`
+	Show            uint8    `json:"show" validate:"omitempty,oneof=0 1"`
+	Level           uint8    `json:"level" validate:"omitempty,gte=0,lte=100"`
+	Authors         []string `json:"authors"`
+	Translators     []string `json:"translators"`
+	Categories      []string `json:"categories"`
+}
+
+type BookUpdateInputValidate struct {
+	Isbn            string   `json:"isbn" validate:"omitempty,max=256"`
+	Name            string   `json:"name" validate:"required,max=256"`
+	EnName          string   `json:"en_name" validate:"omitempty,max=256"`
+	OriginName      string   `json:"origin_name" validate:"omitempty,max=256"`
+	Cover           string   `json:"cover" validate:"required,url,max=256"`
+	Preface         string   `json:"preface" validate:"required,max=500"`
+	ComposeAt       string   `json:"compose_at" validate:"omitempty,max=256"`
+	Release         string   `json:"release" validate:"omitempty,max=256"`
+	Publisher       string   `json:"publisher" validate:"omitempty,max=256"`
+	GlobalPublisher string   `json:"global_publisher" validate:"omitempty,max=256"`
+	Page            uint64   `json:"page" validate:"omitempty,gte=0,lte=100000"`
+	Location        uint64   `json:"location" validate:"omitempty,gte=0,lte=100000"`
+	Chapter         uint8    `json:"chapter" validate:"omitempty,gte=0,lt=256"`
+	Lang            string   `json:"lang" validate:"required,max=256,oneof=vietnamese english chinese greek japanese other"`
+	OriginLang      string   `json:"origin_lang" validate:"omitempty,oneof=vietnamese english chinese greek japanese other"`
+	ProjectUrl      string   `json:"project_url" validate:"omitempty,max=256,url"`
+	ResourceUrl     string   `json:"resource_url" validate:"omitempty,max=256,url"`
+	FileUrl         string   `json:"file_url" validate:"required,max=256,url"`
+	FileName        string   `json:"file_name" validate:"required,max=256"`
+	Nation          string   `json:"nation" validate:"omitempty,max=256"`
+	Status          uint8    `json:"status" validate:"omitempty,oneof= 0 1 2 3 4 5 6 7"`
+	Show            uint8    `json:"show" validate:"omitempty,oneof=0 1"`
+	Level           uint8    `json:"level" validate:"omitempty,gte=0,lte=100"`
 	Authors         []string `json:"authors"`
 	Translators     []string `json:"translators"`
 	Categories      []string `json:"categories"`
@@ -94,7 +125,7 @@ func BookShow(c fiber.Ctx) error {
 
 	if err := database.DB.First(&book, ID).Error; err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"message": "Book with non-exsit ID",
+			"message": "Not found book",
 		})
 	}
 
@@ -139,13 +170,12 @@ func BookStore(c fiber.Ctx) error {
 	var input BookStoreInputValidate
 	if err := json.Unmarshal(body, &input); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "Book body un-parserable",
+			"message": "Body unmarshal error",
 		})
 	}
 
-	fields := fiber.Map{}
-
 	if err := helpers.Validate.Struct(input); err != nil {
+		fields := fiber.Map{}
 		for _, err := range err.(validator.ValidationErrors) {
 			value := err.Value()
 			if str, ok := value.(string); ok {
@@ -157,64 +187,204 @@ func BookStore(c fiber.Ctx) error {
 			switch err.Param() {
 			case "":
 				sentence = "[%s]: '%v' | Needs to implement '%s'"
-				field = fmt.Sprintf(sentence, err.Field(), value, err.Tag())	
+				field = fmt.Sprintf(sentence, err.Field(), value, err.Tag())
 			default:
 				sentence = "[%s]: '%v' | Needs to implement '%s=%s'"
-				field = fmt.Sprintf(sentence, err.Field(), value, err.Tag(), err.Param())	
-			} 
+				field = fmt.Sprintf(sentence, err.Field(), value, err.Tag(), err.Param())
+			}
 
 			fields[helpers.ToSnake(err.Field())] = field
 		}
 
-
-
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "error",
-			"fields": fields,
+			"fields":  fields,
 		})
 	}
 
 	book := models.Book{
-		Isbn: input.Isbn,
-		Name: input.Name,
-		EnName: input.EnName,
-		OriginName: input.OriginName,
-		Cover: input.Cover,
-		Preface: input.Preface,
-		ComposeAt: input.ComposeAt,
-		Release: input.Release,
-		Publisher: input.Publisher,
+		Isbn:            input.Isbn,
+		Name:            input.Name,
+		EnName:          input.EnName,
+		OriginName:      input.OriginName,
+		Cover:           input.Cover,
+		Preface:         input.Preface,
+		ComposeAt:       input.ComposeAt,
+		Release:         input.Release,
+		Publisher:       input.Publisher,
 		GlobalPublisher: input.GlobalPublisher,
-		Page: input.Page,
-		Location: input.Location,
-		Chapter: input.Chapter,
-		Lang: input.Lang,
-		OriginLang: input.OriginLang,
-		ProjectUrl: input.ProjectUrl,
-	    ResourceUrl: input.ResourceUrl,
-		FileUrl: input.FileUrl,
-	 	FileName: input.FileName,
-		Nation: input.Nation,
-		Status: input.Status,
-		Show: input.Show,
-		Level: input.Level,
+		Page:            input.Page,
+		Location:        input.Location,
+		Chapter:         input.Chapter,
+		Lang:            input.Lang,
+		OriginLang:      input.OriginLang,
+		ProjectUrl:      input.ProjectUrl,
+		ResourceUrl:     input.ResourceUrl,
+		FileUrl:         input.FileUrl,
+		FileName:        input.FileName,
+		Nation:          input.Nation,
+		Status:          input.Status,
+		Show:            input.Show,
+		Level:           input.Level,
 	}
 
 	if result := database.DB.Create(&book); result.Error != nil {
+		err_message := result.Error.Error()
+
+		if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
+			fields := fiber.Map{}
+			var b models.Book
+			if err := database.DB.Where("name=?", book.Name).First(&b).Error; err == nil {
+				fields["name"] = err_message
+			}
+			if err := database.DB.Where("en_name=?", book.EnName).First(&b).Error; err == nil {
+				fields["en_name"] = err_message
+			}
+			if err := database.DB.Where("file_name=?", book.FileName).First(&b).Error; err == nil {
+				fields["file_name"] = err_message
+			}
+
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"fields":  fields,
+				"message": "error",
+			})
+		}
+
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "StatusInternalServerError",
+			"message": err_message,
 		})
 	}
 
 	return c.JSON(fiber.Map{
-		"message": "Book store sucessable",
+		"message": "success",
 	})
 }
 
 func BookUpdate(c fiber.Ctx) error {
-	return c.SendString("BookIndex")
+	id := c.Params("id")
+
+	var book models.Book
+	if err := database.DB.First(&book, id).Error; err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"message": "Not found book",
+		})
+	}
+
+	var input BookUpdateInputValidate
+	if err := json.Unmarshal(c.Body(), &input); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Body unmarshal error",
+		})
+	}
+
+	if err := helpers.Validate.Struct(input); err != nil {
+		fields := fiber.Map{}
+		for _, err := range err.(validator.ValidationErrors) {
+			value := err.Value()
+			if str, ok := value.(string); ok {
+				value = helpers.ShortenString(str)
+			}
+
+			sentence := ""
+			field := ""
+			switch err.Param() {
+			case "":
+				sentence = "[%s]: '%v' | Needs to implement '%s'"
+				field = fmt.Sprintf(sentence, err.Field(), value, err.Tag())
+			default:
+				sentence = "[%s]: '%v' | Needs to implement '%s=%s'"
+				field = fmt.Sprintf(sentence, err.Field(), value, err.Tag(), err.Param())
+			}
+
+			fields[helpers.ToSnake(err.Field())] = field
+		}
+
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "error",
+			"fields":  fields,
+		})
+	}
+
+	book.Isbn = input.Isbn
+	book.Name = input.Name
+	book.EnName = input.EnName
+	book.OriginName = input.OriginName
+	book.Cover = input.Cover
+	book.Preface = input.Preface
+	book.ComposeAt = input.ComposeAt
+	book.Release = input.Release
+	book.Publisher = input.Publisher
+	book.GlobalPublisher = input.GlobalPublisher
+	book.Page = input.Page
+	book.Location = input.Location
+	book.Chapter = input.Chapter
+	book.Lang = input.Lang
+	book.OriginLang = input.OriginLang
+	book.ProjectUrl = input.ProjectUrl
+	book.ResourceUrl = input.ResourceUrl
+	book.FileUrl = input.FileUrl
+	book.FileName = input.FileName
+	book.Nation = input.Nation
+	book.Status = input.Status
+	book.Level = input.Level
+
+	if err := database.DB.Save(&book).Error; err != nil {
+		message := err.Error()
+
+		if errors.Is(err, gorm.ErrDuplicatedKey) {
+			fields := fiber.Map{}
+			var b models.Book
+			if err := database.DB.Where("name=?", book.Name).First(&b).Error; err == nil {
+				fields["name"] = message
+			}
+			if err := database.DB.Where("en_name=?", book.EnName).First(&b).Error; err == nil {
+				fields["en_name"] = message
+			}
+			if err := database.DB.Where("file_name=?", book.FileName).First(&b).Error; err == nil {
+				fields["file_name"] = message
+			}
+
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"fields":  fields,
+				"message": "error",
+			})
+		}
+
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": message,
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"message": "success",
+	})
 }
 
 func BookDestroy(c fiber.Ctx) error {
-	return c.SendString("BookIndex")
+	id := c.Params("id")
+
+	var book models.Book
+	if err := database.DB.First(&book, id).Error; err != nil {
+		c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"message": "error",
+		})
+	}
+
+	if err := database.DB.Delete(&book).Error; err != nil {
+		message := err.Error()
+
+		if errors.Is(err, gorm.ErrForeignKeyViolated) {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"message": message,
+			})
+		}
+
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": message,
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"message": "success",
+	})
 }
