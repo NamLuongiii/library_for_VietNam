@@ -34,16 +34,17 @@ type Book struct {
 	Show            uint8  `gorm:"not null;default:1"`
 	Level           uint8  `gorm:"dault:50"`
 
-	Authors     []Author   `gorm:"many2many:book_authors;"`
-	Translators []Author   `gorm:"many2many:book_translators;"`
-	Categories  []Category `gorm:"many2many:book_categories;"`
+	Authors     []Author    `gorm:"many2many:book_authors;"`
+	Translators []Author    `gorm:"many2many:book_translators;"`
+	BookShelves []BookShelf `gorm:"many2many:book_bookshelves;"`
+	Categories  []Category  `gorm:"many2many:book_categories;"`
 }
 
 type Author struct {
 	gorm.Model
 	Name    string `gorm:"size:256;not null"`
 	Potrait string `gorm:"size:256;default:null"`
-	Bio     string `gorm:"size:256;default:null"`
+	Bio     string `gorm:"size:500;default:null"`
 	KnowAs  string `gorm:"size:256;default:null"`
 	Gender  uint8  `gorm:"default:0"`
 	Nation  string `gorm:"size:256;default:null"`
@@ -51,9 +52,9 @@ type Author struct {
 
 type BookShelf struct {
 	gorm.Model
-	Name       string `gorm:"size:256;unique;not null"`
-	Des        string `gorm:"size:256;default:null"`
-	Categories []Category
+	Name        string `gorm:"size:256;unique;not null"`
+	Des         string `gorm:"size:256;default:null"`
+	Categories  []Category
 }
 
 type Category struct {

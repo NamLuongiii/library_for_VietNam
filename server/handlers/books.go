@@ -14,58 +14,58 @@ import (
 )
 
 type BookStoreInputValidate struct {
-	Isbn            string   `json:"isbn" validate:"omitempty,max=256"`
-	Name            string   `json:"name" validate:"required,max=256"`
-	EnName          string   `json:"en_name" validate:"omitempty,max=256"`
-	OriginName      string   `json:"origin_name" validate:"omitempty,max=256"`
-	Cover           string   `json:"cover" validate:"required,url,max=256"`
-	Preface         string   `json:"preface" validate:"required,max=500"`
-	ComposeAt       string   `json:"compose_at" validate:"omitempty,max=256"`
-	Release         string   `json:"release" validate:"omitempty,max=256"`
-	Publisher       string   `json:"publisher" validate:"omitempty,max=256"`
-	GlobalPublisher string   `json:"global_publisher" validate:"omitempty,max=256"`
-	Page            uint64   `json:"page" validate:"omitempty,gte=0,lte=100000"`
-	Location        uint64   `json:"location" validate:"omitempty,gte=0,lte=100000"`
-	Chapter         uint8    `json:"chapter" validate:"omitempty,gte=0,lt=256"`
-	Lang            string   `json:"lang" validate:"required,max=256,oneof=vietnamese english chinese greek japanese other"`
-	OriginLang      string   `json:"origin_lang" validate:"omitempty,oneof=vietnamese english chinese greek japanese other"`
-	ProjectUrl      string   `json:"project_url" validate:"omitempty,max=256,url"`
-	ResourceUrl     string   `json:"resource_url" validate:"omitempty,max=256,url"`
-	FileUrl         string   `json:"file_url" validate:"required,max=256,url"`
-	FileName        string   `json:"file_name" validate:"required,max=256"`
-	Nation          string   `json:"nation" validate:"omitempty,max=256"`
-	Status          uint8    `json:"status" validate:"omitempty,oneof= 0 1 2 3 4 5 6 7"`
-	Show            uint8    `json:"show" validate:"omitempty,oneof=0 1"`
-	Level           uint8    `json:"level" validate:"omitempty,gte=0,lte=100"`
+	Isbn            string   `validate:"omitempty,max=256" json:"isbn"`
+	Name            string   `validate:"required,max=256" json:"name"`
+	EnName          string   `validate:"omitempty,max=256" json:"en_name"`
+	OriginName      string   `validate:"omitempty,max=256" json:"origin_name"`
+	Cover           string   `validate:"required,url,max=256" json:"cover"`
+	Preface         string   `validate:"required,max=500" json:"preface"`
+	ComposeAt       string   `validate:"omitempty,max=256" json:"compose_at"`
+	Release         string   `validate:"omitempty,max=256" json:"release"`
+	Publisher       string   `validate:"omitempty,max=256" json:"publisher"`
+	GlobalPublisher string   `validate:"omitempty,max=256" json:"global_publisher"`
+	Page            uint64   `validate:"omitempty,gte=0,lte=100000" json:"page"`
+	Location        uint64   `validate:"omitempty,gte=0,lte=100000" json:"location"`
+	Chapter         uint8    `validate:"omitempty,gte=0,lt=256" json:"chapter"`
+	Lang            string   `validate:"required,max=256,oneof=vietnamese english chinese greek japanese other" json:"lang"`
+	OriginLang      string   `validate:"omitempty,oneof=vietnamese english chinese greek japanese other" json:"origin_lang"`
+	ProjectUrl      string   `validate:"omitempty,max=256,url" json:"project_url"`
+	ResourceUrl     string   `validate:"omitempty,max=256,url" json:"resource_url"`
+	FileUrl         string   `validate:"required,max=256,url" json:"file_url"`
+	FileName        string   `validate:"required,max=256" json:"file_name"`
+	Nation          string   `validate:"omitempty,max=256" json:"nation"`
+	Status          uint8    `validate:"omitempty,oneof= 0 1 2 3 4 5 6 7" json:"status"`
+	Show            uint8    `validate:"omitempty,oneof=0 1" json:"show"`
+	Level           uint8    `validate:"omitempty,gte=0,lte=100" json:"level"`
 	Authors         []string `json:"authors"`
 	Translators     []string `json:"translators"`
 	Categories      []string `json:"categories"`
 }
 
 type BookUpdateInputValidate struct {
-	Isbn            string   `json:"isbn" validate:"omitempty,max=256"`
-	Name            string   `json:"name" validate:"required,max=256"`
-	EnName          string   `json:"en_name" validate:"omitempty,max=256"`
-	OriginName      string   `json:"origin_name" validate:"omitempty,max=256"`
-	Cover           string   `json:"cover" validate:"required,url,max=256"`
-	Preface         string   `json:"preface" validate:"required,max=500"`
-	ComposeAt       string   `json:"compose_at" validate:"omitempty,max=256"`
-	Release         string   `json:"release" validate:"omitempty,max=256"`
-	Publisher       string   `json:"publisher" validate:"omitempty,max=256"`
-	GlobalPublisher string   `json:"global_publisher" validate:"omitempty,max=256"`
-	Page            uint64   `json:"page" validate:"omitempty,gte=0,lte=100000"`
-	Location        uint64   `json:"location" validate:"omitempty,gte=0,lte=100000"`
-	Chapter         uint8    `json:"chapter" validate:"omitempty,gte=0,lt=256"`
-	Lang            string   `json:"lang" validate:"required,max=256,oneof=vietnamese english chinese greek japanese other"`
-	OriginLang      string   `json:"origin_lang" validate:"omitempty,oneof=vietnamese english chinese greek japanese other"`
-	ProjectUrl      string   `json:"project_url" validate:"omitempty,max=256,url"`
-	ResourceUrl     string   `json:"resource_url" validate:"omitempty,max=256,url"`
-	FileUrl         string   `json:"file_url" validate:"required,max=256,url"`
-	FileName        string   `json:"file_name" validate:"required,max=256"`
-	Nation          string   `json:"nation" validate:"omitempty,max=256"`
-	Status          uint8    `json:"status" validate:"omitempty,oneof= 0 1 2 3 4 5 6 7"`
-	Show            uint8    `json:"show" validate:"omitempty,oneof=0 1"`
-	Level           uint8    `json:"level" validate:"omitempty,gte=0,lte=100"`
+	Isbn            string   `validate:"omitempty,max=256" json:"isbn"`
+	Name            string   `validate:"required,max=256" json:"name"`
+	EnName          string   `validate:"omitempty,max=256" json:"en_name"`
+	OriginName      string   `validate:"omitempty,max=256" json:"origin_name"`
+	Cover           string   `validate:"required,url,max=256" json:"cover"`
+	Preface         string   `validate:"required,max=500" json:"preface"`
+	ComposeAt       string   `validate:"omitempty,max=256" json:"compose_at"`
+	Release         string   `validate:"omitempty,max=256" json:"release"`
+	Publisher       string   `validate:"omitempty,max=256" json:"publisher"`
+	GlobalPublisher string   `validate:"omitempty,max=256" json:"global_publisher"`
+	Page            uint64   `validate:"omitempty,gte=0,lte=100000" json:"page"`
+	Location        uint64   `validate:"omitempty,gte=0,lte=100000" json:"location"`
+	Chapter         uint8    `validate:"omitempty,gte=0,lt=256" json:"chapter"`
+	Lang            string   `validate:"required,max=256,oneof=vietnamese english chinese greek japanese other" json:"lang"`
+	OriginLang      string   `validate:"omitempty,oneof=vietnamese english chinese greek japanese other" json:"origin_lang"`
+	ProjectUrl      string   `validate:"omitempty,max=256,url" json:"project_url"`
+	ResourceUrl     string   `validate:"omitempty,max=256,url" json:"resource_url"`
+	FileUrl         string   `validate:"required,max=256,url" json:"file_url"`
+	FileName        string   `validate:"required,max=256" json:"file_name"`
+	Nation          string   `validate:"omitempty,max=256" json:"nation"`
+	Status          uint8    `validate:"omitempty,oneof= 0 1 2 3 4 5 6 7" json:"status"`
+	Show            uint8    `validate:"omitempty,oneof=0 1" json:"show"`
+	Level           uint8    `validate:"omitempty,gte=0,lte=100" json:"level"`
 	Authors         []string `json:"authors"`
 	Translators     []string `json:"translators"`
 	Categories      []string `json:"categories"`
@@ -385,6 +385,147 @@ func BookDestroy(c fiber.Ctx) error {
 	}
 
 	return c.JSON(fiber.Map{
+		"message": "success",
+	})
+}
+
+func BookOptionLevel(c fiber.Ctx) error {
+	return c.JSON(fiber.Map{
+		"data": []fiber.Map{
+			fiber.Map{
+				"id":   1,
+				"name": "level 1",
+			},
+			fiber.Map{
+				"id":   2,
+				"name": "level 2",
+			},
+			fiber.Map{
+				"id":   3,
+				"name": "level 3",
+			},
+			fiber.Map{
+				"id":   4,
+				"name": "level 4",
+			},
+			fiber.Map{
+				"id":   5,
+				"name": "level 5",
+			},
+			fiber.Map{
+				"id":   6,
+				"name": "level 6",
+			},
+			fiber.Map{
+				"id":   7,
+				"name": "level 7",
+			},
+		},
+	})
+}
+
+func BookOptionLang(c fiber.Ctx) error {
+	return c.JSON(fiber.Map{
+		"data": []fiber.Map{
+			fiber.Map{
+				"id":   1,
+				"name": "vietnamese",
+			},
+			fiber.Map{
+				"id":   1,
+				"name": "english",
+			},
+			fiber.Map{
+				"id":   1,
+				"name": "chinese",
+			},
+			fiber.Map{
+				"id":   1,
+				"name": "greek",
+			},
+			fiber.Map{
+				"id":   1,
+				"name": "japanese",
+			},
+			fiber.Map{
+				"id":   1,
+				"name": "other",
+			},
+		},
+	})
+}
+
+func BookOptionStatus(c fiber.Ctx) error {
+	return c.JSON(fiber.Map{
+		"data": []fiber.Map{
+			fiber.Map{
+				"id":   1,
+				"name": "step 1",
+			},
+			fiber.Map{
+				"id":   2,
+				"name": "step 2",
+			},
+			fiber.Map{
+				"id":   3,
+				"name": "step 3",
+			},
+			fiber.Map{
+				"id":   4,
+				"name": "step 4",
+			},
+			fiber.Map{
+				"id":   5,
+				"name": "step 5",
+			},
+			fiber.Map{
+				"id":   6,
+				"name": "step 6",
+			},
+			fiber.Map{
+				"id":   7,
+				"name": "step 7",
+			},
+			fiber.Map{
+				"id":   8,
+				"name": "step 8",
+			},
+			fiber.Map{
+				"id":   9,
+				"name": "step 9",
+			},
+			fiber.Map{
+				"id":   10,
+				"name": "step 10",
+			},
+		},
+	})
+}
+
+func BookOptionAuthors(c fiber.Ctx) error {
+	p := helpers.Paginate(c)
+
+	var authors []models.Author
+	if err := database.DB.Scopes(p.DbHandler).Find(&authors).Error; err != nil {
+		c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": err.Error(),
+		})
+	}
+
+	author_options := []fiber.Map{}
+	for _, author := range authors {
+		author_options = append(author_options, fiber.Map{
+			"id":      author.ID,
+			"name":    author.Name,
+			"potrait": author.Potrait,
+			"bio":     author.Bio,
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"data":    author_options,
+		"page": p.Page,
+		"page_size": p.PageSize,
 		"message": "success",
 	})
 }
