@@ -40,7 +40,7 @@ func ConnectDb() {
 		&models.Book{},
 		&models.Author{},
 		&models.Category{},
-		&models.BookShelf{},
+		&models.Bookshelf{},
 	)
 
 	DB = db

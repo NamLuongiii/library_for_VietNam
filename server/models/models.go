@@ -36,7 +36,7 @@ type Book struct {
 
 	Authors     []Author    `gorm:"many2many:book_authors;"`
 	Translators []Author    `gorm:"many2many:book_translators;"`
-	BookShelves []BookShelf `gorm:"many2many:book_bookshelves;"`
+	Bookshelves []Bookshelf `gorm:"many2many:book_bookshelves;"`
 	Categories  []Category  `gorm:"many2many:book_categories;"`
 }
 
@@ -50,7 +50,7 @@ type Author struct {
 	Nation  string `gorm:"size:256;default:null"`
 }
 
-type BookShelf struct {
+type Bookshelf struct {
 	gorm.Model
 	Name        string `gorm:"size:256;unique;not null"`
 	Des         string `gorm:"size:256;default:null"`

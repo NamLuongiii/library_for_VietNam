@@ -103,7 +103,7 @@ func AuthorStore(c fiber.Ctx) error {
 			"data":    fields,
 			"message": "error",
 		})
-	} 
+	}
 
 	author := models.Author{
 		Name:    input.Name,
@@ -196,16 +196,16 @@ func AuthorDestroy(c fiber.Ctx) error {
 func OptionAuthorGender(c fiber.Ctx) error {
 	return c.JSON(fiber.Map{
 		"data": []fiber.Map{
-			fiber.Map{
-				"id": 0,
+			{
+				"id":   0,
 				"name": "Male",
 			},
-			fiber.Map{
-				"id": 1,
+			{
+				"id":   1,
 				"name": "Female",
 			},
-			fiber.Map{
-				"id": 2,
+			{
+				"id":   2,
 				"name": "Other",
 			},
 		},
