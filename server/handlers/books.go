@@ -40,7 +40,6 @@ type BookStoreValidate struct {
 	
 	Authors         []int       `json:"authors"`
 	Translators     []int       `json:"translators"`
-	Bookshelves     []models.Bookshelf `validate:"dive,required" json:"bookshelves"`
 } 
 
 func BookIndex(c fiber.Ctx) error {
