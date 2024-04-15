@@ -22,8 +22,8 @@ func ConnectDb() {
 	)
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
-        TranslateError: true,
+		Logger:         logger.Default.LogMode(logger.Info),
+		TranslateError: true,
 	})
 
 	if err != nil {
@@ -40,7 +40,6 @@ func ConnectDb() {
 		&models.Book{},
 		&models.Author{},
 		&models.Category{},
-		&models.Bookshelf{},
 	)
 
 	DB = db

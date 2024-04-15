@@ -13,35 +13,44 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-type BookStoreValidate struct {
-	Isbn            string      `validate:"omitempty,max=256" json:"isbn"`
-	Name            string      `validate:"required,max=256" json:"name"`
-	EnName          string      `validate:"omitempty,max=256" json:"en_name"`
-	OriginName      string      `validate:"omitempty,max=256" json:"origin_name"`
-	Cover           string      `validate:"required,url,max=256" json:"cover"`
-	Preface         string      `validate:"required,max=500" json:"preface"`
-	ComposeAt       string      `validate:"omitempty,max=256" json:"compose_at"`
-	Release         string      `validate:"omitempty,max=256" json:"release"`
-	Publisher       string      `validate:"omitempty,max=256" json:"publisher"`
-	GlobalPublisher string      `validate:"omitempty,max=256" json:"global_publisher"`
-	Page            uint64      `validate:"omitempty,gte=0,lte=100000" json:"page"`
-	Location        uint64      `validate:"omitempty,gte=0,lte=100000" json:"location"`
-	Chapter         uint8       `validate:"omitempty,gte=0,lt=256" json:"chapter"`
-	Lang            string      `validate:"required,max=256,oneof=vietnamese english chinese greek japanese other" json:"lang"`
-	OriginLang      string      `validate:"omitempty,oneof=vietnamese english chinese greek japanese other" json:"origin_lang"`
-	ProjectUrl      string      `validate:"omitempty,max=256,url" json:"project_url"`
-	ResourceUrl     string      `validate:"omitempty,max=256,url" json:"resource_url"`
-	FileUrl         string      `validate:"required,max=256,url" json:"file_url"`
-	FileName        string      `validate:"required,max=256" json:"file_name"`
-	Nation          string      `validate:"omitempty,max=256" json:"nation"`
-	Status          uint8       `validate:"omitempty,oneof= 0 1 2 3 4 5 6 7" json:"status"`
-	Show            uint8       `validate:"omitempty,oneof=0 1" json:"show"`
-	Level           uint8       `validate:"omitempty,gte=0,lte=100" json:"level"`
-	
-	Authors         []int       `json:"authors"`
-	Translators     []int       `json:"translators"`
-	Bookshelves     []models.Bookshelf `validate:"dive,required" json:"bookshelves"`
-} 
+type AuthorInput struct {
+	ID      uint   `validate:"required" json:"id"`
+	Name    string `validate:"required,max=256" json:"name"`
+	Potrait string `validate:"omitempty,url" json:"potrait"`
+	Bio     string `validate:"omitempty,max=500" json:"bio"`
+	KnowAs  string `validate:"omitempty,max=256" json:"know_as"`
+	Gender  uint8  `validate:"omitempty" json:"gender"`
+	Nation  string `validate:"omitempty" json:"nation"`
+}
+
+type BookInput struct {
+	Isbn            string        `validate:"omitempty,max=256" json:"isbn"`
+	Name            string        `validate:"required,max=256" json:"name"`
+	EnName          string        `validate:"omitempty,max=256" json:"en_name"`
+	OriginName      string        `validate:"omitempty,max=256" json:"origin_name"`
+	Cover           string        `validate:"required,url,max=256" json:"cover"`
+	Preface         string        `validate:"required,max=500" json:"preface"`
+	ComposeAt       string        `validate:"omitempty,max=256" json:"compose_at"`
+	Release         string        `validate:"omitempty,max=256" json:"release"`
+	Publisher       string        `validate:"omitempty,max=256" json:"publisher"`
+	GlobalPublisher string        `validate:"omitempty,max=256" json:"global_publisher"`
+	Page            uint64        `validate:"omitempty,gte=0,lte=100000" json:"page"`
+	Location        uint64        `validate:"omitempty,gte=0,lte=100000" json:"location"`
+	Chapter         uint8         `validate:"omitempty,gte=0,lt=256" json:"chapter"`
+	Lang            string        `validate:"required,max=256,oneof=vietnamese english chinese greek japanese other" json:"lang"`
+	OriginLang      string        `validate:"omitempty,oneof=vietnamese english chinese greek japanese other" json:"origin_lang"`
+	ProjectUrl      string        `validate:"omitempty,max=256,url" json:"project_url"`
+	ResourceUrl     string        `validate:"omitempty,max=256,url" json:"resource_url"`
+	FileUrl         string        `validate:"required,max=256,url" json:"file_url"`
+	FileName        string        `validate:"required,max=256" json:"file_name"`
+	Nation          string        `validate:"omitempty,max=256" json:"nation"`
+	Status          uint8         `validate:"omitempty,oneof= 0 1 2 3 4 5 6 7" json:"status"`
+	Show            uint8         `validate:"omitempty,oneof=0 1" json:"show"`
+	Level           uint8         `validate:"omitempty,gte=0,lte=100" json:"level"`
+	Authors         []AuthorInput `validate:"omitempty,dive,required" json:"authors"`
+	Translators     []AuthorInput `validate:"omitempty,dive,required" json:"translators"`
+	// Bookshelves     []models.Bookshelf `validate:"dive,required" json:"bookshelves"`
+}
 
 func BookIndex(c fiber.Ctx) error {
 	p := helpers.Paginate(c)
@@ -137,7 +146,7 @@ func BookShow(c fiber.Ctx) error {
 func BookStore(c fiber.Ctx) error {
 	body := c.Body()
 
-	var input BookStoreValidate
+	var input BookInput
 	if err := json.Unmarshal(body, &input); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Body unmarshal error",
@@ -153,27 +162,28 @@ func BookStore(c fiber.Ctx) error {
 		})
 	}
 
-	var authors []models.Author
-	if len(input.Authors) > 0 {
-		if err := database.DB.Find(&authors, input.Authors).Error; err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"message": err.Error(),
-			})
-		}
+	authors := []models.Author{}
+	for _, _author := range input.Authors {
+		authors = append(authors, models.Author{
+			Model: gorm.Model{
+				ID: _author.ID,
+			},
+		})
 	}
 
-	var translators []models.Author
-	if len(input.Translators) > 0 {
-		if err := database.DB.Find(&translators, input.Translators).Error; err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"message": err.Error(),
-			})
-		}
+	translators := []models.Author{}
+	for _, _translator := range input.Translators {
+		translators = append(translators, models.Author{
+			Model: gorm.Model{
+				ID: _translator.ID,
+			},
+		})
 	}
 
 	book := models.Book{
 		Isbn:            input.Isbn,
 		Name:            input.Name,
+		FileUrl:         input.FileUrl,
 		EnName:          input.EnName,
 		OriginName:      input.OriginName,
 		Cover:           input.Cover,
@@ -189,7 +199,6 @@ func BookStore(c fiber.Ctx) error {
 		OriginLang:      input.OriginLang,
 		ProjectUrl:      input.ProjectUrl,
 		ResourceUrl:     input.ResourceUrl,
-		FileUrl:         input.FileUrl,
 		FileName:        input.FileName,
 		Nation:          input.Nation,
 		Status:          input.Status,
@@ -197,7 +206,6 @@ func BookStore(c fiber.Ctx) error {
 		Level:           input.Level,
 		Authors:         authors,
 		Translators:     translators,
-
 	}
 
 	if result := database.DB.Create(&book); result.Error != nil {
@@ -242,7 +250,7 @@ func BookUpdate(c fiber.Ctx) error {
 		})
 	}
 
-	var input BookStoreValidate
+	var input BookInput
 	if err := json.Unmarshal(c.Body(), &input); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": err.Error(),
@@ -309,21 +317,21 @@ func BookUpdate(c fiber.Ctx) error {
 	}
 
 	var authors []models.Author
-	if len(input.Authors) > 0 {
-		if err := database.DB.Find(&authors, input.Authors).Error; err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"message": err.Error(),
-			})
-		}
+	for _, _author := range input.Authors {
+		authors = append(authors, models.Author{
+			Model: gorm.Model{
+				ID: _author.ID,
+			},
+		})
 	}
 
 	var translators []models.Author
-	if len(input.Translators) > 0 {
-		if err := database.DB.Find(&translators, input.Translators).Error; err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"message": err.Error(),
-			})
-		}
+	for _, _translator := range input.Translators {
+		translators = append(translators, models.Author{
+			Model: gorm.Model{
+				ID: _translator.ID,
+			},
+		})
 	}
 
 	if err := database.DB.Model(&book).Association("Authors").Replace(authors); err != nil {
