@@ -1,3 +1,5 @@
+"use client"
+
 import Image from "next/image"
 import dashboard from "@/public/menu/dashboard.svg"
 import notification from "@/public/menu/notification.svg"
@@ -7,21 +9,25 @@ import author from "@/public/menu/author.svg"
 import profile from "@/public/menu/profile.svg"
 import logout from "@/public/menu/logout.svg"
 import setting from "@/public/menu/setting.svg"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 
-export default function Menu() {
+export default function Menu({ lang }) {
+    const pathName = usePathname()
+
     const title = "vlibrary"
     const MENU = [
         {
             group: "Menu",
             items: [
                 {
-                    href: "#",
+                    href: "/home",
                     icon: dashboard.src,
                     title: "Dashboard",
                 },
                 {
-                    href: "/notification",
+                    href: "/home/notification",
                     icon: notification.src,
                     title: "Notification",
                 }
@@ -31,17 +37,17 @@ export default function Menu() {
             group: "Book",
             items: [
                 {
-                    href: "/books",
+                    href: "/home/books",
                     icon: book.src,
                     title: "Books",
                 },
                 {
-                    href: "/authors",
+                    href: "/home/authors",
                     icon: author.src,
                     title: "Authors"
                 },
                 {
-                    href: "/categories",
+                    href: "/home/categories",
                     icon: category.src,
                     title: "Categories",
                 }
@@ -51,12 +57,12 @@ export default function Menu() {
             group: "Setting",
             items: [
                 {
-                    href: "/profile",
+                    href: "/home/profile",
                     icon: profile.src,
                     title: "Profile",
                 },
                 {
-                    href: "/setting",
+                    href: "/home/setting",
                     icon: setting.src,
                     title: "Setting",
                 },
@@ -69,6 +75,9 @@ export default function Menu() {
         }
     ]
 
+    function isActive(href) {
+        return pathName == `/${lang}${href}`
+    }
     return (
         <div className="flex flex-col w-64 bg-white h-full border-r">
             <div className="flex items-center justify-center h-14 border-b">
@@ -84,7 +93,13 @@ export default function Menu() {
                         </li>
                         {group.items.map(item => (
                             <li key={item.title}>
-                                <a href={item.href} className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
+                                <Link
+                                    href={item.href}
+                                    className={`
+                                        relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50
+                                      text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6
+                                        ${isActive(item.href) ? "border-indigo-500" : ""}
+                                    `}>
                                     <Image
                                         alt="icon"
                                         width={100}
@@ -93,7 +108,7 @@ export default function Menu() {
                                         src={item.icon}
                                     ></Image>
                                     <span className="ml-2 text-sm tracking-wide truncate">{item.title}</span>
-                                </a>
+                                </Link>
                             </li>
                         ))}
                     </ul>
