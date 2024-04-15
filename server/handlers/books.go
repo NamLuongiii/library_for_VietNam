@@ -9,38 +9,39 @@ import (
 	"github.com/NamLuongiii/library_for_VietNam/models"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/basicauth"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
 
 type BookStoreValidate struct {
-	Isbn            string      `validate:"omitempty,max=256" json:"isbn"`
-	Name            string      `validate:"required,max=256" json:"name"`
-	EnName          string      `validate:"omitempty,max=256" json:"en_name"`
-	OriginName      string      `validate:"omitempty,max=256" json:"origin_name"`
-	Cover           string      `validate:"required,url,max=256" json:"cover"`
-	Preface         string      `validate:"required,max=500" json:"preface"`
-	ComposeAt       string      `validate:"omitempty,max=256" json:"compose_at"`
-	Release         string      `validate:"omitempty,max=256" json:"release"`
-	Publisher       string      `validate:"omitempty,max=256" json:"publisher"`
-	GlobalPublisher string      `validate:"omitempty,max=256" json:"global_publisher"`
-	Page            uint64      `validate:"omitempty,gte=0,lte=100000" json:"page"`
-	Location        uint64      `validate:"omitempty,gte=0,lte=100000" json:"location"`
-	Chapter         uint8       `validate:"omitempty,gte=0,lt=256" json:"chapter"`
-	Lang            string      `validate:"required,max=256,oneof=vietnamese english chinese greek japanese other" json:"lang"`
-	OriginLang      string      `validate:"omitempty,oneof=vietnamese english chinese greek japanese other" json:"origin_lang"`
-	ProjectUrl      string      `validate:"omitempty,max=256,url" json:"project_url"`
-	ResourceUrl     string      `validate:"omitempty,max=256,url" json:"resource_url"`
-	FileUrl         string      `validate:"required,max=256,url" json:"file_url"`
-	FileName        string      `validate:"required,max=256" json:"file_name"`
-	Nation          string      `validate:"omitempty,max=256" json:"nation"`
-	Status          uint8       `validate:"omitempty,oneof= 0 1 2 3 4 5 6 7" json:"status"`
-	Show            uint8       `validate:"omitempty,oneof=0 1" json:"show"`
-	Level           uint8       `validate:"omitempty,gte=0,lte=100" json:"level"`
-	
-	Authors         []int       `json:"authors"`
-	Translators     []int       `json:"translators"`
-} 
+	Isbn            string `validate:"omitempty,max=256" json:"isbn"`
+	Name            string `validate:"required,max=256" json:"name"`
+	EnName          string `validate:"omitempty,max=256" json:"en_name"`
+	OriginName      string `validate:"omitempty,max=256" json:"origin_name"`
+	Cover           string `validate:"required,url,max=256" json:"cover"`
+	Preface         string `validate:"required,max=500" json:"preface"`
+	ComposeAt       string `validate:"omitempty,max=256" json:"compose_at"`
+	Release         string `validate:"omitempty,max=256" json:"release"`
+	Publisher       string `validate:"omitempty,max=256" json:"publisher"`
+	GlobalPublisher string `validate:"omitempty,max=256" json:"global_publisher"`
+	Page            uint64 `validate:"omitempty,gte=0,lte=100000" json:"page"`
+	Location        uint64 `validate:"omitempty,gte=0,lte=100000" json:"location"`
+	Chapter         uint8  `validate:"omitempty,gte=0,lt=256" json:"chapter"`
+	Lang            string `validate:"required,max=256,oneof=vietnamese english chinese greek japanese other" json:"lang"`
+	OriginLang      string `validate:"omitempty,oneof=vietnamese english chinese greek japanese other" json:"origin_lang"`
+	ProjectUrl      string `validate:"omitempty,max=256,url" json:"project_url"`
+	ResourceUrl     string `validate:"omitempty,max=256,url" json:"resource_url"`
+	FileUrl         string `validate:"required,max=256,url" json:"file_url"`
+	FileName        string `validate:"required,max=256" json:"file_name"`
+	Nation          string `validate:"omitempty,max=256" json:"nation"`
+	Status          uint8  `validate:"omitempty,oneof= 0 1 2 3 4 5 6 7" json:"status"`
+	Show            uint8  `validate:"omitempty,oneof=0 1" json:"show"`
+	Level           uint8  `validate:"omitempty,gte=0,lte=100" json:"level"`
+
+	Authors     []int `json:"authors"`
+	Translators []int `json:"translators"`
+}
 
 func BookIndex(c fiber.Ctx) error {
 	p := helpers.Paginate(c)
@@ -196,7 +197,6 @@ func BookStore(c fiber.Ctx) error {
 		Level:           input.Level,
 		Authors:         authors,
 		Translators:     translators,
-
 	}
 
 	if result := database.DB.Create(&book); result.Error != nil {
@@ -343,6 +343,14 @@ func BookUpdate(c fiber.Ctx) error {
 }
 
 func BookDestroy(c fiber.Ctx) error {
+	username := basicauth.UsernameFromContext(c)
+	password := basicauth.PasswordFromContext(c)
+	if username != "super_admin" && password != "super_admin" {
+		return c.Status(fiber.StatusForbidden).JSON(fiber.Map{
+			"message": "error",
+		})
+	}
+
 	id := c.Params("id")
 
 	var book models.Book
@@ -352,7 +360,7 @@ func BookDestroy(c fiber.Ctx) error {
 		})
 	}
 
-	if err := database.DB.Select(clause.Associations).Delete(&book).Error; err != nil {
+	if err := database.DB.Select(clause.Associations).Delete(&book, book.ID).Error; err != nil {
 		message := err.Error()
 
 		if errors.Is(err, gorm.ErrForeignKeyViolated) {
