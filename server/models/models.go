@@ -31,7 +31,7 @@ type Book struct {
 	FileName        string `gorm:"unique;size:256;not null"`
 	Nation          string `gorm:"size:256;default: null"`
 	Status          uint8  `gorm:"not null;default:0"`
-	Show            uint8  `gorm:"not null;default:1"`
+	IsShow          uint8  `gorm:"not null;default:1"`
 	Level           uint8  `gorm:"dault:50"`
 
 	Authors     []Author   `gorm:"many2many:book_authors;"`

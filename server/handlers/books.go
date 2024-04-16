@@ -46,7 +46,7 @@ type BookInput struct {
 	FileName        string        `validate:"required,max=256" json:"file_name"`
 	Nation          string        `validate:"omitempty,max=256" json:"nation"`
 	Status          uint8         `validate:"omitempty,oneof= 0 1 2 3 4 5 6 7" json:"status"`
-	Show            uint8         `validate:"omitempty,oneof=0 1" json:"show"`
+	IsShow          uint8         `validate:"omitempty,oneof=0 1" json:"is_show"`
 	Level           uint8         `validate:"omitempty,gte=0,lte=100" json:"level"`
 	Authors         []AuthorInput `validate:"omitempty,dive,required" json:"authors"`
 	Translators     []AuthorInput `validate:"omitempty,dive,required" json:"translators"`
@@ -84,7 +84,7 @@ func BookIndex(c fiber.Ctx) error {
 			"file_name":        book.FileName,
 			"nation":           book.Nation,
 			"status":           book.Status,
-			"show":             book.Show,
+			"is_show":          book.IsShow,
 			"level":            book.Level,
 			"authors":          book.Authors,
 			"translators":      book.Translators,
@@ -134,7 +134,7 @@ func BookShow(c fiber.Ctx) error {
 			"file_name":        book.FileName,
 			"nation":           book.Nation,
 			"status":           book.Status,
-			"show":             book.Show,
+			"is_show":          book.IsShow,
 			"level":            book.Level,
 			"authors":          book.Authors,
 			"translators":      book.Translators,
@@ -203,7 +203,7 @@ func BookStore(c fiber.Ctx) error {
 		FileName:        input.FileName,
 		Nation:          input.Nation,
 		Status:          input.Status,
-		Show:            input.Show,
+		IsShow:          input.IsShow,
 		Level:           input.Level,
 		Authors:         authors,
 		Translators:     translators,

@@ -3,7 +3,7 @@
 import Generator from "@/app/components/fields/generator";
 import Form from "@/app/components/form/form";
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function LoginForm({ fields }) {
     const [input, update] = useState({})
@@ -14,10 +14,7 @@ export default function LoginForm({ fields }) {
         update({...input})
     }
 
-    useEffect(() => {
-        const url = "http://localhost:8080/api/admin"
-        fetch(url)
-    }, [])
+
 
     function submit(e) {
         const token = btoa(`${input.user_name}:${input.password}`)
