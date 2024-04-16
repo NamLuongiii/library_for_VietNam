@@ -50,6 +50,7 @@ export default function Menu({ lang }) {
                     href: "/home/categories",
                     icon: category.src,
                     title: "Categories",
+                    onclick: logout,
                 }
             ]
         },
@@ -67,7 +68,7 @@ export default function Menu({ lang }) {
                     title: "Setting",
                 },
                 {
-                    href: "",
+                    href: "/logout",
                     icon: logout.src,
                     title: "Logout"
                 }

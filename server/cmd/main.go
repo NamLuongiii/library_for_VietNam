@@ -5,6 +5,7 @@ import (
 	"github.com/NamLuongiii/library_for_VietNam/helpers"
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/basicauth"
+	"github.com/gofiber/fiber/v3/middleware/cors"
 )
 
 func main() {
@@ -12,6 +13,11 @@ func main() {
 	helpers.SetupValidator()
 
 	app := fiber.New(fiber.Config{})
+
+	app.Use(cors.New(cors.Config{
+		AllowOrigins:     "http://localhost:3000, http://127.0.0.1:3000",
+		AllowCredentials: true,
+	}))
 
 	api := app.Group("/api")
 

@@ -5,8 +5,8 @@ export default function Input(props) {
         return props.onchange(e.target.value)
     }
 
-    return <div>
-        <label htmlFor={props.id} >{props.label}</label>
+    return <div className="pb-4">
+        <label htmlFor={props.id} className="text-md text-gray-600 font-extralight">{props.label}</label>
         <input  
             id={props.id}
             type={props.type}
