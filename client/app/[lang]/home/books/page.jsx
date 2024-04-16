@@ -1,7 +1,12 @@
+async function getBooks() {
+    return "Hello world"
+}
 
-export default function Login() {
+export default async function BookIndex() {
+    const books = await getBooks()
+
 
     return <section>
-        Login
+        {books}
     </section>
 }

@@ -1,3 +1,4 @@
+import Header from "@/app/components/commons/header";
 import Menu from "@/app/components/commons/menu";
 
 export const metadata = {
@@ -9,7 +10,12 @@ export default function HomeLayout({ children, params: {lang} }) {
   return (
     <main className="h-screen flex bg-gray-50">
       <Menu lang={lang}></Menu>
-      {children}
+      <div className="relative h-screen w-full overscroll-auto">
+        <Header></Header>
+        <div className="pt-14">
+        {children}
+        </div>
+      </div>
     </main>
   );
 }

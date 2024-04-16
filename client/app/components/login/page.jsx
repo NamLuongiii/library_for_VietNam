@@ -2,15 +2,20 @@
 
 import Generator from "@/app/components/fields/generator";
 import Form from "@/app/components/form/form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function LoginForm({ fields }) {
     const [input, update] = useState({})
-    
+
     function onchange(key, value) {
         input[key] = value
         update({...input})
     }
+
+    useEffect(() => {
+        const url = "http://localhost:8080/api/admin"
+        fetch(url)
+    }, [])
 
     function submit() {
         console.log(input);
