@@ -9,6 +9,7 @@ import (
 	"github.com/NamLuongiii/library_for_VietNam/models"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/basicauth"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -352,6 +353,14 @@ func BookUpdate(c fiber.Ctx) error {
 }
 
 func BookDestroy(c fiber.Ctx) error {
+	username := basicauth.UsernameFromContext(c)
+	password := basicauth.PasswordFromContext(c)
+	if username != "super_admin" && password != "super_admin" {
+		return c.Status(fiber.StatusForbidden).JSON(fiber.Map{
+			"message": "error",
+		})
+	}
+
 	id := c.Params("id")
 
 	var book models.Book
@@ -361,7 +370,7 @@ func BookDestroy(c fiber.Ctx) error {
 		})
 	}
 
-	if err := database.DB.Select(clause.Associations).Delete(&book).Error; err != nil {
+	if err := database.DB.Select(clause.Associations).Delete(&book, book.ID).Error; err != nil {
 		message := err.Error()
 
 		if errors.Is(err, gorm.ErrForeignKeyViolated) {

@@ -7,30 +7,36 @@ import (
 	"github.com/gofiber/fiber/v3"
 )
 
-func setupRoutes(app *fiber.App) {
-	app.Get("/", handlers.Home)
-	app.Post("/facts", handlers.CreateFact)
+func setupRoutes(router fiber.Router) {
+	router.Get("/", handlers.Home)
+	router.Post("/facts", handlers.CreateFact)
 
-	app.Get("/books", handlers.BookIndex)
-	app.Get("/books/:id", handlers.BookShow)
-	app.Post("/books", handlers.BookStore)
-	app.Put("/books/:id", handlers.BookUpdate)
-	app.Delete("/books/:id", handlers.BookDestroy)
-	app.Get("/options/books/level", handlers.BookOptionLevel)
-	app.Get("/options/books/lang", handlers.BookOptionLang)
-	app.Get("/options/books/status", handlers.BookOptionStatus)
-	app.Get("/options/books/authors", handlers.BookOptionAuthors)
+	router.Get("/books", handlers.BookIndex)
+	router.Get("/books/:id", handlers.BookShow)
+	router.Post("/books", handlers.BookStore)
+	router.Put("/books/:id", handlers.BookUpdate)
+	router.Delete("/books/:id", handlers.BookDestroy)
+	router.Get("/options/books/level", handlers.BookOptionLevel)
+	router.Get("/options/books/lang", handlers.BookOptionLang)
+	router.Get("/options/books/status", handlers.BookOptionStatus)
+	router.Get("/options/books/authors", handlers.BookOptionAuthors)
 
-	app.Get("/authors", handlers.AuthorIndex)
-	app.Get("/authors/:id", handlers.AuthorShow)
-	app.Post("/authors", handlers.AuthorStore)
-	app.Put("/authors/:id", handlers.AuthorUpdate)
-	app.Delete("/authors/:id", handlers.AuthorDestroy)
-	app.Get("/options/authors/gender", handlers.OptionAuthorGender)
+	router.Get("/authors", handlers.AuthorIndex)
+	router.Get("/authors/:id", handlers.AuthorShow)
+	router.Post("/authors", handlers.AuthorStore)
+	router.Put("/authors/:id", handlers.AuthorUpdate)
+	router.Delete("/authors/:id", handlers.AuthorDestroy)
+	router.Get("/options/authors/gender", handlers.OptionAuthorGender)
 
-	app.Get("/bookshelves", handlers.BookShelfIndex)
-	app.Get("/bookshelves/:id", handlers.BookShelfShow)
-	app.Post("/bookshelves", handlers.BookShelfStore)
-	app.Put("/bookshelves/:id", handlers.BookShelfUpdate)
-	app.Delete("/bookshelves/:id", handlers.BookShelfDestroy)
+	router.Get("/bookshelves", handlers.BookShelfIndex)
+	router.Get("/bookshelves/:id", handlers.BookShelfShow)
+	router.Post("/bookshelves", handlers.BookShelfStore)
+	router.Put("/bookshelves/:id", handlers.BookShelfUpdate)
+	router.Delete("/bookshelves/:id", handlers.BookShelfDestroy)
+
+	router.Get("/auth", func(c fiber.Ctx) error {
+		return c.JSON(fiber.Map{
+			"message": "success",
+		})
+	})
 }
