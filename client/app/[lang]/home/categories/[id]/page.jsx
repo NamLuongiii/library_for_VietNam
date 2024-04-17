@@ -1,15 +1,18 @@
 import BaseShow from "@/app/components/base/baseShow"
 import { show } from "@/app/help/base"
 
-async function showAuthor(resource, id) {
-    return show(resource, id)
-}
-
-export default async function BookShow({ params: {id}}) {
-    const resource = "authors"
-    const { data } = await showAuthor(resource, id)
+export default async function CategoryShow({ params: {id}}) {
+    const resource = "categories"
+    const { data } = await show(resource, id)
 
     const fields = [
+        {
+            id: "id",
+            name: "id",
+            label: "ID",
+            type: "text",
+            isDisplay:  true,
+        },
         {
             id: "name",
             name: "name",
@@ -18,22 +21,18 @@ export default async function BookShow({ params: {id}}) {
             isDisplay: true,
         },
         {
-            id: "know_as",
-            name: "know_as",
-            label: "Know as",
-            type: "text",
-            isDisplay: true,
-        },
-        {
-            id: "nation",
-            name: "nation",
-            label: "Nation",
-            type: "text",
+            id: "des",
+            name: "des",
+            label: "Description",
+            type: "textarea",
             isDisplay: true,
         }
     ]
     
     return <section>
-        <BaseShow entity={data} fields={fields} resource={resource}></BaseShow>
+        <BaseShow 
+            entity={data} 
+            fields={fields} 
+            resource={resource}></BaseShow>
     </section>
 }

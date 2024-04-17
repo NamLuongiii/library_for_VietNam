@@ -1,10 +1,17 @@
 import BaseUpdate from "@/app/components/base/baseUpdate"
 import { show } from "@/app/help/base"
 
-export default async function BookUpdate({ params: {id}}) {
-    const resource = "authors"
+export default async function CategoryUpdate({ params: {id}}) {
+    const resource = "categories"
     const {data} = await show(resource, id)
     const fields = [
+        {
+            id: "id",
+            name: "id",
+            label: "ID",
+            type: "text",
+            isDisplay: true,
+        },
         {
             id: "name",
             name: "name",
@@ -12,21 +19,13 @@ export default async function BookUpdate({ params: {id}}) {
             type: "text",
         },
         {
-            id: "know_as",
-            name: "know_as",
-            label: "Know as",
-            type: "text",
-        },
-        {
-            id: "nation",
-            name: "nation",
-            label: "Nation",
+            id: "des",
+            name: "Des",
+            label: "Description",
             type: "text",
         }
 
     ]
-
-
 
     return <section>
         <BaseUpdate 

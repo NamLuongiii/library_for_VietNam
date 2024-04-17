@@ -3,6 +3,7 @@ package helpers
 import (
 	"strings"
 
+	"github.com/gofiber/fiber/v3"
 	"github.com/iancoleman/strcase"
 )
 
@@ -31,4 +32,23 @@ func SliceString(s string, start, end int) string {
 func ConnectString(strs ...string) string {
 	result := strings.Join(strs, "")
 	return result
+}
+
+func StatusInternalServerResponse(c fiber.Ctx, message string) error {
+	return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+		"message": message,
+	})
+}
+
+func FieldValidateBadRequestResponse(c fiber.Ctx, fields *fiber.Map) error {
+	return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+		"message": "error",
+		"fields":  fields,
+	})
+}
+
+func SimpleSuccessResponse(c fiber.Ctx) error {
+	return c.JSON(fiber.Map{
+		"message": "success",
+	})
 }

@@ -28,11 +28,11 @@ func setupRoutes(router fiber.Router) {
 	router.Delete("/authors/:id", handlers.AuthorDestroy)
 	router.Get("/options/authors/gender", handlers.OptionAuthorGender)
 
-	router.Get("/bookshelves", handlers.BookShelfIndex)
-	router.Get("/bookshelves/:id", handlers.BookShelfShow)
-	router.Post("/bookshelves", handlers.BookShelfStore)
-	router.Put("/bookshelves/:id", handlers.BookShelfUpdate)
-	router.Delete("/bookshelves/:id", handlers.BookShelfDestroy)
+	router.Get("/categories", handlers.CategoryIndex)
+	router.Get("/categories/:id", handlers.CategoryShow)
+	router.Post("/categories", handlers.CategoryStore)
+	router.Put("/categories/:id", handlers.CategoryUpdate)
+	router.Delete("/categories/:id", handlers.CategoryDestroy)
 
 	router.Get("/auth", func(c fiber.Ctx) error {
 		return c.JSON(fiber.Map{
