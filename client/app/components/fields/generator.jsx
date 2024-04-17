@@ -1,15 +1,19 @@
-import Display from "./display";
 import Input from "./input";
-import Select from "./select";
+import ComplexSelect from "./complexSelect";
 import Textarea from "./textarea";
 
 export default function Generator(props) {
-
+    const {
+        errorMessages = {}
+    } =  props
     function renderValue() {
-        const { valueKey, renderValue, entity, value } = props
-        if (!entity) return value
-        if (!renderValue) return entity[valueKey]
-        return renderValue(entity[valueKey])
+        const { render, entity, value, name } = props
+        console.log(entity);
+        if (!value && !entity && !render) return undefined
+
+        if (value) return value
+        if (entity) return entity[name]
+        if (render) return render(entity)
     }
 
     let ele
@@ -22,43 +26,54 @@ export default function Generator(props) {
                 name={props.name}
                 label={props.label || props.name}
                 onchange={props.onchange}
+                isDisplay={props.isDisplay}
+                errorMessage={errorMessages[props.name]}
             />
             break;
 
-        case "textare":
+        case "textarea":
             ele = <Textarea
                 id={props.id}
                 type={props.type}
                 value={renderValue()}
                 name={props.name}
                 label={props.label || props.name}
-                row={props.row}
-                column={props.column}
+                rows={props.rows}
+                columns={props.columns}
                 onchange={props.onchange}
+                isDisplay={props.isDisplay}
+                errorMessage={errorMessages[props.name]}
             />
             break;
 
-        case "select":
-            ele = <Select
+        case "complexSelect":
+            ele = <ComplexSelect
                 id={props.id}
                 type={props.type}
                 value={renderValue()}
                 name={props.name}
                 label={props.label || props.name}
                 onchange={props.onchange}
-            ></Select>
-
+                isDisplay={props.isDisplay}
+                options={props.options}
+                valueKey={props.valueKey}
+                textKey={props.textKey}
+                errorMessage={errorMessages[props.name]}
+            ></ComplexSelect>
             break;
 
-        case "display":
-            ele = <Display
+        case "date":
+            ele = <Input
                 id={props.id}
                 type={props.type}
                 value={renderValue()}
                 name={props.name}
                 label={props.label || props.name}
                 onchange={props.onchange}
-            ></Display>
+                isDisplay={props.isDisplay}
+                errorMessage={errorMessages[props.name]}
+            />
+            break;
         default:
             break;
     }

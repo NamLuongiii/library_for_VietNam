@@ -12,9 +12,7 @@ export default function HomeLayout({ children, params: {lang} }) {
       <Menu lang={lang}></Menu>
       <div className="relative grow h-full overflow-scroll">
         <Header></Header>
-        <div className="pt-14">
         {children}
-        </div>
       </div>
     </main>
   );

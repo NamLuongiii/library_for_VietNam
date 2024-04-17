@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^0.0.0-insiders.9f44656",
     "next": "^14.2.1",
+    "notiflix": "^3.2.7",
     "react": "^18",
     "react-dom": "^18",
     "react-reader": "^2.0.9"

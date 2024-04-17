@@ -1,19 +1,40 @@
+"use client"
 
 export default function Input(props) {
 
+    const {
+        id,
+        type,
+        name,
+        label,
+        value,
+        onchange,
+        isDisplay,
+        errorMessage,
+    } = props
+
     function onChange(e) {
-        return props.onchange(e.target.value)
+        return onchange(e.target.value)
     }
 
-    return <div className="pb-4">
-        <label htmlFor={props.id} className="text-md text-gray-600 font-extralight">{props.label}</label>
-        <input  
-            id={props.id}
-            type={props.type}
-            value={props.value}
-            name={props.name}
+
+
+    if (isDisplay)
+    return  <div>
+ss        <label>{label}</label>
+        <div>{value == undefined || value == null || value == "" ? "//" : value}</div>
+    </div>
+
+    return <div className="grid grid-cols-4 px-4 py-2">
+        <label className={`col-span-1 font-mono ${ errorMessage ? 'text-red-600' : ""}`} htmlFor={id}>{label}:</label>
+        <input
+            id={id}
+            type={type}
+            value={value}
+            name={name}
             onChange={onChange}
-            className="border block"
+            className={`"col-span-3 px-4 py-1 border-2 " ${ errorMessage ? 'border-red-600' : ""}`}
         ></input>
+        <p className={`col-span-3 text-xs pt-2 font-mono ${ errorMessage ? 'text-red-600' : ""}`}>{errorMessage}</p>
     </div>
 }

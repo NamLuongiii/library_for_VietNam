@@ -2,6 +2,6 @@
 export default function BaseIndex() {
 
     return <section>
-        Base index
+    Base index
     </section>
 }

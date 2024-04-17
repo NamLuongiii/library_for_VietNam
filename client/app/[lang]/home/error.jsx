@@ -6,8 +6,6 @@ export default function Error({
     error,
     reset,
 }) {
-    useEffect(() => {
-    }, [error])
 
     return (
         <div>

@@ -1,3 +1,5 @@
+"use server"
+
 function url(resource, segment = '') {
     return `${process.env.API_HOST}/${resource}/${segment}`
 }
@@ -12,7 +14,8 @@ export async function index(resource, page = 1, page_size = 20) {
         url(resource, `?page=${page}&page_size=${page_size}`),
         {
             credentials: "include",
-            headers: { Authorization : basicAuthentication() }
+            headers: { Authorization : basicAuthentication() },
+            cache: 'no-cache'
         }
     )
 
@@ -66,9 +69,9 @@ export async function update(resource, resource_id, input) {
 
 }
 
-export async function store(resource, resource_id, input) {
+export async function store(resource, input) {
     const res = await fetch(
-        url(resource, resource_id),
+        url(resource),
         {
             method: 'POST',
             credentials: "include",
@@ -81,10 +84,14 @@ export async function store(resource, resource_id, input) {
     )
 
     if (!res.ok) {
-        if (res.status == 400) {
-            return  res.json()
-        }
-
+        if (res.status == 400) 
+            return {
+                error: true,
+                data: await res.json(),
+                status: res.status,
+                statusText: res.statusText
+            }
+        
         throw new Error(res.statusText)
     }
 
