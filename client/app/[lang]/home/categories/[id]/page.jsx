@@ -28,6 +28,8 @@ export default async function CategoryShow({ params: {id}}) {
             isDisplay: true,
         }
     ]
+
+    console.log(data);
     
     return <section>
         <BaseShow 

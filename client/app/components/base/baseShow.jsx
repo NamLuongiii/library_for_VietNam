@@ -11,7 +11,7 @@ export default function BaseShow({fields, entity, resource, title = "Detail"}) {
     async function handleDestroy() {
         "use server"
         await destroy(resource, entity.id)
-        redirect("/home/books")
+        redirect(`/home/${resource}`)
     }
 
     return <section className="mb-10">

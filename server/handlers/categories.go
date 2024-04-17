@@ -54,12 +54,17 @@ func CategoryShow(c fiber.Ctx) error {
 		})
 	}
 
-	return c.JSON(fiber.Map{
+	data := fiber.Map{
 		"id":         category.ID,
 		"name":       category.Name,
 		"des":        category.Des,
 		"created_at": category.CreatedAt,
 		"updated_at": category.UpdatedAt,
+	}
+
+	return c.JSON(fiber.Map{
+		"data":    data,
+		"message": "success",
 	})
 }
 

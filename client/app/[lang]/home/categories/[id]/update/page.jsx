@@ -20,9 +20,9 @@ export default async function CategoryUpdate({ params: {id}}) {
         },
         {
             id: "des",
-            name: "Des",
+            name: "des",
             label: "Description",
-            type: "text",
+            type: "textarea",
         }
 
     ]
