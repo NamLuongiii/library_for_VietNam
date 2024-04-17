@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 
 	"github.com/NamLuongiii/library_for_VietNam/database"
 	"github.com/NamLuongiii/library_for_VietNam/helpers"
@@ -208,6 +209,8 @@ func BookStore(c fiber.Ctx) error {
 		Authors:         authors,
 		Translators:     translators,
 	}
+
+	fmt.Println(1000, book.EnName)
 
 	if result := database.DB.Create(&book); result.Error != nil {
 		err_message := result.Error.Error()

@@ -130,7 +130,7 @@ func AuthorUpdate(c fiber.Ctx) error {
 
 	var author models.Author
 	if err := database.DB.First(&author, id).Error; err != nil {
-		c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"message": err.Error(),
 		})
 	}
