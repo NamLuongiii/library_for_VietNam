@@ -17,16 +17,27 @@ export default function Textarea(props) {
         return onchange(e.target.value)
     }
 
-    if (isDisplay) return <textarea onChange={onChange} name={name} rows={rows} columns={columns} disabled value={value}></textarea>
-
-    return <div className={`grid grid-cols-4 px-4 py-2`}>
-        <label htmlFor={id} className={`col-span-1 font-mono ${errorMessage ? "text-red-600" : ""}`}>{label}</label>
+    if (isDisplay) return <div className="grid grid-cols-4 px-4 py-2">
+        <label htmlFor={id} className={`col-span-1 font-mono ${errorMessage ? "text-red-600" : ""}`}>{label}:</label>
         <textarea 
-            className={`col-span-3 border-2 p-4 ${errorMessage ? "border-red-600" : ""}`}
+            className="grid-cols-3 p-4"
             onChange={onChange} 
             name={name} 
             rows={rows} 
-            columns={columns}>{value}</textarea>
+            columns={columns} 
+            disabled 
+            defaultValue={value}></textarea>
+    </div>
+
+    return <div className={`grid grid-cols-4 px-4 py-2`}>
+        <label htmlFor={id} className={`col-span-1 font-mono ${errorMessage ? "text-red-600" : ""}`}>{label}:</label>
+        <textarea
+            className={`col-span-3 border-2 p-4 ${errorMessage ? "border-red-600" : ""}`}
+            onChange={onChange}
+            name={name}
+            rows={rows}
+            columns={columns}
+            defaultValue={value}></textarea>
         <p className="col-span-4 pt-2 text-sm text-red-600 font-mono" >{errorMessage}</p>
     </div>
 }

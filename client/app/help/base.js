@@ -31,7 +31,8 @@ export async function show(resource, resource_id) {
         url(resource, resource_id),
         {
             credentials: "include",
-            headers: { Authorization: basicAuthentication() }
+            headers: { Authorization: basicAuthentication() },
+            cache: 'no-cache'
         }
     )
 
@@ -58,9 +59,13 @@ export async function update(resource, resource_id, input) {
     )
 
     if (!res.ok) {
-        if (res.status == 400) {
-            return  res.json()
-        }
+        if (res.status == 400) 
+            return {
+                error: true,
+                data: await res.json(),
+                status: res.status,
+                statusText: res.statusText
+            }
 
         throw new Error(res.statusText)
     }

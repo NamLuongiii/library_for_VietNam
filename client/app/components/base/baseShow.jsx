@@ -4,8 +4,9 @@ import Link from "next/link"
 import Destroy from "./destroy";
 import { destroy } from "@/app/help/base";
 import { redirect } from 'next/navigation'
+import Back from "./back";
 
-export default function BaseShow({fields, entity, resource}) {
+export default function BaseShow({fields, entity, resource, title = "Detail"}) {
     
     async function handleDestroy() {
         "use server"
@@ -15,7 +16,7 @@ export default function BaseShow({fields, entity, resource}) {
 
     return <section className="mb-10">
         <header className="px-4 py-2 border-b bg-white sticky top-14">
-            <h1 className="text-2xl">Book Detail</h1>
+            <h1 className="text-2xl">{title}</h1>
         </header>
 
         <Form>
@@ -32,11 +33,12 @@ export default function BaseShow({fields, entity, resource}) {
             ))}
         </Form>
         
-        <footer className="h-10 p-2 border-t bg-white fixed bottom-0 right-0 left-64 grid grid-cols-2 gap-4">
-            <Link rel="stylesheet" href={`${entity.id}/edit`} className="border">Update</Link>
+        <footer className="h-14 px-4 py-2 border-t-2 bg-white fixed bottom-0 right-0 left-64 gap-4 flex">
+            <Link rel="stylesheet" href={`${entity.id}/update`} className="border inline-flex justify-center items-center px-4 py-1">Update</Link>
             <form action={handleDestroy}>
                 <Destroy></Destroy>
             </form>
+            <Back text="Back"></Back>
         </footer>
     </section>
 }

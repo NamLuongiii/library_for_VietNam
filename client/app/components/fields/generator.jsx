@@ -8,7 +8,6 @@ export default function Generator(props) {
     } =  props
     function renderValue() {
         const { render, entity, value, name } = props
-        console.log(entity);
         if (!value && !entity && !render) return undefined
 
         if (value) return value

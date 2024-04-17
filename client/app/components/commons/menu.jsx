@@ -77,7 +77,9 @@ export default function Menu({ lang }) {
     ]
 
     function isActive(href) {
-        return pathName == `/${lang}${href}`
+        if (href == "/home") 
+            return pathName == `/${lang}${href}`
+        return pathName.includes(`/${lang}${href}`)
     }
     return (
         <div className="flex flex-col w-64 bg-white h-full border-r">

@@ -4,8 +4,11 @@ import Generator from "@/app/components/fields/generator"
 import Form from "@/app/components/form/form"
 import { store } from "@/app/help/base"
 import { useState } from "react"
+import { useRouter } from 'next/navigation'
+import Back from "./back"
 
-export default function BaseStore({fields, resource}) {
+export default function BaseStore({fields, resource, title="Store new record"}) {
+    const router = useRouter()
     const [input, updateInput] = useState({})
     const [errorMessages, setErrorMessages] = useState({})
 
@@ -14,13 +17,17 @@ export default function BaseStore({fields, resource}) {
         updateInput({...input})
     }
 
+    
+
     async function handleSubmit() {
         try {
             const res = await store(resource, input)
             if (res.error && res.status == 400) {
                 const fields= res.data.fields
+                console.log(fields);
                 setErrorMessages(fields)
-            }
+            } else
+                router.push(`/home/${resource}`)
         } catch (error) {
             throw new Error(error.message)
         }
@@ -29,7 +36,7 @@ export default function BaseStore({fields, resource}) {
 
     return <section>
         <header className="sticky top-14 bg-white flex items-center">
-            <h1 className="text-2xl px-4 py-2">Store a new record</h1>
+            <h1 className="text-2xl px-4 py-2">{title}</h1>
         </header>
         <Form action={handleSubmit}>
             {fields.map(field => (
@@ -41,8 +48,9 @@ export default function BaseStore({fields, resource}) {
                 ></Generator>
             ))}
 
-            <footer className="fixed bottom-0 right-0 left-64 bg-white px-4 py-2 border-t">
+            <footer className="fixed bottom-0 right-0 left-64 bg-white px-4 py-2 border-t flex gap-4">
                 <Submit></Submit>
+                <Back text="Cancel"></Back>
             </footer>
         </Form>
     </section>
