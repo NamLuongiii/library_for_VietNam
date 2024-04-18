@@ -27,16 +27,14 @@ type Book struct {
 	OriginLang      string `gorm:"size:256;default:null"`
 	ProjectUrl      string `gorm:"size:256;default:null"`
 	ResourceUrl     string `gorm:"size:256;default:null"`
-	FileUrl         string `gorm:"size:256;not null;"`
-	FileName        string `gorm:"unique;size:256;not null"`
 	Nation          string `gorm:"size:256;default: null"`
 	Status          uint8  `gorm:"not null;default:0"`
 	IsShow          uint8  `gorm:"not null;default:1"`
 	Level           uint8  `gorm:"dault:50"`
 
-	Authors     []Author   `gorm:"many2many:book_authors;"`
-	Translators []Author   `gorm:"many2many:book_translators;"`
-	Categories  []Category `gorm:"many2many:book_categories;"`
+	Authors    []Author   `gorm:"many2many:book_authors;"`
+	Categories []Category `gorm:"many2many:book_categories;"`
+	Files      []File
 }
 
 type Author struct {
@@ -53,4 +51,13 @@ type Category struct {
 	gorm.Model
 	Name string `gorm:"size:256;unique;not null"`
 	Des  string `gorm:"size:256;default:null"`
+}
+
+type File struct {
+	gorm.Model
+	Name      string `gorm:"size:256;not null"`
+	Url       string `gorm:"size:256;not null"`
+	Color     string `gorm:"size:256;not null"`
+	Extension string `gorm:"size:256;not null"`
+	BookId    uint
 }

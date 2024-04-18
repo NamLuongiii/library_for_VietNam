@@ -1,7 +1,11 @@
 import BaseStore from "@/app/components/base/baseStore"
+import { options } from "@/app/help/base"
 
 export default async function BookStore() {
     const resource = "books"
+    const authors = await options("books/authors")
+    const categories = await options("books/categories")
+    
     const fields = [
         {
             id: "name",
@@ -20,24 +24,26 @@ export default async function BookStore() {
             name: "preface",
             label: "Preface",
             type: "textarea",
-        }, 
-        {
-            id: "lang",
-            name: "lang",
-            label: "Lang",
-            type: "text",
         },
         {
-            id: "file_url",
-            name: "file_url",
-            label: "File url",
-            type: "text",
-        }, 
+            id: "authors",
+            name: "authors",
+            label: "Author",
+            type: "complexSelect",
+            options: authors.data,
+            valueKey: "id",
+            textKey: "name",
+            multiple: true,
+        },
         {
-            id: "file_name",
-            name: "file_name",
-            label: "File Name",
-            type: "text",
+            id: "categories",
+            name: "categories",
+            label: "Category",
+            type: "complexSelect",
+            options: categories.data,
+            valueKey: "id",
+            textKey: "name",
+            multiple: true,
         }
     ]
 

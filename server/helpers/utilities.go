@@ -52,3 +52,15 @@ func SimpleSuccessResponse(c fiber.Ctx) error {
 		"message": "success",
 	})
 }
+
+func SimpleNotFoundResponse(c fiber.Ctx, message string) error {
+	return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+		"message": message,
+	})
+}
+
+func SimpleUnAuthozitionResponse(c fiber.Ctx, message string) error {
+	return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+		"message": message,
+	})
+}

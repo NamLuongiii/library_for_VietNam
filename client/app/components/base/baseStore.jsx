@@ -20,17 +20,18 @@ export default function BaseStore({fields, resource, title="Store new record"}) 
     
 
     async function handleSubmit() {
-        try {
-            const res = await store(resource, input)
-            if (res.error && res.status == 400) {
-                const fields= res.data.fields
-                console.log(fields);
-                setErrorMessages(fields)
-            } else
-                router.push(`/home/${resource}`)
-        } catch (error) {
-            throw new Error(error.message)
-        }
+        console.log(input);
+        // try {
+        //     const res = await store(resource, input)
+        //     if (res.error && res.status == 400) {
+        //         const fields= res.data.fields
+        //         console.log(fields);
+        //         setErrorMessages(fields)
+        //     } else
+        //         router.push(`/home/${resource}`)
+        // } catch (error) {
+        //     throw new Error(error.message)
+        // }
     }
 
 

@@ -24,33 +24,45 @@ type AuthorInput struct {
 	Nation  string `validate:"omitempty" json:"nation"`
 }
 
+type FileInput struct {
+	Name      string `validate:"required,max=256" json:"name"`
+	Url       string `validate:"required,url,max=256" json:"url"`
+	Extension string `validate:"required,max=256" json:"extension"`
+	Color     string `validate:"omitempty,max=256" josn:"color"`
+}
+
+type categoryInput struct {
+	ID   uint   `validate:"required" json:"id"`
+	Name string `validate:"required,max=256" json:"name"`
+	Des  string `validate:"max=256" json:"des"`
+}
+
 type BookInput struct {
-	Isbn            string        `validate:"omitempty,max=256" json:"isbn"`
-	Name            string        `validate:"required,max=256" json:"name"`
-	EnName          string        `validate:"omitempty,max=256" json:"en_name"`
-	OriginName      string        `validate:"omitempty,max=256" json:"origin_name"`
-	Cover           string        `validate:"required,url,max=256" json:"cover"`
-	Preface         string        `validate:"required,max=500" json:"preface"`
-	ComposeAt       string        `validate:"omitempty,max=256" json:"compose_at"`
-	Release         string        `validate:"omitempty,max=256" json:"release"`
-	Publisher       string        `validate:"omitempty,max=256" json:"publisher"`
-	GlobalPublisher string        `validate:"omitempty,max=256" json:"global_publisher"`
-	Page            uint64        `validate:"omitempty,gte=0,lte=100000" json:"page"`
-	Location        uint64        `validate:"omitempty,gte=0,lte=100000" json:"location"`
-	Chapter         uint8         `validate:"omitempty,gte=0,lt=256" json:"chapter"`
-	Lang            string        `validate:"required,max=256,oneof=vietnamese english chinese greek japanese other" json:"lang"`
-	OriginLang      string        `validate:"omitempty,oneof=vietnamese english chinese greek japanese other" json:"origin_lang"`
-	ProjectUrl      string        `validate:"omitempty,max=256,url" json:"project_url"`
-	ResourceUrl     string        `validate:"omitempty,max=256,url" json:"resource_url"`
-	FileUrl         string        `validate:"required,max=256,url" json:"file_url"`
-	FileName        string        `validate:"required,max=256" json:"file_name"`
-	Nation          string        `validate:"omitempty,max=256" json:"nation"`
-	Status          uint8         `validate:"omitempty,oneof= 0 1 2 3 4 5 6 7" json:"status"`
-	IsShow          uint8         `validate:"omitempty,oneof=0 1" json:"is_show"`
-	Level           uint8         `validate:"omitempty,gte=0,lte=100" json:"level"`
-	Authors         []AuthorInput `validate:"omitempty,dive,required" json:"authors"`
-	Translators     []AuthorInput `validate:"omitempty,dive,required" json:"translators"`
-	// Bookshelves     []models.Bookshelf `validate:"dive,required" json:"bookshelves"`
+	Isbn            string `validate:"omitempty,max=256" json:"isbn"`
+	Name            string `validate:"required,max=256" json:"name"`
+	EnName          string `validate:"omitempty,max=256" json:"en_name"`
+	OriginName      string `validate:"omitempty,max=256" json:"origin_name"`
+	Cover           string `validate:"required,url,max=256" json:"cover"`
+	Preface         string `validate:"required,max=500" json:"preface"`
+	ComposeAt       string `validate:"omitempty,max=256" json:"compose_at"`
+	Release         string `validate:"omitempty,max=256" json:"release"`
+	Publisher       string `validate:"omitempty,max=256" json:"publisher"`
+	GlobalPublisher string `validate:"omitempty,max=256" json:"global_publisher"`
+	Page            uint64 `validate:"omitempty,gte=0,lte=100000" json:"page"`
+	Location        uint64 `validate:"omitempty,gte=0,lte=100000" json:"location"`
+	Chapter         uint8  `validate:"omitempty,gte=0,lt=256" json:"chapter"`
+	Lang            string `validate:"required,max=256,oneof=vietnamese english chinese greek japanese other" json:"lang"`
+	OriginLang      string `validate:"omitempty,oneof=vietnamese english chinese greek japanese other" json:"origin_lang"`
+	ProjectUrl      string `validate:"omitempty,max=256,url" json:"project_url"`
+	ResourceUrl     string `validate:"omitempty,max=256,url" json:"resource_url"`
+	Nation          string `validate:"omitempty,max=256" json:"nation"`
+	Status          uint8  `validate:"omitempty,oneof= 0 1 2 3 4 5 6 7" json:"status"`
+	IsShow          uint8  `validate:"omitempty,oneof=0 1" json:"is_show"`
+	Level           uint8  `validate:"omitempty,gte=0,lte=100" json:"level"`
+
+	Authors    []AuthorInput   `validate:"omitempty,dive,required" json:"authors"`
+	Categories []categoryInput `validate:"omitempty,dive,required" json:"categories"`
+	Files      []FileInput     `validate:"omitempty,dive,required" json:"files"`
 }
 
 func BookIndex(c fiber.Ctx) error {
@@ -80,16 +92,16 @@ func BookIndex(c fiber.Ctx) error {
 			"origin_lang":      book.OriginLang,
 			"project_url":      book.ProjectUrl,
 			"resource_url":     book.ResourceUrl,
-			"file_url":         book.FileUrl,
-			"file_name":        book.FileName,
 			"nation":           book.Nation,
 			"status":           book.Status,
 			"is_show":          book.IsShow,
 			"level":            book.Level,
-			"authors":          book.Authors,
-			"translators":      book.Translators,
 			"created_at":       book.CreatedAt,
 			"updated_at":       book.UpdatedAt,
+
+			"authors":    book.Authors,
+			"categories": book.Categories,
+			"files":      book.Files,
 		})
 	}
 
@@ -105,9 +117,7 @@ func BookShow(c fiber.Ctx) error {
 	var book models.Book
 
 	if err := database.DB.Preload(clause.Associations).First(&book, ID).Error; err != nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"message": "Not found book",
-		})
+		return helpers.SimpleNotFoundResponse(c, err.Error())
 	}
 
 	return c.JSON(fiber.Map{
@@ -130,16 +140,16 @@ func BookShow(c fiber.Ctx) error {
 			"origin_lang":      book.OriginLang,
 			"project_url":      book.ProjectUrl,
 			"resource_url":     book.ResourceUrl,
-			"file_url":         book.FileUrl,
-			"file_name":        book.FileName,
 			"nation":           book.Nation,
 			"status":           book.Status,
 			"is_show":          book.IsShow,
 			"level":            book.Level,
-			"authors":          book.Authors,
-			"translators":      book.Translators,
 			"created_at":       book.CreatedAt,
 			"updated_at":       book.UpdatedAt,
+
+			"authors":    book.Authors,
+			"categories": book.Categories,
+			"files":      book.Files,
 		},
 	})
 }
@@ -149,18 +159,13 @@ func BookStore(c fiber.Ctx) error {
 
 	var input BookInput
 	if err := json.Unmarshal(body, &input); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "Body unmarshal error",
-		})
+		return helpers.StatusInternalServerResponse(c, err.Error())
 	}
 
 	if errs := helpers.Validate.Struct(input); errs != nil {
 		fields := fiber.Map{}
 		helpers.ErrorFieldMessages(errs.(validator.ValidationErrors), &fields)
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "error",
-			"fields":  fields,
-		})
+		return helpers.FieldValidateBadRequestResponse(c, &fields)
 	}
 
 	authors := []models.Author{}
@@ -172,19 +177,28 @@ func BookStore(c fiber.Ctx) error {
 		})
 	}
 
-	translators := []models.Author{}
-	for _, _translator := range input.Translators {
-		translators = append(translators, models.Author{
+	categories := []models.Category{}
+	for _, category := range input.Categories {
+		categories = append(categories, models.Category{
 			Model: gorm.Model{
-				ID: _translator.ID,
+				ID: category.ID,
 			},
+		})
+	}
+
+	files := []models.File{}
+	for _, file := range input.Files {
+		files = append(files, models.File{
+			Name:      file.Name,
+			Url:       file.Url,
+			Extension: file.Extension,
+			Color:     file.Color,
 		})
 	}
 
 	book := models.Book{
 		Isbn:            input.Isbn,
 		Name:            input.Name,
-		FileUrl:         input.FileUrl,
 		EnName:          input.EnName,
 		OriginName:      input.OriginName,
 		Cover:           input.Cover,
@@ -200,13 +214,14 @@ func BookStore(c fiber.Ctx) error {
 		OriginLang:      input.OriginLang,
 		ProjectUrl:      input.ProjectUrl,
 		ResourceUrl:     input.ResourceUrl,
-		FileName:        input.FileName,
 		Nation:          input.Nation,
 		Status:          input.Status,
 		IsShow:          input.IsShow,
 		Level:           input.Level,
-		Authors:         authors,
-		Translators:     translators,
+
+		Authors:    authors,
+		Categories: categories,
+		Files:      files,
 	}
 
 	if result := database.DB.Create(&book); result.Error != nil {
@@ -218,17 +233,8 @@ func BookStore(c fiber.Ctx) error {
 			if err := database.DB.Unscoped().Where("name=?", book.Name).First(&b).Error; err == nil {
 				fields["name"] = err_message
 			}
-			if err := database.DB.Unscoped().Where("en_name=?", book.EnName).First(&b).Error; err == nil {
-				fields["en_name"] = err_message
-			}
-			if err := database.DB.Unscoped().Where("file_name=?", book.FileName).First(&b).Error; err == nil {
-				fields["file_name"] = err_message
-			}
 
-			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"fields":  fields,
-				"message": result.Error.Error(),
-			})
+			return helpers.FieldValidateBadRequestResponse(c, &fields)
 		}
 
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -246,25 +252,18 @@ func BookUpdate(c fiber.Ctx) error {
 
 	var book models.Book
 	if err := database.DB.First(&book, id).Error; err != nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"message": err.Error(),
-		})
+		return helpers.SimpleNotFoundResponse(c, err.Error())
 	}
 
 	var input BookInput
 	if err := json.Unmarshal(c.Body(), &input); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": err.Error(),
-		})
+		return helpers.StatusInternalServerResponse(c, err.Error())
 	}
 
 	if errs := helpers.Validate.Struct(input); errs != nil {
 		fields := fiber.Map{}
 		helpers.ErrorFieldMessages(errs.(validator.ValidationErrors), &fields)
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "error",
-			"fields":  fields,
-		})
+		return helpers.FieldValidateBadRequestResponse(c, &fields)
 	}
 
 	book.Isbn = input.Isbn
@@ -284,8 +283,6 @@ func BookUpdate(c fiber.Ctx) error {
 	book.OriginLang = input.OriginLang
 	book.ProjectUrl = input.ProjectUrl
 	book.ResourceUrl = input.ResourceUrl
-	book.FileUrl = input.FileUrl
-	book.FileName = input.FileName
 	book.Nation = input.Nation
 	book.Status = input.Status
 	book.Level = input.Level
@@ -299,22 +296,11 @@ func BookUpdate(c fiber.Ctx) error {
 			if err := database.DB.Where("name=?", book.Name).First(&b).Error; err == nil {
 				fields["name"] = message
 			}
-			if err := database.DB.Where("en_name=?", book.EnName).First(&b).Error; err == nil {
-				fields["en_name"] = message
-			}
-			if err := database.DB.Where("file_name=?", book.FileName).First(&b).Error; err == nil {
-				fields["file_name"] = message
-			}
 
-			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"fields":  fields,
-				"message": "error",
-			})
+			return helpers.FieldValidateBadRequestResponse(c, &fields)
 		}
 
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": message,
-		})
+		return helpers.StatusInternalServerResponse(c, err.Error())
 	}
 
 	var authors []models.Author
@@ -326,67 +312,46 @@ func BookUpdate(c fiber.Ctx) error {
 		})
 	}
 
-	var translators []models.Author
-	for _, _translator := range input.Translators {
-		translators = append(translators, models.Author{
-			Model: gorm.Model{
-				ID: _translator.ID,
-			},
+	files := []models.File{}
+	for _, file := range input.Files {
+		files = append(files, models.File{
+			Name:      file.Name,
+			Url:       file.Url,
+			Extension: file.Extension,
+			Color:     file.Color,
 		})
 	}
 
 	if err := database.DB.Model(&book).Association("Authors").Replace(authors); err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err.Error(),
-		})
+		return helpers.StatusInternalServerResponse(c, err.Error())
 	}
 
-	if err := database.DB.Model(&book).Association("Translators").Replace(translators); err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err.Error(),
-		})
+	if err := database.DB.Model(&book).Association("Files").Replace(files); err != nil {
+		return helpers.StatusInternalServerResponse(c, err.Error())
 	}
 
-	return c.JSON(fiber.Map{
-		"message": "success",
-	})
+	return helpers.SimpleSuccessResponse(c)
 }
 
 func BookDestroy(c fiber.Ctx) error {
 	username := basicauth.UsernameFromContext(c)
 	password := basicauth.PasswordFromContext(c)
 	if username != "super_admin" && password != "super_admin" {
-		return c.Status(fiber.StatusForbidden).JSON(fiber.Map{
-			"message": "error",
-		})
+		return helpers.SimpleUnAuthozitionResponse(c, "error")
 	}
 
 	id := c.Params("id")
 
 	var book models.Book
 	if err := database.DB.First(&book, id).Error; err != nil {
-		c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"message": "error",
-		})
+		return helpers.SimpleNotFoundResponse(c, err.Error())
 	}
 
 	if err := database.DB.Select(clause.Associations).Delete(&book, book.ID).Error; err != nil {
-		message := err.Error()
-
-		if errors.Is(err, gorm.ErrForeignKeyViolated) {
-			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"message": message,
-			})
-		}
-
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": message,
-		})
+		return helpers.StatusInternalServerResponse(c, err.Error())
 	}
 
-	return c.JSON(fiber.Map{
-		"message": "success",
-	})
+	return helpers.SimpleSuccessResponse(c)
 }
 
 func BookOptionLevel(c fiber.Ctx) error {
@@ -507,9 +472,7 @@ func BookOptionAuthors(c fiber.Ctx) error {
 
 	var authors []models.Author
 	if err := database.DB.Scopes(p.DbHandler).Find(&authors).Error; err != nil {
-		c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err.Error(),
-		})
+		return helpers.StatusInternalServerResponse(c, err.Error())
 	}
 
 	author_options := []fiber.Map{}
@@ -524,6 +487,33 @@ func BookOptionAuthors(c fiber.Ctx) error {
 
 	return c.JSON(fiber.Map{
 		"data":      author_options,
+		"page":      p.Page,
+		"page_size": p.PageSize,
+		"message":   "success",
+	})
+}
+
+func BookOptionCategories(c fiber.Ctx) error {
+	p := helpers.Paginate(c)
+
+	categories := []models.Category{}
+	if err := database.DB.Scopes(p.DbHandler).Find(&categories).Error; err != nil {
+		return helpers.StatusInternalServerResponse(c, err.Error())
+	}
+
+	res := []fiber.Map{}
+	for _, category := range categories {
+		res = append(res, fiber.Map{
+			"id":         category.ID,
+			"name":       category.Name,
+			"des":        category.Des,
+			"created_at": category.CreatedAt,
+			"updated_at": category.UpdatedAt,
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"data":      res,
 		"page":      p.Page,
 		"page_size": p.PageSize,
 		"message":   "success",

@@ -58,6 +58,7 @@ export default function Generator(props) {
                 valueKey={props.valueKey}
                 textKey={props.textKey}
                 errorMessage={errorMessages[props.name]}
+                multiple={props.multiple}
             ></ComplexSelect>
             break;
 

@@ -16,10 +16,12 @@ func setupRoutes(router fiber.Router) {
 	router.Post("/books", handlers.BookStore)
 	router.Put("/books/:id", handlers.BookUpdate)
 	router.Delete("/books/:id", handlers.BookDestroy)
+
 	router.Get("/options/books/level", handlers.BookOptionLevel)
 	router.Get("/options/books/lang", handlers.BookOptionLang)
 	router.Get("/options/books/status", handlers.BookOptionStatus)
 	router.Get("/options/books/authors", handlers.BookOptionAuthors)
+	router.Get("/options/books/categories", handlers.BookOptionCategories)
 
 	router.Get("/authors", handlers.AuthorIndex)
 	router.Get("/authors/:id", handlers.AuthorShow)
