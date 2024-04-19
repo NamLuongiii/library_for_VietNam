@@ -11,8 +11,8 @@ type Fact struct {
 type Book struct {
 	gorm.Model
 	Isbn            string `gorm:"size:256;default:null"`
-	Name            string `gorm:"unique;size:256;not null"`
-	EnName          string `gorm:"unique;size:256;default:null"`
+	Name            string `gorm:"size:256;not null"`
+	EnName          string `gorm:"size:256;default:null"`
 	OriginName      string `gorm:"size:256;default:null"`
 	Cover           string `gorm:"size:256;not null"`
 	Preface         string `gorm:"size:500;not null"`
@@ -49,7 +49,7 @@ type Author struct {
 
 type Category struct {
 	gorm.Model
-	Name string `gorm:"size:256;unique;not null"`
+	Name string `gorm:"size:256;not null"`
 	Des  string `gorm:"size:256;default:null"`
 }
 
