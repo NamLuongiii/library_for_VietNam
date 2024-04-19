@@ -39,18 +39,51 @@ export default async function BookShow({ params: {id}}) {
             isDisplay: true,
         },
         {
-            id: "file_url",
-            name: "file_url",
-            label: "File url",
-            type: "text",
+            id: "authors",
+            name: "authors",
+            label: "Author",
+            type: "complexSelect",
+            options: [],
+            valueKey: "id",
+            textKey: "name",
             isDisplay: true,
-        }, 
+        },
         {
-            id: "file_name",
-            name: "file_name",
-            label: "File Name",
-            type: "text",
+            id: "categories",
+            name: "categories",
+            label: "Category",
+            type: "complexSelect",
+            options: [],
+            valueKey: "id",
+            textKey: "name",
             isDisplay: true,
+        },
+        {
+            id: "files",
+            name: "files",
+            label: "Files",
+            type: "inseartingField",
+            isDisplay: true,
+            inseartStruct: [
+                {
+                    id: "file_name",
+                    name: "name",
+                    type: "text",
+                    label: "Name",
+                }, 
+                {
+                    id: "file_url",
+                    name: "url",
+                    type: "text",
+                    label: "Url",
+                },
+                {
+                    id: "file_extension",
+                    name: "extension",
+                    type: "text",
+                    label: "File extension",
+                }
+            ]
         }
     ]
     

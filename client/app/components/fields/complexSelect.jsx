@@ -1,3 +1,4 @@
+"use client"
 
 export default function complexSelect(props) {
     const {
@@ -12,19 +13,11 @@ export default function complexSelect(props) {
         textKey,
         isDisplay,
         errorMessage,
-        multiple = false
     } = props
 
     function handleChange(e) {
-
-    }
-
-    function _value() {
-        if (multiple) {
-            return value ? [value[valueKey]] : []
-        } else {
-            return value ? value[valueKey] : null 
-        }
+        const value = e.target.value
+        onchange(options.filter(o => o[valueKey] == value))
     }
 
     function isSelectDisabled() {
@@ -38,10 +31,7 @@ export default function complexSelect(props) {
             name={name}
             id={id}
             disabled={isSelectDisabled()}
-            multiple={multiple}
-            onChange={handleChange}
-            >
-            <option disabled selected value> -- select an option -- </option>
+            onChange={handleChange}>
             {options.map((option, index) => (
                 <option
                     className="p-2"

@@ -29,6 +29,7 @@ export default function BaseShow({fields, entity, resource, title = "Detail"}) {
                     type={field.type}
                     entity={entity}
                     isDisplay={field.isDisplay}
+                    inseartStruct={field.inseartStruct}
                 ></Generator>
             ))}
         </Form>

@@ -1,11 +1,12 @@
 import Input from "./input";
 import ComplexSelect from "./complexSelect";
 import Textarea from "./textarea";
+import InseartingField from "./insertingField";
 
 export default function Generator(props) {
     const {
         errorMessages = {}
-    } =  props
+    } = props
     function renderValue() {
         const { render, entity, value, name } = props
         if (!value && !entity && !render) return undefined
@@ -58,7 +59,6 @@ export default function Generator(props) {
                 valueKey={props.valueKey}
                 textKey={props.textKey}
                 errorMessage={errorMessages[props.name]}
-                multiple={props.multiple}
             ></ComplexSelect>
             break;
 
@@ -74,6 +74,19 @@ export default function Generator(props) {
                 errorMessage={errorMessages[props.name]}
             />
             break;
+
+        case "inseartingField":
+            ele = <InseartingField
+                id={props.id}
+                type={props.type}
+                value={renderValue()}
+                name={props.name}
+                label={props.label || props.name}
+                onchange={props.onchange}
+                isDisplay={props.isDisplay}
+                inseartStruct={props.inseartStruct}
+                errorMessage={errorMessages[props.name]}
+            ></InseartingField>
         default:
             break;
     }

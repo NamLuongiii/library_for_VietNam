@@ -1,9 +1,12 @@
 import BaseUpdate from "@/app/components/base/baseUpdate"
-import { show } from "@/app/help/base"
+import { options, show } from "@/app/help/base"
 
 export default async function BookUpdate({ params: {id}}) {
     const resource = "books"
+    const authors = await options("books/authors")
+    const categories = await options("books/categories")
     const {data} = await show(resource, id)
+
     const fields = [
         {
             id: "name",
@@ -30,16 +33,48 @@ export default async function BookUpdate({ params: {id}}) {
             type: "text",
         },
         {
-            id: "file_url",
-            name: "file_url",
-            label: "File url",
-            type: "text",
-        }, 
+            id: "authors",
+            name: "authors",
+            label: "Author",
+            type: "complexSelect",
+            options: authors.data,
+            valueKey: "id",
+            textKey: "name",
+        },
         {
-            id: "file_name",
-            name: "file_name",
-            label: "File Name",
-            type: "text",
+            id: "categories",
+            name: "categories",
+            label: "Category",
+            type: "complexSelect",
+            options: categories.data,
+            valueKey: "id",
+            textKey: "name",
+        },
+        {
+            id: "files",
+            name: "files",
+            label: "Files",
+            type: "inseartingField",
+            inseartStruct: [
+                {
+                    id: "file_name",
+                    name: "name",
+                    type: "text",
+                    label: "Name",
+                }, 
+                {
+                    id: "file_url",
+                    name: "url",
+                    type: "text",
+                    label: "Url",
+                },
+                {
+                    id: "file_extension",
+                    name: "extension",
+                    type: "text",
+                    label: "File extension",
+                }
+            ]
         }
     ]
 

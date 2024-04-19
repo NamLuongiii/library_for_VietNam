@@ -26,6 +26,12 @@ export default async function BookStore() {
             type: "textarea",
         },
         {
+            id: "lang",
+            name: "lang",
+            label: "Lang",
+            type: "text",
+        },
+        {
             id: "authors",
             name: "authors",
             label: "Author",
@@ -33,7 +39,6 @@ export default async function BookStore() {
             options: authors.data,
             valueKey: "id",
             textKey: "name",
-            multiple: true,
         },
         {
             id: "categories",
@@ -43,7 +48,32 @@ export default async function BookStore() {
             options: categories.data,
             valueKey: "id",
             textKey: "name",
-            multiple: true,
+        },
+        {
+            id: "files",
+            name: "files",
+            label: "Files",
+            type: "inseartingField",
+            inseartStruct: [
+                {
+                    id: "file_name",
+                    name: "name",
+                    type: "text",
+                    label: "Name",
+                }, 
+                {
+                    id: "file_url",
+                    name: "url",
+                    type: "text",
+                    label: "Url",
+                },
+                {
+                    id: "file_extension",
+                    name: "extension",
+                    type: "text",
+                    label: "File extension",
+                }
+            ]
         }
     ]
 
