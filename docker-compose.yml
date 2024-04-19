@@ -30,5 +30,12 @@ services:
   #   volumes:
   #     - ./client:/client
   #     - /client/node_modules
+  library:
+    build: ./library
+    ports:
+      - "8000:3000"
+    volumes:
+      - ./library:/library
+      # - /library/node_modules 
 volumes:
   postgres-db:
