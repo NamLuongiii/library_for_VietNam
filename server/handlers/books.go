@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"errors"
 
 	"github.com/NamLuongiii/library_for_VietNam/database"
 	"github.com/NamLuongiii/library_for_VietNam/helpers"
@@ -73,6 +72,44 @@ func BookIndex(c fiber.Ctx) error {
 
 	res_books := []fiber.Map{}
 	for _, book := range books {
+		authors := []fiber.Map{}
+		for _, author := range book.Authors {
+			authors = append(authors, fiber.Map{
+				"id":         author.ID,
+				"name":       author.Name,
+				"bio":        author.Bio,
+				"botrait":    author.Potrait,
+				"know_as":    author.KnowAs,
+				"gender":     author.Gender,
+				"created_at": author.CreatedAt,
+				"updated_at": author.UpdatedAt,
+			})
+		}
+
+		categories := []fiber.Map{}
+		for _, category := range book.Categories {
+			categories = append(categories, fiber.Map{
+				"id":         category.ID,
+				"name":       category.Name,
+				"des":        category.Des,
+				"created_at": category.CreatedAt,
+				"updated_at": category.UpdatedAt,
+			})
+		}
+
+		files := []fiber.Map{}
+		for _, file := range book.Files {
+			files = append(files, fiber.Map{
+				"id":         file.ID,
+				"name":       file.Name,
+				"url":        file.Url,
+				"extension":  file.Extension,
+				"color":      file.Color,
+				"created_at": file.CreatedAt,
+				"updated_at": file.UpdatedAt,
+			})
+		}
+
 		res_books = append(res_books, fiber.Map{
 			"id":               book.ID,
 			"isbn":             book.Isbn,
@@ -99,9 +136,9 @@ func BookIndex(c fiber.Ctx) error {
 			"created_at":       book.CreatedAt,
 			"updated_at":       book.UpdatedAt,
 
-			"authors":    book.Authors,
-			"categories": book.Categories,
-			"files":      book.Files,
+			"authors":    authors,
+			"categories": categories,
+			"files":      files,
 		})
 	}
 
@@ -114,10 +151,48 @@ func BookIndex(c fiber.Ctx) error {
 
 func BookShow(c fiber.Ctx) error {
 	ID := c.Params("id")
-	var book models.Book
 
+	var book models.Book
 	if err := database.DB.Preload(clause.Associations).First(&book, ID).Error; err != nil {
 		return helpers.SimpleNotFoundResponse(c, err.Error())
+	}
+
+	authors := []fiber.Map{}
+	for _, author := range book.Authors {
+		authors = append(authors, fiber.Map{
+			"id":         author.ID,
+			"name":       author.Name,
+			"bio":        author.Bio,
+			"botrait":    author.Potrait,
+			"know_as":    author.KnowAs,
+			"gender":     author.Gender,
+			"created_at": author.CreatedAt,
+			"updated_at": author.UpdatedAt,
+		})
+	}
+
+	categories := []fiber.Map{}
+	for _, category := range book.Categories {
+		categories = append(categories, fiber.Map{
+			"id":         category.ID,
+			"name":       category.Name,
+			"des":        category.Des,
+			"created_at": category.CreatedAt,
+			"updated_at": category.UpdatedAt,
+		})
+	}
+
+	files := []fiber.Map{}
+	for _, file := range book.Files {
+		files = append(files, fiber.Map{
+			"id":         file.ID,
+			"name":       file.Name,
+			"url":        file.Url,
+			"extension":  file.Extension,
+			"color":      file.Color,
+			"created_at": file.CreatedAt,
+			"updated_at": file.UpdatedAt,
+		})
 	}
 
 	return c.JSON(fiber.Map{
@@ -147,9 +222,9 @@ func BookShow(c fiber.Ctx) error {
 			"created_at":       book.CreatedAt,
 			"updated_at":       book.UpdatedAt,
 
-			"authors":    book.Authors,
-			"categories": book.Categories,
-			"files":      book.Files,
+			"authors":    authors,
+			"categories": categories,
+			"files":      files,
 		},
 	})
 }
@@ -224,22 +299,8 @@ func BookStore(c fiber.Ctx) error {
 		Files:      files,
 	}
 
-	if result := database.DB.Create(&book); result.Error != nil {
-		err_message := result.Error.Error()
-
-		if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
-			fields := fiber.Map{}
-			var b models.Book
-			if err := database.DB.Unscoped().Where("name=?", book.Name).First(&b).Error; err == nil {
-				fields["name"] = err_message
-			}
-
-			return helpers.FieldValidateBadRequestResponse(c, &fields)
-		}
-
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err_message,
-		})
+	if err := database.DB.Create(&book).Error; err != nil {
+		return helpers.StatusInternalServerResponse(c, err.Error())
 	}
 
 	return c.JSON(fiber.Map{
@@ -288,18 +349,6 @@ func BookUpdate(c fiber.Ctx) error {
 	book.Level = input.Level
 
 	if err := database.DB.Save(&book).Error; err != nil {
-		message := err.Error()
-
-		if errors.Is(err, gorm.ErrDuplicatedKey) {
-			fields := fiber.Map{}
-			var b models.Book
-			if err := database.DB.Where("name=?", book.Name).First(&b).Error; err == nil {
-				fields["name"] = message
-			}
-
-			return helpers.FieldValidateBadRequestResponse(c, &fields)
-		}
-
 		return helpers.StatusInternalServerResponse(c, err.Error())
 	}
 
@@ -308,6 +357,15 @@ func BookUpdate(c fiber.Ctx) error {
 		authors = append(authors, models.Author{
 			Model: gorm.Model{
 				ID: _author.ID,
+			},
+		})
+	}
+
+	var categories []models.Category
+	for _, category := range input.Categories {
+		categories = append(categories, models.Category{
+			Model: gorm.Model{
+				ID: category.ID,
 			},
 		})
 	}
@@ -327,6 +385,10 @@ func BookUpdate(c fiber.Ctx) error {
 	}
 
 	if err := database.DB.Model(&book).Association("Files").Replace(files); err != nil {
+		return helpers.StatusInternalServerResponse(c, err.Error())
+	}
+
+	if err := database.DB.Model(&book).Association("Categories").Replace(categories); err != nil {
 		return helpers.StatusInternalServerResponse(c, err.Error())
 	}
 
