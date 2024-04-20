@@ -1,7 +1,8 @@
+import BaseBookListing from "@/app/components/commons/baseBookListing";
 
 export default function Category() {
 
     return <main>
-        Category
+        <BaseBookListing></BaseBookListing>
     </main>
 }

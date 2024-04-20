@@ -15,7 +15,7 @@ const book = {
 
 export default function BookDetail({ params: { slug } }) {
 
-    return <main className="p-4 lg:px-0 lg:py-4">
+    return <main className="p-4 mx-auto max-w-screen-lg md:p-8 lg:py-8 lg:px-0">
 
         <div className="group w-40 h-48 border mx-auto my-8 md:w-48 md:h-56">
             <img
@@ -37,9 +37,36 @@ export default function BookDetail({ params: { slug } }) {
 
 
         <div className="py-4 text-center lg:py-8">
-            <Button width="200px" colorScheme="teal" size="lg">Read</Button>
+            <Link href="/ereader">
+                <Button width="200px" colorScheme="teal" size="lg">Read</Button>
+            </Link>
         </div>
 
+        <ol className="py-4 columns-1 md:py-6 md:columns-2 lg:py-8 lg:columns-3">
+            <li>English name: "Test book"</li>
+            <li>Chapter 3</li>
+            <li>Page 200</li>
+            <li>Location 1000</li>
+            <li>Language vietnamese</li>
+            <li>Origin language english</li>
+            <li>
+                Author 
+                <Link>Test author 1</Link>
+                <Link>Test author 2</Link>    
+                <Link>Test author 3</Link>
+            </li>
+            <li>Translator <Link>Translator a</Link></li>
+            <li>
+                Categories 
+                <Link>Category a</Link>    
+                <Link>Category b</Link>
+                <Link>Category c</Link>
+            </li>           
+        </ol>
 
+        <section className="py-4 my-4 min-h-28 border rounded-md shadow-md bg-teal-50 md:p-6 md:my-6 md:min-h-36 lg:p-8 lg:my-8 lg:min-h-44">
+            <div className="text-lg md:text-xl">Preface</div>
+            <p className="text-sm text-gray-600">Content</p>
+        </section>
     </main>
 }
