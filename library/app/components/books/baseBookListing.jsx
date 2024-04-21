@@ -3,15 +3,22 @@ import NoData from "../commons/noData"
 import Cover from "../commons/cover"
 import Link from "next/link"
 import QueryLink from "./QueryLink"
+import { Radio, RadioGroup } from "@chakra-ui/react"
+import Filter from "./filter"
 
 export default async function BaseBookListing({searchParams}) {
-    const resource = "books"
+    const resources = {
+        books: "books",
+        categories: "categories",
+    }
     const urlSearchParams = new URLSearchParams(searchParams)
     const query = "?" + urlSearchParams.toString()
 
-    const { data, page, page_size } = await Index(resource, query) 
+    const { data, page, page_size } = await Index(resources.books, query)
+    const _categories = await Index(resources.categories)
+    const categories = _categories.data 
     const books = data
-    const empty = false
+    const empty = !books.length
     const total_pages = 10
 
     // 0 1 2 3 4 5 6 7 <= page = 0
@@ -36,7 +43,7 @@ export default async function BaseBookListing({searchParams}) {
         </section>
 
         <section className="hidden lg:block lg:p-4 lg:col-span-1 border">
-            Sort & Filter
+            <Filter categories={categories}></Filter>
         </section>
 
         {empty && (
@@ -47,13 +54,16 @@ export default async function BaseBookListing({searchParams}) {
 
         {!empty && (
             <section className="p-4 grid-cols-1 lg:p-8 lg:col-span-2 border">
-                <div className="min-h-24 lg:min-h-44">
+                <div className="flex flex-wrap">
                     {books.map(book => (
-                        <Cover key={book.id} book={book} ></Cover>
+                        <Cover 
+                            key={book.id} 
+                            className="basis-1/3 p-4 py-4 md:p-4"
+                            book={book} ></Cover>
                     ))}
                 </div>
 
-                <div className="p-2 lg:p-4 flex items-center">
+                <div className="py-4 lg:py-12 flex items-center">
                     <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
                         <QueryLink query={`page=${page - 1 >= 0 ? page - 1 : 0}`} className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 
                         ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">

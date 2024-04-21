@@ -26,8 +26,8 @@ export default function Header() {
 
     return <header className="border-b sticky top-0 bg-white max-w-screen-lg mx-auto flex justify-between items-center px-4 py-1 md:py-2">
         <section>
-            <Link 
-                href="/" 
+            <Link
+                href="/"
                 className="before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-teal-500 relative inline-block">
                 <span className="relative text-white text-lg font-bold">Sách Việt</span>
             </Link>
@@ -49,15 +49,17 @@ export default function Header() {
 
 
         <label className="hidden md:block relative">
-            <span className="sr-only">Search</span>
-            <span className="absolute inset-y-0 left-0 flex items-center pl-2">
-                <svg className="h-5 w-5 fill-slate-300" viewBox="0 0 20 20"></svg>
-            </span>
-            <input className="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md 
-            py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm" 
-            placeholder="Search for anything..." 
-            type="text" 
-            name="search" />
+            <form action="/books">
+                <span className="sr-only">Search</span>
+                <span className="absolute inset-y-0 left-0 flex items-center pl-2">
+                    <svg className="h-5 w-5 fill-slate-300" viewBox="0 0 20 20"></svg>
+                </span>
+                <input className="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md 
+            py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
+                    placeholder="Search for anything..."
+                    type="text"
+                    name="key_word"/>
+            </form>
         </label>
     </header>
 }

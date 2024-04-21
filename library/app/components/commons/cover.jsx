@@ -1,11 +1,11 @@
 import Image from "next/image"
 import Link from "next/link"
 
-export default function({book}) {
+export default function({book, className}) {
     const { cover, name, id } = book
 
-    return <Link className="group" href={`/books/${id}`}>
-        <div className="overflow-hidden w-24 h-28 border-2">
+    return <Link className={className + " group"} href={`/books/${id}`}>
+        <div className="overflow-hidden w-full aspect-square border-2">
             <img 
                 alt="book cover"
                 src={cover}

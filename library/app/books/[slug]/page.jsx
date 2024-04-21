@@ -32,15 +32,14 @@ export default async function BookDetail({ params: { slug } }) {
                         <option key={file.id} value={file.url}>{file.name} | {file.extension}</option>
                     ))}
                 </Select>
+                <input name="book" value={book.id} className="hidden"></input>
             </form>
 
         </div>
 
 
         <div className="py-4 text-center lg:py-8">
-            <Link href="/ereader">
-                <Button width="200px" colorScheme="teal" size="lg" form="ereader" type="submit">Đọc online</Button>
-            </Link>
+            <Button width="200px" colorScheme="teal" size="lg" form="ereader" type="submit">Đọc online</Button>
         </div>
 
         <ol className="py-4 columns-1 md:py-6 md:columns-2 lg:py-8 lg:columns-3">
