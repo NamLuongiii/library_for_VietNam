@@ -19,7 +19,7 @@ func Paginate(c fiber.Ctx) PaginateResponseType {
 
 	page, _ := strconv.Atoi(q["page"])
 	if page <= 0 {
-		page = 1
+		page = 0
 	}
 
 	pageSize, _ := strconv.Atoi(q["page_size"])
@@ -30,7 +30,7 @@ func Paginate(c fiber.Ctx) PaginateResponseType {
 		pageSize = 20
 	}
 
-	offset := (page - 1) * pageSize
+	offset := page * pageSize
 
 	return PaginateResponseType{
 		page,

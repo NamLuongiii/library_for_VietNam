@@ -1,11 +1,14 @@
 "use client"
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useState } from 'react'
 import { ReactReader } from 'react-reader'
 
 export default function Ereader() {
     const router = useRouter()
     const [location, setLocation] = useState(0)
+    const searchParams = useSearchParams()
+    const file = searchParams.get("file")
+
 
     function handleClick() {
         router.back()
@@ -28,7 +31,7 @@ export default function Ereader() {
                 </span>
             </div>
             <ReactReader
-                url="https://react-reader.metabits.no/files/alice.epub"
+                url={file}
                 location={location}
                 locationChanged={(epubcfi) => setLocation(epubcfi)}
             />

@@ -31,7 +31,7 @@ export async function Show(resource, id, cache = "default") {
         throw new Error(res.statusText)
     }
 
-    return res.json
+    return res.json()
 }
 
 export async function Update(resource, id, input, cache = "default") {

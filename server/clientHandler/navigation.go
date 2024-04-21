@@ -22,7 +22,7 @@ func NavigationShow(c fiber.Ctx) error {
 		data_nav = append(data_nav, fiber.Map{
 			"id":    category.ID,
 			"title": category.Name,
-			"href":  "/categories/" + strconv.FormatUint(uint64(category.ID), 10),
+			"href":  "/books?category=" + strconv.FormatUint(uint64(category.ID), 10),
 		})
 	}
 
@@ -32,7 +32,7 @@ func NavigationShow(c fiber.Ctx) error {
 			"href":  "/",
 		},
 		{
-			"title": "Categories",
+			"title": "Danh mục",
 			"menu":  data_nav,
 		},
 	}

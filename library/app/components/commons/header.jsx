@@ -5,6 +5,7 @@ import Navigation from "./navigation"
 import MobileNavigation from "./mobileNavigation"
 import bars3 from "@/public/commons/bars3.svg"
 import { Index } from "@/app/lib/baseApi"
+import Link from "next/link"
 
 export default function Header() {
     const [open, setOpen] = useState(false)
@@ -25,7 +26,11 @@ export default function Header() {
 
     return <header className="border-b sticky top-0 bg-white max-w-screen-lg mx-auto flex justify-between items-center px-4 py-1 md:py-2">
         <section>
-            <div>Logo</div>
+            <Link 
+                href="/" 
+                className="before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-teal-500 relative inline-block">
+                <span className="relative text-white text-lg font-bold">Sách Việt</span>
+            </Link>
         </section>
 
         <Navigation navigation={navigation}></Navigation>
