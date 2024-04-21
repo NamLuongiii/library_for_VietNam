@@ -1,5 +1,11 @@
 import { usePathname, useRouter } from "next/navigation"
-import { Menu } from '@headlessui/react'
+import {
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItem,
+} from '@chakra-ui/react'
+import Link from "next/link"
 
 export default function Navigation({ navigation }) {
     const router = useRouter()
@@ -19,29 +25,24 @@ export default function Navigation({ navigation }) {
             if (item.menu) {
                 return (
                     <Menu key={index}>
-                        <Menu.Button>{item.href}</Menu.Button>
-                        <Menu.Items>
-                            {item.menu.map((item, index) => (
-                                <Menu.Item key={index}>
-                                    {({ active }) => (
-                                        <a
-                                            className={`${active && 'bg-blue-500'}`}
-                                            href={item.href}
-                                        >
-                                            {item.title}
-                                        </a>
-                                    )}
-                                </Menu.Item>
+                        <MenuButton className="text-md">
+                            {item.title}
+                        </MenuButton>
+                        <MenuList>
+                            {item.menu.map((menuItem, index) => (
+                                <MenuItem 
+                                    key={index}
+                                    as={Link} 
+                                    href={menuItem.href}>{menuItem.title}</MenuItem>
                             ))}
-
-                        </Menu.Items>
+                        </MenuList>
                     </Menu>
                 )
             }
 
             return (
                 <div
-                    className={`px-2 font-light text-sm text-gray-600 hover:text-gray-500 cursor-pointer active:text-gray-700 ${isActive(item.href) && "underline"}`}
+                    className={`px-2 text-md cursor-pointer active:text-gray-700 ${isActive(item.href) && "underline"}`}
                     key={index}
                     onClick={() => go(item.href)}>
                     {item.title}

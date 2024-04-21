@@ -1,37 +1,27 @@
 "use client"
 import Image from "next/image"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Navigation from "./navigation"
 import MobileNavigation from "./mobileNavigation"
 import bars3 from "@/public/commons/bars3.svg"
+import { Index } from "@/app/lib/baseApi"
 
 export default function Header() {
     const [open, setOpen] = useState(false)
+    const [navigation, setNavigation] = useState([])
 
     function handleClick() {
         setOpen(!open)
     }
 
-    const navigation = [
-        {
-            title: "Home",
-            href: "/",
-        },
-        {
-            title: "Categories",
-            href: null,
-            menu: [
-                {
-                    title: "Category A",
-                    href: "/a"
-                },
-                {
-                    title: "Category B",
-                    href: "/b"
-                }
-            ]
-        }
-    ]
+    useEffect(() => {
+        loadNav()
+    }, [])
+
+    async function loadNav() {
+        const { data } = await Index("navigation")
+        setNavigation(data)
+    }
 
     return <header className="border-b sticky top-0 bg-white max-w-screen-lg mx-auto flex justify-between items-center px-4 py-1 md:py-2">
         <section>
