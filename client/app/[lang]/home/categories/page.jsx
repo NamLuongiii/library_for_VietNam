@@ -2,30 +2,43 @@ import { index } from "@/app/help/base"
 import Link from "next/link"
 import addSvg from "@/public/methods/add.svg"
 import Image from "next/image"
+import BaseIndex from "@/app/components/base/baseIndex"
+import { parseQueryString } from "@/app/help/uitilies"
 
 
-export default async function BookIndex() {
+export default async function BookIndex({ searchParams }) {
     const resource = "categories"
-    const { data, page, page_size } = await index(resource)
+    const queryString = parseQueryString(searchParams)
+    const { data, page, page_size } = await index(resource, queryString)
+
+    const columns = [
+        {
+            id: "id",
+            name: "id",
+            label: "Id",
+            type: "text",
+        },
+        {
+            id: "name",
+            name: "name",
+            label: "Name",
+            type: "text",
+        },
+        {
+            id: "des",
+            name: "des",
+            label: "Description",
+            type: "text",
+        },
+    ]
 
     return <section>
-        <header>
-            <Link
-                href={`${resource}/store`}
-                className="p-2 cursor-pointer hover:bg-gray-50 active:bg-gray-100 inline-block rounded-sm w-10 h-10">
-            <Image
-                alt="new book button"
-                width={24}
-                height={24}
-                src={addSvg.src}
-                className="w-full"
-            ></Image>
-            </Link>
-        </header>
-        {data.map(item => (
-            <div key={item.id}>
-                <Link href={`${resource}/${item.id}`} className="text-blue-600 underline">{item.name}</Link>
-            </div>
-        ))}
+        <BaseIndex
+            resource={resource}
+            title="Categories"
+            columns={columns}
+            entities={data}
+            page={page}
+            page_size={page_size}></BaseIndex>
     </section>
 }

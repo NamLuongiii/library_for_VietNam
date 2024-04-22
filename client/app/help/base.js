@@ -9,9 +9,9 @@ function basicAuthentication() {
     return `Basic ${token}`
 }
 
-export async function index(resource, page = 1, page_size = 20) {
+export async function index(resource, segments = "") {
     const res = await fetch(
-        url(resource, `?page=${page}&page_size=${page_size}`),
+        url(resource, segments),
         {
             credentials: "include",
             headers: { Authorization : basicAuthentication() },

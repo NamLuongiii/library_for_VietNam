@@ -23,13 +23,14 @@ func BooksIndex(c fiber.Ctx) error {
 	dbHandler := database.DB.
 		Table("books").
 		Distinct("id").
-		Select("books.*").
-		Joins("JOIN book_categories ON books.id = book_categories.book_id")
+		Select("books.*")
 
 	categoryQuery := q["category"]
 	if categoryQuery != "" {
 		categoryIds := strings.Split(q["category"], ",")
-		dbHandler.Where("book_categories.category_id IN (?)", categoryIds)
+		dbHandler.
+			Joins("JOIN book_categories ON books.id = book_categories.book_id").
+			Where("book_categories.category_id IN (?)", categoryIds)
 	}
 
 	keyWord := strings.ToLower(q["key_word"])

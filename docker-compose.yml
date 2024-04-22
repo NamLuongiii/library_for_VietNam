@@ -23,19 +23,19 @@ services:
       - "5432:5432"
     volumes:
       - postgres-db:/var/lib/postgresql/data
-  # client:
-  #   build: ./client
-  #   ports:
-  #     - "3000:3000"
-  #   volumes:
-  #     - ./client:/client
-  #     - /client/node_modules
-  library:
-    build: ./library
+  client:
+    build: ./client
     ports:
-      - "8000:3000"
+      - "3000:3000"
     volumes:
-      - ./library:/library
+      - ./client:/client
+      # - /client/node_modules
+  # library:
+  #   build: ./library
+  #   ports:
+  #     - "8000:3000"
+  #   volumes:
+  #     - ./library:/library
       # - /library/node_modules 
 volumes:
   postgres-db:

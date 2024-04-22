@@ -2,33 +2,46 @@ import { index } from "@/app/help/base"
 import Link from "next/link"
 import addSvg from "@/public/methods/add.svg"
 import Image from "next/image"
+import { parseQueryString } from "@/app/help/uitilies"
+import BaseIndex from "@/app/components/base/baseIndex"
 
-async function getBooks(resource) {
-    return index(resource)
-}
 
-export default async function BookIndex() {
+export default async function BookIndex({ searchParams }) {
     const resource = "books"
-    const { data, page, page_size } = await getBooks(resource)
+    const queryString = parseQueryString(searchParams)
+    const { data, page, page_size } = await index(resource, queryString)
+
+    const columns = [
+        {
+            id: "id",
+            name: "id",
+            label: "ID",
+        }, 
+        {
+            id: "isbn",
+            name: "isbn",
+            label: "Isbn",
+        },
+        {
+            id: "name",
+            name: "name",
+            label: "Name",
+        },
+        {
+            id: "en_name",
+            name: "en_name",
+            label: "English name",
+        }, 
+    ]
 
     return <section>
-        <header>
-            <Link
-                href="books/store" 
-                className="p-2 cursor-pointer hover:bg-gray-50 active:bg-gray-100 inline-block rounded-sm w-10 h-10">
-            <Image
-                alt="new book button"
-                width={24}
-                height={24}
-                src={addSvg.src}
-                className="w-full"
-            ></Image>
-            </Link>
-        </header>
-        {data.map(book => (
-            <div key={book.id}>
-                <Link href={`${resource}/${book.id}`} className="text-blue-600 underline">{book.name}</Link>
-            </div>
-        ))}
+        <BaseIndex
+            title="Books"
+            resource={resource}
+            columns={columns}
+            entities={data}
+            page={page}
+            page_size={page_size}
+        ></BaseIndex>
     </section>
 }
