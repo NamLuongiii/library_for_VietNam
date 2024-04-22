@@ -16,63 +16,47 @@ import { usePathname } from "next/navigation"
 export default function Menu({ lang }) {
     const pathName = usePathname()
 
-    const title = "vlibrary"
     const MENU = [
         {
-            group: "Menu",
-            items: [
-                {
-                    href: "/home",
-                    icon: dashboard.src,
-                    title: "Dashboard",
-                },
-                {
-                    href: "/home/notification",
-                    icon: notification.src,
-                    title: "Notification",
-                }
-            ]
+            href: "/home",
+            icon: dashboard.src,
+            title: "Dashboard",
         },
         {
-            group: "Book",
-            items: [
-                {
-                    href: "/home/books",
-                    icon: book.src,
-                    title: "Books",
-                },
-                {
-                    href: "/home/authors",
-                    icon: author.src,
-                    title: "Authors"
-                },
-                {
-                    href: "/home/categories",
-                    icon: category.src,
-                    title: "Categories",
-                    onclick: logout,
-                }
-            ]
+            href: "/home/notification",
+            icon: notification.src,
+            title: "Notification",
         },
         {
-            group: "Setting",
-            items: [
-                {
-                    href: "/home/profile",
-                    icon: profile.src,
-                    title: "Profile",
-                },
-                {
-                    href: "/home/setting",
-                    icon: setting.src,
-                    title: "Setting",
-                },
-                {
-                    href: "/logout",
-                    icon: logout.src,
-                    title: "Logout"
-                }
-            ]
+            href: "/home/books",
+            icon: book.src,
+            title: "Books",
+        },
+        {
+            href: "/home/authors",
+            icon: author.src,
+            title: "Authors"
+        },
+        {
+            href: "/home/categories",
+            icon: category.src,
+            title: "Categories",
+            onclick: logout,
+        },
+        {
+            href: "/home/profile",
+            icon: profile.src,
+            title: "Profile",
+        },
+        {
+            href: "/home/setting",
+            icon: setting.src,
+            title: "Setting",
+        },
+        {
+            href: "/logout",
+            icon: logout.src,
+            title: "Logout"
         }
     ]
 
@@ -82,40 +66,32 @@ export default function Menu({ lang }) {
         return pathName.includes(`/${lang}${href}`)
     }
     return (
-        <div className="flex flex-col w-64 bg-white h-full border-r">
+        <div className=" hidden lg:block w-52 bg-gray-50 border-r h-screen sticky top-0">
             <div className="flex items-center justify-center h-14 border-b">
-                <div>{title}</div>
+               <span className="text-lg font-bold text-teal-500">Sách việt</span>
             </div>
             <div className="overflow-y-auto overflow-x-hidden flex-grow">
-                {MENU.map(group => (
-                    <ul key={group.group} className="flex flex-col py-4 space-y-1">
-                        <li className="px-5">
-                            <div className="flex flex-row items-center h-8">
-                                <div className="text-sm font-light tracking-wide text-gray-500">{group.group}</div>
-                            </div>
-                        </li>
-                        {group.items.map(item => (
-                            <li key={item.title}>
-                                <Link
-                                    href={item.href}
-                                    className={`
-                                        flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50
-                                      text-gray-600 hover:text-gray-800 border-l-4 pr-6
-                                        ${isActive(item.href) ? "border-indigo-500" : "border-transparent border-indigo-500"}
-                                    `}>
+                <ul>
+                    {MENU.map((item, index) => (
+                        <li key={index}>
+                            <Link
+                                href={item.href}
+                                className={`h-11 flex justify-start items-center focus:outline-none hover:bg-gray-50
+                                text-teal-600 border-l-4 
+                                ${isActive(item.href) ? "border-teal-600 bg-teal-50" : "border-transparent"}`}
+                            >
                                     <Image
                                         alt="icon"
                                         width={100}
                                         height={100}
-                                        className="aspect-auto w-6"
+                                        className="aspect-auto w-6 mx-4"
                                         src={item.icon}
                                     ></Image>
                                     <span className="ml-2 text-sm tracking-wide truncate">{item.title}</span>
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                ))}
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
             </div>
         </div>
     )

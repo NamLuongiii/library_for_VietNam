@@ -31,50 +31,50 @@ export default async function BookStore() {
             label: "Lang",
             type: "text",
         },
-        {
-            id: "authors",
-            name: "authors",
-            label: "Author",
-            type: "complexSelect",
-            options: authors.data,
-            valueKey: "id",
-            textKey: "name",
-        },
-        {
-            id: "categories",
-            name: "categories",
-            label: "Category",
-            type: "complexSelect",
-            options: categories.data,
-            valueKey: "id",
-            textKey: "name",
-        },
-        {
-            id: "files",
-            name: "files",
-            label: "Files",
-            type: "inseartingField",
-            inseartStruct: [
-                {
-                    id: "file_name",
-                    name: "name",
-                    type: "text",
-                    label: "Name",
-                }, 
-                {
-                    id: "file_url",
-                    name: "url",
-                    type: "text",
-                    label: "Url",
-                },
-                {
-                    id: "file_extension",
-                    name: "extension",
-                    type: "text",
-                    label: "File extension",
-                }
-            ]
-        }
+        // {
+        //     id: "authors",
+        //     name: "authors",
+        //     label: "Author",
+        //     type: "complexSelect",
+        //     options: authors.data,
+        //     valueKey: "id",
+        //     textKey: "name",
+        // },
+        // {
+        //     id: "categories",
+        //     name: "categories",
+        //     label: "Category",
+        //     type: "complexSelect",
+        //     options: categories.data,
+        //     valueKey: "id",
+        //     textKey: "name",
+        // },
+        // {
+        //     id: "files",
+        //     name: "files",
+        //     label: "Files",
+        //     type: "inseartingField",
+        //     inseartStruct: [
+        //         {
+        //             id: "file_name",
+        //             name: "name",
+        //             type: "text",
+        //             label: "Name",
+        //         }, 
+        //         {
+        //             id: "file_url",
+        //             name: "url",
+        //             type: "text",
+        //             label: "Url",
+        //         },
+        //         {
+        //             id: "file_extension",
+        //             name: "extension",
+        //             type: "text",
+        //             label: "File extension",
+        //         }
+        //     ]
+        // }
     ]
 
 

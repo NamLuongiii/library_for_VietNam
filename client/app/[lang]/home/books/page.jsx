@@ -1,7 +1,4 @@
 import { index } from "@/app/help/base"
-import Link from "next/link"
-import addSvg from "@/public/methods/add.svg"
-import Image from "next/image"
 import { parseQueryString } from "@/app/help/uitilies"
 import BaseIndex from "@/app/components/base/baseIndex"
 

@@ -1,4 +1,7 @@
 "use client"
+
+import { TextField } from "@mui/material"
+
 export default function Textarea(props) {
     const {
         id,
@@ -17,27 +20,20 @@ export default function Textarea(props) {
         return onchange(e.target.value)
     }
 
-    if (isDisplay) return <div className="grid grid-cols-4 px-4 py-2">
-        <label htmlFor={id} className={`col-span-1 font-mono ${errorMessage ? "text-red-600" : ""}`}>{label}:</label>
-        <textarea 
-            className="grid-cols-3 p-4"
-            onChange={onChange} 
-            name={name} 
-            rows={rows} 
-            columns={columns} 
-            disabled 
-            defaultValue={value}></textarea>
-    </div>
-
-    return <div className={`grid grid-cols-4 px-4 py-2`}>
-        <label htmlFor={id} className={`col-span-1 font-mono ${errorMessage ? "text-red-600" : ""}`}>{label}:</label>
-        <textarea
-            className={`col-span-3 border-2 p-4 ${errorMessage ? "border-red-600" : ""}`}
-            onChange={onChange}
-            name={name}
-            rows={rows}
-            columns={columns}
-            defaultValue={value}></textarea>
-        <p className="col-span-4 pt-2 text-sm text-red-600 font-mono" >{errorMessage}</p>
-    </div>
+    return (
+        <div className="px-8 py-4">
+            <TextField
+                fullWidth
+                variant="outlined"
+                multiline
+                rows={18}
+                id={id}
+                name={name}
+                type={type}
+                label={label}
+                error={!!errorMessage}
+                helperText={errorMessage}
+            ></TextField>
+        </div>
+    )
 }

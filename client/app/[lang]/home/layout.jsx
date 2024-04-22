@@ -8,9 +8,9 @@ export const metadata = {
 
 export default function HomeLayout({ children, params: {lang} }) {
   return (
-    <main className="h-screen flex bg-gray-50 overflow-hidden">
+    <main className="flex">
       <Menu lang={lang}></Menu>
-      <div className="relative grow h-full overflow-scroll">
+      <div className="flex-1">
         <Header></Header>
         {children}
       </div>
