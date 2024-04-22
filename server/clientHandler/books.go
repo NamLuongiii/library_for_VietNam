@@ -1,6 +1,8 @@
 package clienthandler
 
 import (
+	"strings"
+
 	"github.com/NamLuongiii/library_for_VietNam/database"
 	"github.com/NamLuongiii/library_for_VietNam/helpers"
 	"github.com/NamLuongiii/library_for_VietNam/models"
@@ -10,9 +12,29 @@ import (
 
 func BooksIndex(c fiber.Ctx) error {
 	p := helpers.Paginate(c)
+	q := c.Queries()
+
+	orderBy := q["order_by"]
+	if orderBy == "" {
+		orderBy = "desc"
+	}
 
 	books := []models.Book{}
-	if err := database.DB.Scopes(p.DbHandler).Find(&books).Error; err != nil {
+	dbHandler := database.DB.
+		Table("books").
+		Distinct("id").
+		Select("books.*").
+		Joins("JOIN book_categories ON books.id = book_categories.book_id")
+
+	categoryQuery := q["category"]
+	if categoryQuery != "" {
+		categoryIds := strings.Split(q["category"], ",")
+		dbHandler.Where("book_categories.category_id IN (?)", categoryIds)
+	}
+
+	result := dbHandler.Order("created_at " + orderBy).Scopes(p.DbHandler).Scan(&books)
+
+	if err := result.Error; err != nil {
 		return helpers.StatusInternalServerResponse(c, err.Error())
 	}
 

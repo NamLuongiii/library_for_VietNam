@@ -4,7 +4,7 @@ function url(resource, segments) {
     return `${process.env.API_HOST}/${resource}/${segments}` 
 }
 
-export async function Index(resource, segments = "", cache = "default") {
+export async function Index(resource, segments = "", cache = "no-cache") {
     const res = await fetch(
         url(resource, segments),
         {
@@ -20,7 +20,7 @@ export async function Index(resource, segments = "", cache = "default") {
     return res.json()
 }
 
-export async function Show(resource, id, cache = "default") {
+export async function Show(resource, id, cache = "no-cache") {
     const res = await fetch(
         url(resource, id),
         {
@@ -36,7 +36,7 @@ export async function Show(resource, id, cache = "default") {
     return res.json()
 }
 
-export async function Update(resource, id, input, cache = "default") {
+export async function Update(resource, id, input, cache = "no-cache") {
     const res = await fetch(
         url(resource, id),
         {

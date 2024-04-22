@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"net/url"
 	"strings"
 
 	"github.com/gofiber/fiber/v3"
@@ -63,4 +64,15 @@ func SimpleUnAuthozitionResponse(c fiber.Ctx, message string) error {
 	return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 		"message": message,
 	})
+}
+
+func QueriesParser(c fiber.Ctx) (url.Values, error) {
+	url, err := url.Parse(c.BaseURL() + c.OriginalURL())
+	if err != nil {
+		return nil, err
+	}
+
+	queries := url.Query()
+
+	return queries, nil
 }
