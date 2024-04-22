@@ -29,10 +29,12 @@ export default async function BookDetail({ params: { slug } }) {
             <form id="ereader" method="GET" action="/ereader">
                 <Select defaultChecked name="file">
                     {book.files.map(file => (
-                        <option key={file.id} value={file.url}>{file.name} | {file.extension}</option>
+                        <option 
+                            key={file.id} 
+                            value={file.url}>{file.name} | {file.extension}</option>
                     ))}
                 </Select>
-                <input name="book" value={book.id} className="hidden"></input>
+                <input name="book" defaultValue={book.id} className="hidden"></input>
             </form>
 
         </div>
@@ -88,7 +90,10 @@ export default async function BookDetail({ params: { slug } }) {
             <li>
                 <label className="font-bold">Danh mục: </label>
                 {book.categories.map(category => (
-                    <Link key={category.id} color="teal.500" href={`/books?category=${category.id}`}>{category.name}</Link>
+                    <Link
+                        key={category.id} 
+                        color="teal.500" 
+                        href={`/books?category=${category.id}`}>{category.name}</Link>
                 ))}
             </li>
         </ol>

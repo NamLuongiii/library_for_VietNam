@@ -37,7 +37,7 @@ export default function Filter({ categories }) {
 
     }
 
-    if (!defaultRadioValue || !defaultCheckValues.length) return <></>
+    if (!defaultRadioValue && !defaultCheckValues.length) return <></>
 
     return <div>
         <h2 className="text-lg text-teal-500 lg:text-xl">Sắp xếp</h2>

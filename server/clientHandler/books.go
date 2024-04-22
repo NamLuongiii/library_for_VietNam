@@ -32,6 +32,11 @@ func BooksIndex(c fiber.Ctx) error {
 		dbHandler.Where("book_categories.category_id IN (?)", categoryIds)
 	}
 
+	keyWord := strings.ToLower(q["key_word"])
+	if keyWord != "" {
+		dbHandler.Where(database.DB.Where("LOWER(name) LIKE ?", "%"+keyWord+"%").Or("LOWER(en_name) LIKE ?", "%"+keyWord+"%"))
+	}
+
 	result := dbHandler.Order("created_at " + orderBy).Scopes(p.DbHandler).Scan(&books)
 
 	if err := result.Error; err != nil {
