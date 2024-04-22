@@ -13,7 +13,8 @@ export async function Index(resource, segments = "", cache = "default") {
     )
 
     if (!res.ok) {
-        throw new Error(res.statusText)
+        const data = await res.json()
+        throw new Error(data.message || res.statusText)
     }
 
     return res.json()
@@ -28,7 +29,8 @@ export async function Show(resource, id, cache = "default") {
     )
 
     if (!res.ok) {
-        throw new Error(res.statusText)
+        const data = await res.json()
+        throw new Error(data.message || res.statusText)
     }
 
     return res.json()
@@ -47,7 +49,8 @@ export async function Update(resource, id, input, cache = "default") {
     )
 
     if (!res.ok) {
-        throw new Error(res.statusText)
+        const data = await res.json()
+        throw new Error(data.message || res.statusText)
     }
 
     return res.json()

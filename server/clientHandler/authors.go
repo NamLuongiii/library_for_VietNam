@@ -5,14 +5,25 @@ import (
 	"github.com/NamLuongiii/library_for_VietNam/helpers"
 	"github.com/NamLuongiii/library_for_VietNam/models"
 	"github.com/gofiber/fiber/v3"
+	"gorm.io/gorm/clause"
 )
 
 func AuthorsShow(c fiber.Ctx) error {
 	id := c.Params("id")
 
 	author := models.Author{}
-	if err := database.DB.First(&author, id).Error; err != nil {
+	if err := database.DB.Preload(clause.Associations).First(&author, id).Error; err != nil {
 		return helpers.StatusInternalServerResponse(c, err.Error())
+	}
+
+	books := []fiber.Map{}
+	for _, book := range author.Books {
+		books = append(books, fiber.Map{
+			"id":    book.ID,
+			"isbn":  book.Isbn,
+			"name":  book.Name,
+			"cover": book.Cover,
+		})
 	}
 
 	data := fiber.Map{
@@ -25,6 +36,7 @@ func AuthorsShow(c fiber.Ctx) error {
 		"gender":     author.Gender,
 		"know_as":    author.KnowAs,
 		"nation":     author.Nation,
+		"books":      books,
 	}
 
 	return c.JSON(fiber.Map{

@@ -78,7 +78,11 @@ export default async function BookDetail({ params: { slug } }) {
             <li>
                 <label className="font-bold">Tác giả: </label>
                 {book.authors.map(author => (
-                    <Link key={author.id} color="teal.500" href={`/authors/${author.id}`}>{author.name}</Link>
+                    <Link
+                        className="mr-2 mr-4" 
+                        key={author.id} 
+                        color="teal.500" 
+                        href={`/authors/${author.id}`}>{author.name}</Link>
                 ))}
             </li>
             <li>

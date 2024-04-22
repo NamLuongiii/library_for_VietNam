@@ -45,6 +45,7 @@ type Author struct {
 	KnowAs  string `gorm:"size:256;default:null"`
 	Gender  uint8  `gorm:"default:0"`
 	Nation  string `gorm:"size:256;default:null"`
+	Books   []Book `gorm:"many2many:book_authors;"`
 }
 
 type Category struct {

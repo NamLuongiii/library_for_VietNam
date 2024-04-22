@@ -27,8 +27,14 @@ export default function Filter({ categories }) {
     }
 
     function handleCheckboxChange(e) {
-        urlSearchParams.append(filterName, e.target.value)
-        router.push("?" + urlSearchParams.toString())
+        if (e.target.checked) {
+            urlSearchParams.append(filterName, e.target.value)
+            return router.push("?" + urlSearchParams.toString())
+        }
+
+        urlSearchParams.delete(filterName, e.target.value)
+        return router.push("?" + urlSearchParams.toString())
+
     }
 
     if (!defaultRadioValue || !defaultCheckValues.length) return <></>
