@@ -5,8 +5,6 @@ import (
 	"log"
 
 	firebase "firebase.google.com/go/v4"
-
-	"google.golang.org/api/option"
 )
 
 func FirebaseConnect() {
@@ -14,7 +12,7 @@ func FirebaseConnect() {
 		StorageBucket: "vlibrary-6c105.appspot.com",
 	}
 
-	opt := option.WithCredentialsFile("firebaseServiceAccountKey.json")
+	// opt := option.WithCredentialsFile("firebaseServiceAccountKey.json")
 	app, err := firebase.NewApp(context.Background(), config, opt)
 	if err != nil {
 		log.Fatalln(err)
