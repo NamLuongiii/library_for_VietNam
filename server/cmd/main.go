@@ -10,6 +10,7 @@ import (
 
 func main() {
 	database.ConnectDb()
+	database.FirebaseConnect()
 	helpers.SetupValidator()
 
 	app := fiber.New(fiber.Config{})

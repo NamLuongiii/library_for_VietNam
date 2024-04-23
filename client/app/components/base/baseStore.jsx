@@ -2,7 +2,7 @@
 import Submit from "@/app/components/base/submit"
 import Generator from "@/app/components/fields/generator"
 import Form from "@/app/components/form/form"
-import { store } from "@/app/help/base"
+import { store, storeFormData } from "@/app/help/base"
 import { useState } from "react"
 import { useRouter } from 'next/navigation'
 import Back from "./back"
@@ -26,7 +26,7 @@ export default function BaseStore({fields, resource, title="Store new record"}) 
             fd.append(key, input[key])
         })
         try {
-            const res = await store(resource, fd)
+            const res = await storeFormData(resource, fd)
             if (res.error && res.status == 400) {
                 const fields= res.data.fields
                 console.log(res);

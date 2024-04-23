@@ -1,6 +1,6 @@
 "use client"
 
-import { Button } from "@mui/material"
+import { Button, TextField } from "@mui/material"
 import Table from "@mui/material/Table"
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -13,14 +13,14 @@ import TableFooter from "@mui/material/TableFooter";
 import { useRouter, useSearchParams } from "next/navigation";
 
 
-export default function BaseIndex({ 
-        columns, 
-        entities, 
-        page, 
-        page_size, 
-        resource,
-        title,
-    }) {
+export default function BaseIndex({
+    columns,
+    entities,
+    page,
+    page_size,
+    resource,
+    title,
+}) {
     const searchParams = useSearchParams()
     const urlSearchParams = new URLSearchParams(searchParams)
     const router = useRouter()
@@ -30,7 +30,7 @@ export default function BaseIndex({
 
     function handleRowClick(id) {
         return router.push(`${resource}/${id}`)
-        
+
     }
 
     function handlePageChange(e, v) {
@@ -47,9 +47,25 @@ export default function BaseIndex({
 
 
     return <section>
-        <div className="p-2 bg-white flex items-center">
+
+        <div className="px-4 py-2 bg-white flex items-center">
             <h1 className="text-xl">{title}</h1>
-            <div className="ml-auto">
+            <div className="ml-auto flex gap-4">
+                <form id="search">
+                    <TextField
+                        size="small"
+                        placeholder="Search..."
+                        id="key_word"
+                        name="key_word"
+                        type="text"
+                        form="search"
+                        InputProps={{
+                            endAdornment: (
+                                <button type="submit" form="search">submit</button>
+                            )
+                        }}
+                    ></TextField>
+                </form>
                 <Button size="sm" href={`${resource}/store`} variant="contained">Add</Button>
             </div>
         </div>

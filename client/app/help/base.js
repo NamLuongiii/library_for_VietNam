@@ -144,3 +144,33 @@ export async function options(segment, page = 0, page_size = 200) {
 
     return res.json()
 }
+
+
+export async function storeFormData(resource, input) {
+    const res = await fetch(
+        url(resource),
+        {
+            method: 'POST',
+            credentials: "include",
+            headers: { 
+                Authorization: basicAuthentication(),
+            },
+            body: input
+        }
+    )
+
+    if (!res.ok) {
+        if (res.status == 400) 
+            return {
+                error: true,
+                data: await res.json(),
+                status: res.status,
+                statusText: res.statusText
+            }
+        
+            const data = await res.json()
+            throw new Error(data.message || res.statusText)
+    }
+
+    return res.json()
+}
