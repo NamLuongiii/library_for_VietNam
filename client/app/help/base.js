@@ -20,7 +20,8 @@ export async function index(resource, segments = "") {
     )
 
     if (!res.ok) {
-        throw new Error(res.statusText)
+        const data = await res.json()
+        throw new Error(data.message || res.statusText)
     }
 
     return res.json()
@@ -37,7 +38,8 @@ export async function show(resource, resource_id) {
     )
 
     if (!res.ok) {
-        throw new Error(res.statusText)
+        const data = await res.json()
+        throw new Error(data.message || res.statusText)
     }
 
     return res.json()
@@ -67,7 +69,8 @@ export async function update(resource, resource_id, input) {
                 statusText: res.statusText
             }
 
-        throw new Error(res.statusText)
+        const data = await res.json()
+        throw new Error(data.message || res.statusText)
     }
 
     return res.json()
@@ -97,7 +100,8 @@ export async function store(resource, input) {
                 statusText: res.statusText
             }
         
-        throw new Error(res.statusText)
+            const data = await res.json()
+            throw new Error(data.message || res.statusText)
     }
 
     return res.json()
@@ -116,24 +120,26 @@ export async function destroy(resource, resource_id) {
     )
 
     if (!res.ok) {
-        throw new Error(res.statusText)
+        const data = await res.json()
+        throw new Error(data.message || res.statusText)
     }
 
     return res.json()
 }
 
-export async function options(segment, page = 1, page_size = 20) {
+export async function options(segment, page = 0, page_size = 200) {
     const res = await fetch(
         url(`options/${segment}`, `?page=${page}&page_size=${page_size}`),
         {
             credentials: "include",
             headers: { Authorization : basicAuthentication() },
-            cache: 'no-cache'
+            cache: "force-cache"
         }
     )
 
     if (!res.ok) {
-        throw new Error(res.statusText)
+        const data = await res.json()
+        throw new Error(data.message || res.statusText)
     }
 
     return res.json()

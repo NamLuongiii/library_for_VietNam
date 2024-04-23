@@ -40,9 +40,8 @@ export default function BaseStore({fields, resource, title="Store new record"}) 
 
 
     return <section> 
-        <header className="sticky top-14 bg-white flex items-center gap-4 px-4 shadow-md border-b z-50">
+        <header className="sticky top-14 bg-white px-4 shadow-md border-b z-50">
             <h1 className="text-2xl py-2">{title}</h1>
-            <Button variant="contained" onClick={handleBack}>Back</Button>
         </header>
         <Form className="py-12" action={handleSubmit}>
             {fields.map(field => (
@@ -54,8 +53,9 @@ export default function BaseStore({fields, resource, title="Store new record"}) 
                 ></Generator>
             ))}
 
-            <footer className="px-8 py-8">
+            <footer className="px-8 py-8 flex items-center gap-4">
                 <Submit></Submit>
+                <Button variant="outlined" onClick={handleBack}>Back</Button>
             </footer>
         </Form>
     </section>

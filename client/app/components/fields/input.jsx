@@ -13,6 +13,7 @@ export default function Input(props) {
         onchange,
         isDisplay,
         errorMessage,
+        required,
     } = props
 
     function onChange(e) {
@@ -21,6 +22,7 @@ export default function Input(props) {
 
     return <div className="px-8 py-4">
         <TextField
+            size="small"
             fullWidth
             variant="outlined"
             id={id}
@@ -29,6 +31,10 @@ export default function Input(props) {
             label={label}
             error={!!errorMessage}
             helperText={errorMessage}
+            defaultValue={value}
+            onChange={onChange}
+            disabled={isDisplay}
+            required={required}
         ></TextField>
     </div>
 }

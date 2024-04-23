@@ -459,23 +459,23 @@ func BookOptionLang(c fiber.Ctx) error {
 				"name": "vietnamese",
 			},
 			{
-				"id":   1,
+				"id":   2,
 				"name": "english",
 			},
 			{
-				"id":   1,
+				"id":   3,
 				"name": "chinese",
 			},
 			{
-				"id":   1,
+				"id":   4,
 				"name": "greek",
 			},
 			{
-				"id":   1,
+				"id":   5,
 				"name": "japanese",
 			},
 			{
-				"id":   1,
+				"id":   6,
 				"name": "other",
 			},
 		},

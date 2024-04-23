@@ -1,4 +1,5 @@
 "use client"
+import { Button } from '@mui/material'
 import { useRouter } from 'next/navigation'
 
 export default function Back({text = "Back"}) {
@@ -6,8 +7,9 @@ export default function Back({text = "Back"}) {
     function handleClick() {
         router.back()
     }
-    return <button 
+    return <Button 
+        variant="outlined" 
+        color="secondary"
         type="button"
-        className="border px-4 py-1"
-    onClick={handleClick}>{text}</button>
+        onClick={handleClick}>{text}</Button>
 }

@@ -5,8 +5,14 @@ import Destroy from "./destroy";
 import { destroy } from "@/app/help/base";
 import { redirect } from 'next/navigation'
 import Back from "./back";
+import { Button } from "@mui/material";
 
-export default function BaseShow({fields, entity, resource, title = "Detail"}) {
+export default function BaseShow({
+    fields, 
+    entity, 
+    resource, 
+    title = "Detail"
+}) {
     
     async function handleDestroy() {
         "use server"
@@ -15,7 +21,7 @@ export default function BaseShow({fields, entity, resource, title = "Detail"}) {
     }
 
     return <section className="mb-10">
-        <header className="px-4 py-2 border-b bg-white sticky top-14">
+        <header className="px-4 py-2 border-b bg-white sticky top-14 z-50">
             <h1 className="text-2xl">{title}</h1>
         </header>
 
@@ -34,8 +40,8 @@ export default function BaseShow({fields, entity, resource, title = "Detail"}) {
             ))}
         </Form>
         
-        <footer className="h-14 px-4 py-2 border-t-2 bg-white fixed bottom-0 right-0 left-64 gap-4 flex">
-            <Link rel="stylesheet" href={`${entity.id}/update`} className="border inline-flex justify-center items-center px-4 py-1">Update</Link>
+        <footer className="px-8 py-4 flex items-center gap-4">
+            <Button variant="contained" href={`${entity.id}/update`}>Update</Button>
             <form action={handleDestroy}>
                 <Destroy></Destroy>
             </form>

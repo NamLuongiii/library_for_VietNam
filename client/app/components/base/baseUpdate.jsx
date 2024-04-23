@@ -38,7 +38,7 @@ export default function BaseUpdate({fields, resource, id, entity, title="Update"
 
 
     return <section>
-        <header className="sticky top-14 bg-white flex items-center">
+        <header className="bg-white flex items-center px-4 z-50">
             <h1 className="text-2xl px-4 py-2">{title}</h1>
         </header>
         <Form action={handleSubmit}>
@@ -52,7 +52,7 @@ export default function BaseUpdate({fields, resource, id, entity, title="Update"
                 ></Generator>
             ))}
 
-            <footer className="fixed bottom-0 right-0 left-64 bg-white px-4 py-2 border-t flex gap-4">
+            <footer className="px-8 py-4 flex items-center gap-4">
                 <Submit></Submit>
                 <Back text="Cancel"></Back>
             </footer>

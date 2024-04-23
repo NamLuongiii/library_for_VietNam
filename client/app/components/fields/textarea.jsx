@@ -11,7 +11,7 @@ export default function Textarea(props) {
         value,
         onchange,
         isDisplay,
-        rows = 5,
+        rows = 12,
         columns = 30,
         errorMessage,
     } = props
@@ -23,16 +23,21 @@ export default function Textarea(props) {
     return (
         <div className="px-8 py-4">
             <TextField
+                size="small"
                 fullWidth
                 variant="outlined"
                 multiline
-                rows={18}
+                rows={rows}
+                columns={columns}
                 id={id}
                 name={name}
                 type={type}
                 label={label}
                 error={!!errorMessage}
                 helperText={errorMessage}
+                defaultValue={value}
+                onChange={onChange}
+                disabled={isDisplay}
             ></TextField>
         </div>
     )

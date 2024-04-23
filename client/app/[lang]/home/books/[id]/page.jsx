@@ -1,13 +1,9 @@
 import BaseShow from "@/app/components/base/baseShow"
-import { show } from "@/app/help/base"
-
-async function showBook(id) {
-    return show("books", id)
-}
+import { index, show } from "@/app/help/base"
 
 export default async function BookShow({ params: {id}}) {
-    const { data } = await showBook(id)
     const resource = "books"
+    const { data } = await show(resource, id)
 
     const fields = [
         {
@@ -42,7 +38,7 @@ export default async function BookShow({ params: {id}}) {
             id: "authors",
             name: "authors",
             label: "Author",
-            type: "complexSelect",
+            type: "autocomplete",
             options: [],
             valueKey: "id",
             textKey: "name",
@@ -52,42 +48,19 @@ export default async function BookShow({ params: {id}}) {
             id: "categories",
             name: "categories",
             label: "Category",
-            type: "complexSelect",
+            type: "autocomplete",
             options: [],
             valueKey: "id",
             textKey: "name",
             isDisplay: true,
         },
-        {
-            id: "files",
-            name: "files",
-            label: "Files",
-            type: "inseartingField",
-            isDisplay: true,
-            inseartStruct: [
-                {
-                    id: "file_name",
-                    name: "name",
-                    type: "text",
-                    label: "Name",
-                }, 
-                {
-                    id: "file_url",
-                    name: "url",
-                    type: "text",
-                    label: "Url",
-                },
-                {
-                    id: "file_extension",
-                    name: "extension",
-                    type: "text",
-                    label: "File extension",
-                }
-            ]
-        }
     ]
     
     return <section>
-        <BaseShow entity={data} fields={fields} resource={resource}></BaseShow>
+        <BaseShow 
+            entity={data} 
+            fields={fields} 
+            resource={resource}
+        ></BaseShow>
     </section>
 }

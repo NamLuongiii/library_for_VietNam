@@ -1,6 +1,6 @@
 import BaseStore from "@/app/components/base/baseStore"
 
-export default async function BookStore() {
+export default async function AuthorStore() {
     const resource = "authors"
     const fields = [
         {
@@ -20,7 +20,19 @@ export default async function BookStore() {
             name: "nation",
             label: "Nation",
             type: "text",
-        }
+        },
+        {
+            id: "potrait",
+            name: "potrait",
+            label: "Avatar",
+            type: "avatar",
+        },
+        {
+            id: "bio",
+            name: "bio",
+            label: "Biograhy",
+            type: "textarea",
+        },
     ]
 
 
