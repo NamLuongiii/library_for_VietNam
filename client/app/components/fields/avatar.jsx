@@ -10,7 +10,8 @@ export default function AvatarField(props) {
     } = props
 
     function handleChange(e) {
-        onchange(e.target.files)
+        const f = e.target.files[0]
+        if (f) onchange(f)
     }
 
     return (

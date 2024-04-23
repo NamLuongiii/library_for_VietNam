@@ -21,11 +21,15 @@ export default function BaseStore({fields, resource, title="Store new record"}) 
     
 
     async function handleSubmit() {
+        const fd = new FormData()
+        Object.keys(input).forEach(key => {
+            fd.append(key, input[key])
+        })
         try {
-            const res = await store(resource, input)
+            const res = await store(resource, fd)
             if (res.error && res.status == 400) {
                 const fields= res.data.fields
-                console.log(fields);
+                console.log(res);
                 setErrorMessages(fields)
             } else
                 router.push(`/home/${resource}`)

@@ -91,18 +91,13 @@ func AuthorShow(c fiber.Ctx) error {
 func AuthorStore(c fiber.Ctx) error {
 	var input AuthorInputValidate
 	if err := json.Unmarshal(c.Body(), &input); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": err.Error(),
-		})
+		return helpers.StatusInternalServerResponse(c, err.Error())
 	}
 
 	fields := fiber.Map{}
 	if errs := helpers.Validate.Struct(input); errs != nil {
 		helpers.ErrorFieldMessages(errs.(validator.ValidationErrors), &fields)
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"data":    fields,
-			"message": "error",
-		})
+		return helpers.FieldValidateBadRequestResponse(c, &fields)
 	}
 
 	author := models.Author{
@@ -115,14 +110,10 @@ func AuthorStore(c fiber.Ctx) error {
 	}
 
 	if err := database.DB.Create(&author).Error; err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err.Error(),
-		})
+		return helpers.StatusInternalServerResponse(c, err.Error())
 	}
 
-	return c.JSON(fiber.Map{
-		"message": "success",
-	})
+	return helpers.SimpleSuccessResponse(c)
 }
 
 func AuthorUpdate(c fiber.Ctx) error {
