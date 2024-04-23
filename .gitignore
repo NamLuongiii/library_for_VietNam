@@ -23,4 +23,4 @@ go.work
 /server/tmp
 /server/tmp/*
 .env
-firebaseServiceAccountKey.json
+/server/firebaseServiceAccountKey.json
