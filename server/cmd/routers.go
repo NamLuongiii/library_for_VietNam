@@ -36,6 +36,8 @@ func setupRoutes(router fiber.Router) {
 	router.Put("/categories/:id", handlers.CategoryUpdate)
 	router.Delete("/categories/:id", handlers.CategoryDestroy)
 
+	router.Get("/business", handlers.BusinessShow)
+
 	router.Get("/auth", func(c fiber.Ctx) error {
 		return c.JSON(fiber.Map{
 			"message": "success",

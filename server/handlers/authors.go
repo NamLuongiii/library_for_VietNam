@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 
 	"github.com/NamLuongiii/library_for_VietNam/database"
 	"github.com/NamLuongiii/library_for_VietNam/helpers"
@@ -89,31 +90,19 @@ func AuthorShow(c fiber.Ctx) error {
 }
 
 func AuthorStore(c fiber.Ctx) error {
-	var input AuthorInputValidate
-	if err := json.Unmarshal(c.Body(), &input); err != nil {
-		return helpers.StatusInternalServerResponse(c, err.Error())
+	input := AuthorInputValidate{
+		Name:   c.FormValue("name"),
+		Bio:    c.FormValue("bio"),
+		KnowAs: c.FormValue("know_as"),
+		Nation: c.FormValue("nation"),
 	}
 
-	fields := fiber.Map{}
-	if errs := helpers.Validate.Struct(input); errs != nil {
-		helpers.ErrorFieldMessages(errs.(validator.ValidationErrors), &fields)
-		return helpers.FieldValidateBadRequestResponse(c, &fields)
-	}
+	fmt.Println(input.Name, input.Bio, input.KnowAs, input.Nation, 111)
 
-	author := models.Author{
-		Name:    input.Name,
-		Potrait: input.Potrait,
-		Bio:     input.Bio,
-		KnowAs:  input.KnowAs,
-		Gender:  input.Gender,
-		Nation:  input.Nation,
-	}
-
-	if err := database.DB.Create(&author).Error; err != nil {
-		return helpers.StatusInternalServerResponse(c, err.Error())
-	}
-
-	return helpers.SimpleSuccessResponse(c)
+	return c.JSON(fiber.Map{
+		"data":    input,
+		"message": "success",
+	})
 }
 
 func AuthorUpdate(c fiber.Ctx) error {
