@@ -6,6 +6,8 @@ import AvatarField from "./avatar";
 import BookFileField from "./bookFiles";
 import Autocomplete from "./autocomplete";
 import RadioGroup from "./radioGroup";
+import BookCoverField from "./bookCoverField";
+import BookDocumentsField from "./bookDocuments";
 
 export default function Generator(props) {
     const {
@@ -97,6 +99,19 @@ export default function Generator(props) {
                 errorMessage={errorMessages[props.name]}
             />
             break;
+        case "bookCover":
+            ele = <BookCoverField
+                {...props}
+                value={renderValue()}
+                errorMessage={errorMessages[props.name]}
+            ></BookCoverField>
+            break;
+        case "bookDocuments":
+            ele = <BookDocumentsField
+                {...props}
+                value={renderValue()}
+                errorMessage={errorMessages[props.name]}
+            ></BookDocumentsField>
         default:
             break;
     }

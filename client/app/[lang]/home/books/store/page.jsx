@@ -1,4 +1,5 @@
 import BaseStore from "@/app/components/base/baseStore"
+import ClientWrap from "@/app/components/books/ClientWrap"
 import { options } from "@/app/help/base"
 
 export default async function BookStore() {
@@ -15,6 +16,13 @@ export default async function BookStore() {
             name: "name",
             label: "Name",
             type: "text",
+            required: true,
+        },
+        {
+            id: "cover",
+            name: "cover",
+            label: "Cover",
+            type: "bookCover",
             required: true,
         },
         {
@@ -46,13 +54,6 @@ export default async function BookStore() {
             name: "global_publisher",
             label: "global_publisher",
             type: "text",
-        },
-        {
-            id: "cover",
-            name: "cover",
-            label: "Cover",
-            type: "text",
-            required: true,
         },
         {
             id: "page",
@@ -156,12 +157,19 @@ export default async function BookStore() {
             valueKey: "id",
             textKey: "name",
             required: true,
+        },
+        {
+            id: "files",
+            name: "files",
+            type: "bookDocuments",
+            label: "Documents",
         }
     ]
 
+    return (
+        <ClientWrap
+            resource={resource}
+            fields={fields}></ClientWrap>
+    )
 
-
-    return <section>
-        <BaseStore resource={resource} fields={fields}></BaseStore>
-    </section>
 }

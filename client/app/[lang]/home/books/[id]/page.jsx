@@ -17,7 +17,7 @@ export default async function BookShow({ params: {id}}) {
             id: "cover",
             name: "cover",
             label: "Cover",
-            type: "text",
+            type: "bookCover",
             isDisplay: true,
         },
         {
