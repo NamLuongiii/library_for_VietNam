@@ -64,6 +64,7 @@ export default function Generator(props) {
         case "avatar":
             ele = <AvatarField
                 {...props}
+                value={renderValue()}
                 errorMessage={errorMessages[props.name]}
             ></AvatarField>
             break;

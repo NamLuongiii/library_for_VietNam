@@ -29,13 +29,8 @@ export default function BaseShow({
             {fields.map((field, index) => (
                 <Generator
                     key={index}
-                    id={field.id}
-                    name={field.name}
-                    label={field.label}
-                    type={field.type}
                     entity={entity}
-                    isDisplay={field.isDisplay}
-                    inseartStruct={field.inseartStruct}
+                    {...field}
                 ></Generator>
             ))}
         </Form>

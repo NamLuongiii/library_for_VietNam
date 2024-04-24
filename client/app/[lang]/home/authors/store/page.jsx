@@ -1,6 +1,9 @@
-import BaseStore from "@/app/components/base/baseStore"
+"use client"
 
-export default async function AuthorStore() {
+import BaseStore from "@/app/components/base/baseStore"
+import { uploadSingleImage } from "@/app/help/firebase"
+
+export default function AuthorStore() {
     const resource = "authors"
     const fields = [
         {
@@ -36,8 +39,19 @@ export default async function AuthorStore() {
     ]
 
 
+    async function handleBeforeStore (input) {
+        const potrait = input.potrait
+        if (typeof potrait != 'object') return input
+
+        const url = await uploadSingleImage(potrait)
+        input.potrait = url        
+        return input
+    }
 
     return <section>
-        <BaseStore resource={resource} fields={fields}></BaseStore>
+        <BaseStore 
+            resource={resource} 
+            fields={fields}
+            beforeSubmit={handleBeforeStore}></BaseStore>
     </section>
 }

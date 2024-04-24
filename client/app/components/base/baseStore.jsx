@@ -8,7 +8,12 @@ import { useRouter } from 'next/navigation'
 import Back from "./back"
 import { Button } from "@mui/material"
 
-export default function BaseStore({fields, resource, title="Store new record"}) {
+export default function BaseStore({
+        fields, 
+        resource, 
+        title="Store new record",
+        beforeSubmit = async i => i
+    }) {
     const router = useRouter()
     const [input, updateInput] = useState({})
     const [errorMessages, setErrorMessages] = useState({})
@@ -21,12 +26,10 @@ export default function BaseStore({fields, resource, title="Store new record"}) 
     
 
     async function handleSubmit() {
-        const fd = new FormData()
-        Object.keys(input).forEach(key => {
-            fd.append(key, input[key])
-        })
+        const _input = await beforeSubmit(input)
+        console.log(_input);
         try {
-            const res = await storeFormData(resource, fd)
+            const res = await store(resource, _input)
             if (res.error && res.status == 400) {
                 const fields= res.data.fields
                 console.log(res);

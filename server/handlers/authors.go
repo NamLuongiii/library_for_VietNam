@@ -89,6 +89,34 @@ func AuthorShow(c fiber.Ctx) error {
 }
 
 func AuthorStore(c fiber.Ctx) error {
+	var input AuthorInputValidate
+	if err := json.Unmarshal(c.Body(), &input); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": err.Error(),
+		})
+	}
+
+	fields := fiber.Map{}
+	if errs := helpers.Validate.Struct(input); errs != nil {
+		helpers.ErrorFieldMessages(errs.(validator.ValidationErrors), &fields)
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"data":    fields,
+			"message": "error",
+		})
+	}
+
+	author := models.Author{
+		Name:    input.Name,
+		Potrait: input.Potrait,
+		Bio:     input.Bio,
+		Nation:  input.Nation,
+		KnowAs:  input.KnowAs,
+	}
+
+	if err := database.DB.Create(&author).Error; err != nil {
+		return helpers.StatusInternalServerResponse(c, err.Error())
+	}
+
 	return c.JSON(fiber.Map{
 		"data":    "oke",
 		"message": "success",

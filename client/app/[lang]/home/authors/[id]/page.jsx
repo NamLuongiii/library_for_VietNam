@@ -1,13 +1,9 @@
 import BaseShow from "@/app/components/base/baseShow"
 import { show } from "@/app/help/base"
 
-async function showAuthor(resource, id) {
-    return show(resource, id)
-}
-
-export default async function BookShow({ params: {id}}) {
+export default async function AuthorShow({ params: {id}}) {
     const resource = "authors"
-    const { data } = await showAuthor(resource, id)
+    const { data } = await show(resource, id)
 
     const fields = [
         {
@@ -15,6 +11,13 @@ export default async function BookShow({ params: {id}}) {
             name: "name",
             label: "Name",
             type: "text",
+            isDisplay: true,
+        },
+        {
+            id: "potrait",
+            name: "potrait",
+            label: "Potrait",
+            type: "avatar",
             isDisplay: true,
         },
         {

@@ -14,7 +14,7 @@ export async function index(resource, segments = "") {
         url(resource, segments),
         {
             credentials: "include",
-            headers: { Authorization : basicAuthentication() },
+            headers: { Authorization: basicAuthentication() },
             cache: 'no-cache'
         }
     )
@@ -50,9 +50,9 @@ export async function update(resource, resource_id, input) {
         url(resource, resource_id),
         {
             credentials: "include",
-            headers: { 
+            headers: {
                 Authorization: basicAuthentication(),
-                'Content-Type': 'application/json' 
+                'Content-Type': 'application/json'
             },
             method: 'PUT',
             body: JSON.stringify(input)
@@ -61,7 +61,7 @@ export async function update(resource, resource_id, input) {
     )
 
     if (!res.ok) {
-        if (res.status == 400) 
+        if (res.status == 400)
             return {
                 error: true,
                 data: await res.json(),
@@ -83,25 +83,25 @@ export async function store(resource, input) {
         {
             method: 'POST',
             credentials: "include",
-            headers: { 
+            headers: {
                 Authorization: basicAuthentication(),
-                'Content-Type': 'application/json' 
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(input)
         }
     )
 
     if (!res.ok) {
-        if (res.status == 400) 
+        if (res.status == 400)
             return {
                 error: true,
                 data: await res.json(),
                 status: res.status,
                 statusText: res.statusText
             }
-        
-            const data = await res.json()
-            throw new Error(data.message || res.statusText)
+
+        const data = await res.json()
+        throw new Error(data.message || res.statusText)
     }
 
     return res.json()
@@ -113,7 +113,7 @@ export async function destroy(resource, resource_id) {
         {
             method: 'DELETE',
             credentials: "include",
-            headers: { 
+            headers: {
                 Authorization: basicAuthentication(),
             },
         }
@@ -132,7 +132,7 @@ export async function options(segment, page = 0, page_size = 200) {
         url(`options/${segment}`, `?page=${page}&page_size=${page_size}`),
         {
             credentials: "include",
-            headers: { Authorization : basicAuthentication() },
+            headers: { Authorization: basicAuthentication() },
             cache: "force-cache"
         }
     )
@@ -152,7 +152,7 @@ export async function storeFormData(resource, input) {
         {
             method: 'POST',
             credentials: "include",
-            headers: { 
+            headers: {
                 Authorization: basicAuthentication(),
             },
             body: input
@@ -160,17 +160,18 @@ export async function storeFormData(resource, input) {
     )
 
     if (!res.ok) {
-        if (res.status == 400) 
+        if (res.status == 400)
             return {
                 error: true,
                 data: await res.json(),
                 status: res.status,
                 statusText: res.statusText
             }
-        
-            const data = await res.json()
-            throw new Error(data.message || res.statusText)
+
+        const data = await res.json()
+        throw new Error(data.message || res.statusText)
     }
 
     return res.json()
 }
+
