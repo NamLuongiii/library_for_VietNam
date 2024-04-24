@@ -3,7 +3,6 @@ package handlers
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 
 	"github.com/NamLuongiii/library_for_VietNam/database"
 	"github.com/NamLuongiii/library_for_VietNam/helpers"
@@ -90,17 +89,8 @@ func AuthorShow(c fiber.Ctx) error {
 }
 
 func AuthorStore(c fiber.Ctx) error {
-	input := AuthorInputValidate{
-		Name:   c.FormValue("name"),
-		Bio:    c.FormValue("bio"),
-		KnowAs: c.FormValue("know_as"),
-		Nation: c.FormValue("nation"),
-	}
-
-	fmt.Println(input.Name, input.Bio, input.KnowAs, input.Nation, 111)
-
 	return c.JSON(fiber.Map{
-		"data":    input,
+		"data":    "oke",
 		"message": "success",
 	})
 }
