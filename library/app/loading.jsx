@@ -1,6 +1,4 @@
 export default function Loading() {
 
-    return <main>
-        Loading...
-    </main>
+    return <main></main>
 }
