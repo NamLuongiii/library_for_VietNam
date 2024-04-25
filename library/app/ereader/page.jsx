@@ -12,6 +12,8 @@ export default function Ereader() {
     const file = searchParams.get("file")
     const book = searchParams.get("book")
 
+    console.log(file);
+
     return (
         <div className="fixed inset-0 h-screen">
             <div className="absolute top-2 right-12 p-2 z-10">

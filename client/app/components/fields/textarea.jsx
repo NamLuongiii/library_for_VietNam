@@ -1,6 +1,7 @@
 "use client"
 
-import { TextField } from "@mui/material"
+import { TextField, useScrollTrigger } from "@mui/material"
+import { useState } from "react"
 
 export default function Textarea(props) {
     const {
@@ -14,10 +15,21 @@ export default function Textarea(props) {
         rows = 12,
         columns = 30,
         errorMessage,
+        required,
+        minLength,
+        maxLength = 500,
     } = props
 
+    const [v, setV] = useState(value)
+
     function onChange(e) {
+        setV(e.target.value)
         return onchange(e.target.value)
+    }
+
+    function feedback() {
+        const c = v ? v.length : 0
+        return maxLength - c
     }
 
     return (
@@ -34,10 +46,13 @@ export default function Textarea(props) {
                 type={type}
                 label={label}
                 error={!!errorMessage}
-                helperText={errorMessage}
+                helperText={errorMessage || feedback()}
                 defaultValue={value}
                 onChange={onChange}
                 disabled={isDisplay}
+                required={required}
+                minLength={minLength}
+                maxLength={maxLength}
             ></TextField>
         </div>
     )

@@ -1,6 +1,8 @@
+import { uuidv4 } from "@firebase/util";
 import { initializeApp } from "firebase/app";
 
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { stringToReadbleUrl } from "./uitilies";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBd-TdmJWmjBV8DcsE9y14eBwj62hU__wk",
@@ -13,8 +15,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-const  FILE_FOLDER = "files/"
-
+const FILE_FOLDER = "files"
+const IMAGE_FOLDER = "images"
 export async function uploadSingleImage(file) {
     const storage = getStorage();
 
@@ -22,7 +24,7 @@ export async function uploadSingleImage(file) {
         contentType: 'image/*'
     };
 
-    const storageRef = ref(storage, 'images/' + file.name);
+    const storageRef = ref(storage, buildImageUrl(file));
     const uploadTask = uploadBytesResumable(storageRef, file, metadata);
 
     return new Promise((resolve, reject) => {
@@ -63,16 +65,16 @@ export async function uploadSingleImage(file) {
 }
 
 export async function bookDocumentsUpoad(files) {
-    let fail = false
-    for (let i = 0; i < files.length; i++) {
-        const is_e = await checkFileExsit(files[i])
-        if (is_e) {
-            console.log(`File is invalid because already exsit`);
-            fail = true
-        } 
-    }   
-    if (fail)
-        throw Error("Upload files fail")
+    // let fail = false
+    // for (let i = 0; i < files.length; i++) {
+    //     const is_e = await checkFileExsit(files[i])
+    //     if (is_e) {
+    //         console.log(`File is invalid because already exsit`);
+    //         fail = true
+    //     } 
+    // }   
+    // if (fail)
+    //     throw Error("Upload files fail")
 
     const tasks = []
     files.forEach(file => {
@@ -89,7 +91,8 @@ async function uploadSingleFile(file) {
         contentType: file.type,
     };
 
-    const storageRef = ref(storage, FILE_FOLDER + file.name);
+    
+    const storageRef = ref(storage, buildFileUrl(file));
     const uploadTask = uploadBytesResumable(storageRef, file, metadata);
 
     return new Promise((resolve, reject) => {
@@ -144,4 +147,14 @@ async function checkFileExsit(file) {
         return Promise.reject(error);
       }
     });
+}
+
+function buildFileUrl(file) {
+    const randomId = uuidv4()
+    return `${FILE_FOLDER}/${randomId}_${stringToReadbleUrl(file.name)}`
+}
+
+function buildImageUrl(file) {
+    const randomId = uuidv4()
+    return `${IMAGE_FOLDER}/${randomId}_${stringToReadbleUrl(file.name)}`
 }

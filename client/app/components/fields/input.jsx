@@ -14,6 +14,10 @@ export default function Input(props) {
         isDisplay,
         errorMessage,
         required,
+        maxLength,
+        minLength,
+        min, 
+        max,
     } = props
 
     function onChange(e) {
@@ -35,6 +39,10 @@ export default function Input(props) {
             onChange={onChange}
             disabled={isDisplay}
             required={required}
+            maxLength={maxLength}
+            minLength={minLength}
+            min={min}
+            max={max}
         ></TextField>
     </div>
 }

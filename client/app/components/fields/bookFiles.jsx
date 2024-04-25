@@ -7,6 +7,7 @@ export default function BookFileField(props) {
         label,
         value,
         onchange,
+        required,
     } = props
 
     function handleChange(e) {
@@ -22,6 +23,7 @@ export default function BookFileField(props) {
                 type="file"
                 accept=".epub, .pdf"
                 multiple
+                required={required}
                 onChange={handleChange}
             ></input>
         </div>

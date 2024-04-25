@@ -3,7 +3,7 @@ import MuiRadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import { FormHelperText } from '@mui/material/FormHelperText';
+import FormHelperText from '@mui/material/FormHelperText';
 
 export default function RadioGroup(props) {
     const {
@@ -43,11 +43,12 @@ export default function RadioGroup(props) {
                     <FormControlLabel 
                         key={index} 
                         value={option[valueKey]} 
-                        control={<Radio />} 
-                        label={option[textKey]} />
+                        control={<Radio required={required} />} 
+                        label={option[textKey]} 
+                    />
                 ))}
             </MuiRadioGroup>
-            <div className="text-red-600 text-xs">{errorMessage}</div>
+            <FormHelperText>{errorMessage}</FormHelperText>
         </FormControl>
     )
 }

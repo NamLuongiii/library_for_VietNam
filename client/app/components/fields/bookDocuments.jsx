@@ -38,7 +38,7 @@ export default function BookDocumentsField(props) {
                 name={name}></input>
             <ol>
                 {files.map(file => (
-                    <li className="text-sm text-gray-400 py-2">
+                    <li key={file.name} className="text-sm text-gray-400 py-2">
                         {file.name} 
                         <Chip label={formatBytes(file.size)} color="warning" className="ml-2"></Chip>
                         <Chip label={extractBookExtension(file.type)} color="info" className="ml-2"></Chip>  

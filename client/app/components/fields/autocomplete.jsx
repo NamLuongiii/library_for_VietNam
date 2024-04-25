@@ -35,7 +35,7 @@ export default function Autocomplete(props) {
                 onChange={handleChagne}
                 renderInput={params => <TextField variant="outlined" label={label} {...params}></TextField>}
                 disabled={isDisplay}
-                required={required}
+                required={isDisplay}
                 isOptionEqualToValue={(option, value) => option === value || option[valueKey] == value[valueKey]}
             ></MuiAutocomplete>
         </div>

@@ -60,18 +60,21 @@ export default async function BookStore() {
             name: "page",
             label: "Page number",
             type: "number",
+            min:0,
         },
         {
             id: "chapter",
             name: "chapter",
             label: "Chapter number",
             type: "number",
+            min:0,
         },
         {
             id: "location",
             name: "location",
             label: "Location",
             type: "number",
+            min:0,
         },
         {
             id: "lang",
@@ -81,7 +84,6 @@ export default async function BookStore() {
             options: languages.data,
             valueKey: "id",
             textKey: "name",
-            required: true,
         },
         {
             id: "origin_lang",
@@ -130,14 +132,12 @@ export default async function BookStore() {
             options: categories.data,
             valueKey: "id",
             textKey: "name",
-            required: true,
         },
         {
             id: "preface",
             name: "preface",
             label: "Preface",
             type: "textarea",
-            required: true,
         },
         {
             id: "is_show",
@@ -156,7 +156,6 @@ export default async function BookStore() {
             ],
             valueKey: "id",
             textKey: "name",
-            required: true,
         },
         {
             id: "files",

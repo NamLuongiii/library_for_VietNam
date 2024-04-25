@@ -1,3 +1,5 @@
+import { func } from "prop-types"
+
 export function parseQueryString(obj) {
     let query = "?"
     Object.keys(obj).forEach(k => {
@@ -25,4 +27,8 @@ export function extractBookExtension(fileType) {
             return accepts[i]
     }
     return "N/a"
+}
+
+export function stringToReadbleUrl(str) {
+    return str.replace(/ /g, '_');
 }

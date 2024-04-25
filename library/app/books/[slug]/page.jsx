@@ -31,7 +31,7 @@ export default async function BookDetail({ params: { slug } }) {
                     {book.files.map(file => (
                         <option 
                             key={file.id} 
-                            value={file.url}>{file.name} | {file.extension}</option>
+                            value={file.url}>{file.name}</option>
                     ))}
                 </Select>
                 <input name="book" defaultValue={book.id} className="hidden"></input>

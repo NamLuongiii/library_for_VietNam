@@ -12,6 +12,7 @@ export default function BookCoverField(props) {
         value,
         onchange,
         isDisplay,
+        required,
     } = props
 
     async function handleChange(e) {
@@ -31,13 +32,17 @@ export default function BookCoverField(props) {
 
     return (
         <div className="px-8 py-4">
-            <label className="text-sm text-gray-600 mr-4">{label}</label>
+            <label 
+                htmlFor={id} 
+                required
+                className={`text-sm text-gray-600 mr-4 ${required && "after:content-['*']"}`}>{label}</label>
             <input
                 type="file"
                 accept="image/*"
                 id={id}
                 name={name}
                 onChange={handleChange}
+                required={required}
             ></input>
         </div>
     )

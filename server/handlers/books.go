@@ -42,7 +42,7 @@ type BookInput struct {
 	EnName          string `validate:"omitempty,max=256" json:"en_name"`
 	OriginName      string `validate:"omitempty,max=256" json:"origin_name"`
 	Cover           string `validate:"required,url,max=256" json:"cover"`
-	Preface         string `validate:"required,max=500" json:"preface"`
+	Preface         string `validate:"omitempty,max=500" json:"preface"`
 	ComposeAt       string `validate:"omitempty,max=256" json:"compose_at"`
 	Release         string `validate:"omitempty,max=256" json:"release"`
 	Publisher       string `validate:"omitempty,max=256" json:"publisher"`
@@ -50,8 +50,8 @@ type BookInput struct {
 	Page            uint64 `validate:"omitempty,gte=0,lte=100000" json:"page"`
 	Location        uint64 `validate:"omitempty,gte=0,lte=100000" json:"location"`
 	Chapter         uint8  `validate:"omitempty,gte=0,lt=256" json:"chapter"`
-	Lang            string `validate:"required,max=256,oneof=vietnamese english chinese greek japanese other" json:"lang"`
-	OriginLang      string `validate:"omitempty,oneof=vietnamese english chinese greek japanese other" json:"origin_lang"`
+	Lang            string `validate:"omitempty,max=256" json:"lang"`
+	OriginLang      string `validate:"omitempty,max=256" json:"origin_lang"`
 	ProjectUrl      string `validate:"omitempty,max=256,url" json:"project_url"`
 	ResourceUrl     string `validate:"omitempty,max=256,url" json:"resource_url"`
 	Nation          string `validate:"omitempty,max=256" json:"nation"`
