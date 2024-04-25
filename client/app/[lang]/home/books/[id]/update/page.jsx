@@ -1,4 +1,5 @@
 import BaseUpdate from "@/app/components/base/baseUpdate"
+import { ClientWrap } from "@/app/components/bookUpdate/ClientWrap"
 import { options, show } from "@/app/help/base"
 
 export default async function BookUpdate({ params: {id}}) {
@@ -17,6 +18,13 @@ export default async function BookUpdate({ params: {id}}) {
             label: "Name",
             type: "text",
             required: true,
+        },
+        {
+            id: "cover",
+            name: "cover",
+            label: "Cover",
+            type: "bookCover",
+            // required: true,
         },
         {
             id: "en_ name",
@@ -49,13 +57,6 @@ export default async function BookUpdate({ params: {id}}) {
             type: "text",
         },
         {
-            id: "cover",
-            name: "cover",
-            label: "Cover",
-            type: "text",
-            required: true,
-        },
-        {
             id: "page",
             name: "page",
             label: "Page number",
@@ -77,11 +78,8 @@ export default async function BookUpdate({ params: {id}}) {
             id: "lang",
             name: "lang",
             label: "Lang",
-            type: "radioGroup",
+            type: "select",
             options: languages.data,
-            valueKey: "id",
-            textKey: "name",
-            required: true,
         },
         {
             id: "origin_lang",
@@ -130,14 +128,12 @@ export default async function BookUpdate({ params: {id}}) {
             options: categories.data,
             valueKey: "id",
             textKey: "name",
-            required: true,
         },
         {
             id: "preface",
             name: "preface",
             label: "Preface",
             type: "textarea",
-            required: true,
         },
         {
             id: "is_show",
@@ -156,17 +152,22 @@ export default async function BookUpdate({ params: {id}}) {
             ],
             valueKey: "id",
             textKey: "name",
-            required: true,
+        },
+        {
+            id: "files",
+            name: "files",
+            label: "File documents",
+            type: "bookDocuments",
         }
     ]
 
 
 
     return <section>
-        <BaseUpdate 
+        <ClientWrap 
             resource={resource} 
             fields={fields}
             id={id}
-            entity={data}></BaseUpdate>
+            entity={data}></ClientWrap>
     </section>
 }

@@ -30,15 +30,22 @@ func BooksIndex(c fiber.Ctx) error {
 		categoryIds := strings.Split(q["category"], ",")
 		dbHandler.
 			Joins("JOIN book_categories ON books.id = book_categories.book_id").
-			Where("book_categories.category_id IN (?)", categoryIds)
+			Where("book_categories.category_id IN (?)", categoryIds).
+			Where("is_show = 1")
 	}
 
 	keyWord := strings.ToLower(q["key_word"])
 	if keyWord != "" {
-		dbHandler.Where(database.DB.Where("LOWER(name) LIKE ?", "%"+keyWord+"%").Or("LOWER(en_name) LIKE ?", "%"+keyWord+"%"))
+		dbHandler.
+			Where(database.DB.
+				Where("LOWER(name) LIKE ?", "%"+keyWord+"%").
+				Or("LOWER(en_name) LIKE ?", "%"+keyWord+"%"))
 	}
 
-	result := dbHandler.Order("created_at " + orderBy).Scopes(p.DbHandler).Scan(&books)
+	result := dbHandler.
+		Order("created_at " + orderBy).
+		Scopes(p.DbHandler).
+		Scan(&books)
 
 	if err := result.Error; err != nil {
 		return helpers.StatusInternalServerResponse(c, err.Error())
@@ -86,7 +93,12 @@ func BooksDiscovery(c fiber.Ctx) error {
 	p := helpers.Paginate(c)
 
 	books := []models.Book{}
-	if err := database.DB.Preload(clause.Associations).Scopes(p.DbHandler).Find(&books).Error; err != nil {
+	if err := database.DB.
+		Preload(clause.Associations).
+		Scopes(p.DbHandler).
+		Where("is_show = 1").
+		Order("created_at desc").
+		Find(&books).Error; err != nil {
 		return helpers.StatusInternalServerResponse(c, err.Error())
 	}
 
@@ -173,7 +185,10 @@ func BooksShow(c fiber.Ctx) error {
 	id := c.Params("id")
 
 	book := models.Book{}
-	if err := database.DB.Preload(clause.Associations).First(&book, id).Error; err != nil {
+	if err := database.DB.
+		Preload(clause.Associations).
+		Where("is_show = 1").
+		First(&book, id).Error; err != nil {
 		return helpers.StatusInternalServerResponse(c, err.Error())
 	}
 

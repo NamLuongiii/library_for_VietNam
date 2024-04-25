@@ -80,10 +80,8 @@ export default async function BookStore() {
             id: "lang",
             name: "lang",
             label: "Lang",
-            type: "radioGroup",
+            type: "select",
             options: languages.data,
-            valueKey: "id",
-            textKey: "name",
         },
         {
             id: "origin_lang",

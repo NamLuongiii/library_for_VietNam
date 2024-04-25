@@ -32,11 +32,12 @@ export default function RadioGroup(props) {
             disabled={isDisplay} 
             required={required}
             error={!!errorMessage}>
-            <FormLabel id={id}>{label}</FormLabel>
+            <FormLabel>{label}</FormLabel>
             <MuiRadioGroup
+                id={id}
                 row
                 name={name}
-                value={value}
+                defaultValue={value}
                 onChange={handleChange}
             >
                 {options.map((option, index) => (

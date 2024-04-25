@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"encoding/json"
+	"fmt"
 
 	"github.com/NamLuongiii/library_for_VietNam/database"
 	"github.com/NamLuongiii/library_for_VietNam/helpers"
@@ -67,8 +67,10 @@ type BookInput struct {
 func BookIndex(c fiber.Ctx) error {
 	p := helpers.Paginate(c)
 
+	orderBy := "created_at desc"
+
 	var books []models.Book
-	database.DB.Preload(clause.Associations).Scopes(p.DbHandler).Find(&books)
+	database.DB.Preload(clause.Associations).Order(orderBy).Scopes(p.DbHandler).Find(&books)
 
 	res_books := []fiber.Map{}
 	for _, book := range books {
@@ -230,12 +232,8 @@ func BookShow(c fiber.Ctx) error {
 }
 
 func BookStore(c fiber.Ctx) error {
-	body := c.Body()
-
 	var input BookInput
-	if err := json.Unmarshal(body, &input); err != nil {
-		return helpers.StatusInternalServerResponse(c, err.Error())
-	}
+	c.Bind().Body(&input)
 
 	if errs := helpers.Validate.Struct(input); errs != nil {
 		fields := fiber.Map{}
@@ -316,10 +314,10 @@ func BookUpdate(c fiber.Ctx) error {
 		return helpers.SimpleNotFoundResponse(c, err.Error())
 	}
 
+	fmt.Println(string(c.Request().Header.ContentType()))
+
 	var input BookInput
-	if err := json.Unmarshal(c.Body(), &input); err != nil {
-		return helpers.StatusInternalServerResponse(c, err.Error())
-	}
+	c.Bind().JSON(&input)
 
 	if errs := helpers.Validate.Struct(input); errs != nil {
 		fields := fiber.Map{}
@@ -346,6 +344,7 @@ func BookUpdate(c fiber.Ctx) error {
 	book.ResourceUrl = input.ResourceUrl
 	book.Nation = input.Nation
 	book.Status = input.Status
+	book.IsShow = input.IsShow
 	book.Level = input.Level
 
 	if err := database.DB.Save(&book).Error; err != nil {
@@ -453,31 +452,10 @@ func BookOptionLevel(c fiber.Ctx) error {
 
 func BookOptionLang(c fiber.Ctx) error {
 	return c.JSON(fiber.Map{
-		"data": []fiber.Map{
-			{
-				"id":   1,
-				"name": "vietnamese",
-			},
-			{
-				"id":   2,
-				"name": "english",
-			},
-			{
-				"id":   3,
-				"name": "chinese",
-			},
-			{
-				"id":   4,
-				"name": "greek",
-			},
-			{
-				"id":   5,
-				"name": "japanese",
-			},
-			{
-				"id":   6,
-				"name": "other",
-			},
+		"data": []string{
+			"Sách trong nước",
+			"Sách nước ngoài",
+			"Sách nước ngoài có chuyển ngữ",
 		},
 	})
 }

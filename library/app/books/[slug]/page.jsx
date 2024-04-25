@@ -71,11 +71,11 @@ export default async function BookDetail({ params: { slug } }) {
             </li>
             <li>
                 <label className="font-bold">Ngôn ngữ: </label>
-                <span>{book.language}</span>
+                <span>{book.lang}</span>
             </li>
             <li>
                 <label className="font-bold">Nguyên bản: </label>
-                <span>{book.origin_language}</span>
+                <span>{book.origin_lang}</span>
             </li>
             <li>
                 <label className="font-bold">Tác giả: </label>

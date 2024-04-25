@@ -8,6 +8,7 @@ import Autocomplete from "./autocomplete";
 import RadioGroup from "./radioGroup";
 import BookCoverField from "./bookCoverField";
 import BookDocumentsField from "./bookDocuments";
+import Select from "./select";
 
 export default function Generator(props) {
     const {
@@ -112,6 +113,14 @@ export default function Generator(props) {
                 value={renderValue()}
                 errorMessage={errorMessages[props.name]}
             ></BookDocumentsField>
+            break;
+        case "select": 
+            ele = <Select
+                {...props}
+                value={renderValue()}
+                errorMessage={errorMessages[props.name]}
+            ></Select>
+            break;
         default:
             break;
     }

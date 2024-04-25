@@ -7,7 +7,14 @@ import { useEffect, useState } from "react"
 import { useRouter } from 'next/navigation'
 import Back from "./back"
 
-export default function BaseUpdate({fields, resource, id, entity, title="Update"}) {
+export default function BaseUpdate({
+        fields, 
+        resource, 
+        id, 
+        entity, 
+        title="Update",
+        beforeSubmit = async i => i,
+    }) {
     const router = useRouter()
     const [input, updateInput] = useState({})
     const [errorMessages, setErrorMessages] = useState({})
@@ -24,8 +31,9 @@ export default function BaseUpdate({fields, resource, id, entity, title="Update"
     }, [])
 
     async function handleSubmit() {
+        const _input = await beforeSubmit(input)
         try {
-            const res = await update(resource, id, input)
+            const res = await update(resource, id, _input)
             if (res.error && res.status == 400) {
                 const fields= res.data.fields
                 setErrorMessages(fields)
