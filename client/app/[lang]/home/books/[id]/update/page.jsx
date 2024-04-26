@@ -13,6 +13,12 @@ export default async function BookUpdate({ params: {id}}) {
 
     const fields = [
         {
+            id: "isbn",
+            name: "isbn",
+            label: "Isbn",
+            type: "text",
+        },
+        {
             id: "name",
             name: "name",
             label: "Name",
@@ -101,6 +107,7 @@ export default async function BookUpdate({ params: {id}}) {
             options: level.data,
             valueKey: "id",
             textKey: "name",
+            parseInt: true,
         },
         {
             id: "status",
@@ -110,6 +117,7 @@ export default async function BookUpdate({ params: {id}}) {
             options: status.data,
             valueKey: "id",
             textKey: "name",
+            parseInt: true,
         },
         {
             id: "authors",
@@ -152,6 +160,7 @@ export default async function BookUpdate({ params: {id}}) {
             ],
             valueKey: "id",
             textKey: "name",
+            parseInt: true,
         },
         {
             id: "files",

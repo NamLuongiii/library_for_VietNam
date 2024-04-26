@@ -12,6 +12,12 @@ export default async function BookStore() {
 
     const fields = [
         {
+            id: "isbn",
+            name: "isbn",
+            label: "Isbn",
+            type: "text",
+        },
+        {
             id: "name",
             name: "name",
             label: "Name",
@@ -103,6 +109,7 @@ export default async function BookStore() {
             options: level.data,
             valueKey: "id",
             textKey: "name",
+            parseInt: true,
         },
         {
             id: "status",
@@ -112,6 +119,7 @@ export default async function BookStore() {
             options: status.data,
             valueKey: "id",
             textKey: "name",
+            parseInt: true,
         },
         {
             id: "authors",
@@ -142,6 +150,7 @@ export default async function BookStore() {
             name: "is_show",
             label: "Show",
             type: "radioGroup",
+            parseInt: true,
             options: [
                 {
                     id: 0,

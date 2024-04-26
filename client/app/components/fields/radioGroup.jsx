@@ -19,10 +19,13 @@ export default function RadioGroup(props) {
         isDisplay,
         errorMessage,
         required,
+        parseInt,
     } = props 
 
-    function handleChange(e) {
-        onchange(e.target.value)
+    function handleChange(e, value) {
+        if (parseInt) 
+            return onchange(Number(value))
+        return onchange(e.target.value)
     }
 
     return (

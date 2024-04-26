@@ -43,4 +43,6 @@ func setupRoutes(router fiber.Router) {
 			"message": "success",
 		})
 	})
+
+	router.Post("/test", handlers.BookTest)
 }

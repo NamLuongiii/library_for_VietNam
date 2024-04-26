@@ -1,8 +1,6 @@
 package handlers
 
 import (
-	"fmt"
-
 	"github.com/NamLuongiii/library_for_VietNam/database"
 	"github.com/NamLuongiii/library_for_VietNam/helpers"
 	"github.com/NamLuongiii/library_for_VietNam/models"
@@ -233,7 +231,10 @@ func BookShow(c fiber.Ctx) error {
 
 func BookStore(c fiber.Ctx) error {
 	var input BookInput
-	c.Bind().Body(&input)
+	err := c.Bind().JSON(&input)
+	if err != nil {
+		return helpers.StatusInternalServerResponse(c, err.Error())
+	}
 
 	if errs := helpers.Validate.Struct(input); errs != nil {
 		fields := fiber.Map{}
@@ -314,10 +315,11 @@ func BookUpdate(c fiber.Ctx) error {
 		return helpers.SimpleNotFoundResponse(c, err.Error())
 	}
 
-	fmt.Println(string(c.Request().Header.ContentType()))
-
 	var input BookInput
-	c.Bind().JSON(&input)
+	err := c.Bind().JSON(&input)
+	if err != nil {
+		return helpers.StatusInternalServerResponse(c, err.Error())
+	}
 
 	if errs := helpers.Validate.Struct(input); errs != nil {
 		fields := fiber.Map{}
@@ -557,5 +559,19 @@ func BookOptionCategories(c fiber.Ctx) error {
 		"page":      p.Page,
 		"page_size": p.PageSize,
 		"message":   "success",
+	})
+}
+
+type BookTestType struct {
+	Name string `json:"name"`
+	Age  uint8  `json:"age"`
+	Cash uint64 `json:"cash"`
+}
+
+func BookTest(c fiber.Ctx) error {
+	var data BookTestType
+	c.Bind().JSON(&data)
+	return c.JSONP(fiber.Map{
+		"data": data,
 	})
 }

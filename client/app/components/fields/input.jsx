@@ -21,7 +21,10 @@ export default function Input(props) {
     } = props
 
     function onChange(e) {
-        return onchange(e.target.value)
+        const _value = e.target.value 
+        if (type == "number")
+            return onchange(Number(_value))
+        return onchange(_value)
     }
 
     return <div className="px-8 py-4">
