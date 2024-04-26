@@ -1,70 +1,49 @@
 "use client"
 
-import { Button } from '@chakra-ui/react';
-import React from 'react';
-import { ScrollMenu, VisibilityContext, publicApiType } from 'react-horizontal-scrolling-menu';
-import 'react-horizontal-scrolling-menu/dist/styles.css';
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons"
+import Cover from "../commons/cover"
+import { IconButton } from "@chakra-ui/react"
 
-const getItems = () =>
-  Array(20)
-    .fill(0)
-    .map((_, ind) => ({ id: `element-${ind}` }));
+export default function BookDiscovery({ booksDiscovery }) {
 
-export default function DiscoveryBooks() {
-  const [items, setItems] = React.useState(getItems);
+  const sliderLeft = () => {
+    const slider = document.getElementById("slider");
+    slider.scrollLeft -= 500; // Di chuyển sang trái
+  };
+  
+  const sliderRight = () => {
+    const slider = document.getElementById("slider");
+    slider.scrollLeft += 500; // Di chuyển sang phải
+  };
 
   return (
-    <ScrollMenu LeftArrow={LeftArrow} RightArrow={RightArrow}>
-      {items.map(({ id }) => (
-        <Card
-          itemId={id} // NOTE: itemId is required for track items
-          title={id}
-          key={id}
+    <div className="pt-16">
+      <h2 className="text-2xl font-bold text-gray-600 mb-8">Khám phá sách</h2>
+      <div className="relative flex items-center gap-2">
+        <IconButton
+          onClick={sliderLeft}
+          isRound={true}
+          variant='solid'
+          colorScheme='teal'
+          aria-label='Done'
+          fontSize='40px'
+          icon={<ChevronLeftIcon />}
         />
-      ))}
-    </ScrollMenu>
-  );
-}
-
-const LeftArrow = () => {
-  const visibility = React.useContext<publicApiType>(VisibilityContext);
-  return (
-    <Button
-      onClick={visibility.scrollPrev}
-      className="left"
-    >
-      Left
-    </Button>
-  );
-};
-
-const RightArrow = () => {
-  const visibility = React.useContext<publicApiType>(VisibilityContext);
-  return (
-    <Button
-      onClick={visibility.scrollNext}
-      className="right"
-    >
-      Right
-    </Button>
-  );
-};
-
-function Card({ title }) {
-  return (
-    <div
-      style={{
-        width: '160px',
-      }}
-    >
-      <div className="card">
-        <div>{title}</div>
+        <div id="slider" className="w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide flex flex-nowrap gap-4">
+          {booksDiscovery.map(book => (
+            <Cover key={book.id} book={book}></Cover>
+          ))}
+        </div>
+        <IconButton
+          onClick={sliderRight}
+          isRound={true}
+          variant='solid'
+          colorScheme='teal'
+          aria-label='Done'
+          fontSize='40px'
+          icon={<ChevronRightIcon />}
+        />
       </div>
-      <div
-        style={{
-          height: '200px',
-        }}
-      />
     </div>
-  );
+  )
 }

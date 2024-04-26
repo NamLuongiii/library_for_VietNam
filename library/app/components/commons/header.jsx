@@ -24,7 +24,7 @@ export default function Header() {
         setNavigation(data)
     }
 
-    return <header className="border-b sticky top-0 bg-white max-w-screen-lg mx-auto flex justify-between items-center px-4 py-1 md:py-2">
+    return <header className="border-b sticky top-0 bg-white max-w-screen-lg mx-auto flex justify-between items-center px-4 py-1 md:py-2 z-20">
         <section>
             <Link
                 href="/"

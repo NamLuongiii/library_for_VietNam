@@ -15,7 +15,7 @@ export default function Ereader() {
     console.log(file);
 
     return (
-        <div className="fixed inset-0 h-screen">
+        <div className="fixed inset-0 h-screen z-50">
             <div className="absolute top-2 right-12 p-2 z-10">
                 <Link href={`/books/${book}`}>
                     <CloseButton size="lg"></CloseButton>

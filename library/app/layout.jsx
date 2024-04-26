@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "./components/commons/header";
 import Footer from "./components/commons/footer";
 import { Providers } from './providers'
+import ScrollToTop from "./components/home/scrollToTop";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +19,7 @@ export default async function RootLayout({ children, params }) {
         <Providers>
           <Header></Header>
           {children}
+          <ScrollToTop></ScrollToTop>
           <Footer></Footer>
         </Providers>
       </body>
