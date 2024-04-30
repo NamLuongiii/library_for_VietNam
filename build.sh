@@ -1,0 +1,1 @@
+docker run -e DB_USER=postgres -e DB_PASSWORD=%Gy(_eQ0izrQ8K.5:jRde3|7Wq-_ -e  DB_NAME=database-1 -e DB_HOST=database-1.cl0mymi24hl4.ap-southeast-1.rds.amazonaws.com
