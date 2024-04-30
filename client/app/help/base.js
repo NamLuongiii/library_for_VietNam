@@ -133,7 +133,7 @@ export async function options(segment, page = 0, page_size = 200) {
         {
             credentials: "include",
             headers: { Authorization: basicAuthentication() },
-            cache: "force-cache"
+            // cache: "default"
         }
     )
 
