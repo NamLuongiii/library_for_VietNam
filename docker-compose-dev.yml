@@ -7,7 +7,7 @@ services:
       context: ./server
       dockerfile: Dockerfile.dev
     env_file: 
-      - .env.dev
+      - server/.env.dev
     ports:
       - "8080:8080"
     volumes:
@@ -25,17 +25,19 @@ services:
       - postgres-db:/var/lib/postgresql/data
   client:
     build: ./client
+    env_file:
+      - client/.env.dev
     ports:
       - "3000:3000"
     volumes:
       - ./client:/client
-      # - /client/node_modules
   library:
     build: ./library
+    env_file:
+      - library/.env.dev
     ports:
       - "8000:3000"
     volumes:
       - ./library:/library
-      # - /library/node_modules 
 volumes:
   postgres-db:
