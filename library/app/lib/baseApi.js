@@ -24,7 +24,7 @@ export async function Show(resource, id, cache = "default") {
     const res = await fetch(
         url(resource, id),
         {
-            cache: cache,
+            // cache: cache,
         }
     )
 
