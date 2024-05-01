@@ -45,6 +45,7 @@ export default function Filter({ categories }) {
             defaultValue={defaultRadioValue} 
             name={sortName} 
             onChange={handleRadioChange} 
+            colorScheme="teal"
             className="py-2 lg:py-4">
             <Stack direction="column" className="text-xs" gap={4}>
                 <Radio value="desc">Mới lên đầu</Radio>
@@ -62,6 +63,7 @@ export default function Filter({ categories }) {
                     key={cate.id}
                     name={filterName}
                     onChange={handleCheckboxChange}
+                    colorScheme="teal"
                     value={cate.id}>{cate.name}</Checkbox>
             ))}
         </Stack>

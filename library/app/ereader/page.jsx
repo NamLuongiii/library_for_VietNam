@@ -1,6 +1,6 @@
 "use client"
 import { useRouter, useSearchParams } from 'next/navigation'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ReactReader } from 'react-reader'
 import { CloseButton, IconButton } from '@chakra-ui/react'
 import Link from "next/link"
@@ -22,10 +22,10 @@ export default function Ereader() {
     const book = searchParams.get("book")
 
     const [preference, setPreference] = useState({
-        fontSize: 10,
+        fontSize: 8,
         fullHeight: true,
         theme: 1,
-        mode: 0,
+        mode: 1,
     })
 
     const handleFullHeight = () => {
@@ -37,12 +37,41 @@ export default function Ereader() {
 
     // 1 2 3 4 5 6 7 8 9 0 => 60% 70% 80% 90% 100% 110% 120% 130% 140% 150%
 
-    console.log(file);
+    const handlePreferenceChange = (key, v) => {
+        const t = { ...preference }
+        t[key] = v
+        setPreference(t)
+    }
+
+    useEffect(() => {
+        rendition.current?.themes.fontSize(caculFontSize())
+    }, [preference])
+
+    const caculFontSize = () => {
+        return `${100 + 10 * (preference.fontSize - 5)}%`
+    }
+
+    const caculMode =() => {
+        switch (preference.mode) {
+            case 0:
+                return {
+                    flow: 'scrolled',
+                    manager: 'continuous',
+                } 
+            case 1:
+                return {
+                    flow: 'paginated',
+                    manager: 'default',
+                }
+            default:
+                break;
+        }
+    }
 
     return (
         <div className="h-screen flex flex-col relative">
             <header 
-                className="px-4 py-2 flex flex-wrap justify-end items-center gap-4"
+                className="px-4 py-2 flex flex-wrap lg:justify-end items-center gap-4"
                 style={{ display: preference.fullHeight ? "none" : "flex" }}    
             >
                 <Link href="/">
@@ -52,9 +81,11 @@ export default function Ereader() {
                     ></IconButton>
                 </Link>
 
-                <ScrollSetting></ScrollSetting>
-                <ThemeSetting></ThemeSetting>
-                <FontSizeSetting></FontSizeSetting>
+                <ScrollSetting onchange={v => handlePreferenceChange("mode", v)}></ScrollSetting>
+                <ThemeSetting onchange={v => handlePreferenceChange("theme", v)}></ThemeSetting>
+                <FontSizeSetting 
+                    onchange={v => handlePreferenceChange("fontSize", v)} 
+                    defaultValue={preference.fontSize}></FontSizeSetting>
 
                 <IconButton
                     onClick={handleFullHeight}
@@ -76,7 +107,7 @@ export default function Ereader() {
                 ></IconButton>
             </div>
 
-            <main className="grow bg-teal-100">
+            <main className="grow">
                 <ReactReader
                     url={file}
                     location={location}
@@ -101,8 +132,11 @@ export default function Ereader() {
                                 }
                             }
                         })
-                        rendition.current.themes.fontSize(`${100 + 10 * (preference.fontSize - 5)}%`)
+                        rendition.current.themes.fontSize(caculFontSize())
                     }}
+                    epubOptions={caculMode()}
+                    showToc={true}
+                    // swipeable={true}
                 />
             </main>
             <div className="text-center text-xs py-4">{page}</div>
