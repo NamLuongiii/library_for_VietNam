@@ -40,21 +40,22 @@ export default function Filter({ categories }) {
     if (!defaultRadioValue && !defaultCheckValues.length) return <></>
 
     return <div>
-        <h2 className="text-lg text-teal-500 lg:text-xl">Sắp xếp</h2>
+        <h2 className="text-lg text-teal-500 mb-4">Sắp xếp</h2>
         <RadioGroup
             defaultValue={defaultRadioValue} 
             name={sortName} 
             onChange={handleRadioChange} 
             className="py-2 lg:py-4">
-            <Stack direction="column">
+            <Stack direction="column" className="text-xs" gap={4}>
                 <Radio value="desc">Mới lên đầu</Radio>
                 <Radio value="asc">Cũ lên đầu</Radio>
             </Stack>
         </RadioGroup>
+
         <Divider></Divider>
 
-        <h2 className="text-lg text-teal-500 lg:text-xl">Theo danh mục</h2>
-        <Stack>
+        <h2 className="text-lg text-teal-500 my-4">Theo danh mục</h2>
+        <Stack className="text-sm" gap={2}>
             {categories.map(cate => (
                 <Checkbox
                     defaultChecked={defaultCheckValues.includes(cate.id + "")}

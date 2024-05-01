@@ -15,7 +15,7 @@ export default async function BookDetail({ params: { slug } }) {
 
     return <main className="p-4 mx-auto max-w-screen-lg md:p-8 lg:py-8 lg:px-0 mb-8">
 
-        <div className="group w-40 h-48 border mx-auto mb-8 md:w-48 md:h-56 overflow-hidden">
+        <div className="cover group w-40 h-48 border mx-auto md:w-48 md:h-56 overflow-hidden">
             <img
                 alt='cover book'
                 className="w-full object-cover group-hover:scale-105 transition-transform duration-300"

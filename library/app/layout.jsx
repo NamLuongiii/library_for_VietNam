@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "./components/commons/header";
+import Header from "./components/header/header";
 import Footer from "./components/commons/footer";
 import { Providers } from './providers'
 import ScrollToTop from "./components/home/scrollToTop";
