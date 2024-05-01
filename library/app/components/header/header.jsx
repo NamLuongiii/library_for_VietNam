@@ -20,7 +20,9 @@ export default async function Header() {
 
         <Navigation navigation={data}></Navigation>
 
-        <Search></Search>
+        <div className="hidden lg:inline-block">
+            <Search></Search>
+        </div>
         <MobileNavigation ></MobileNavigation>
     </header>
 }

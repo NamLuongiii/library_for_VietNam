@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react'
 import { useRef } from "react"
 import { HamburgerIcon } from "@chakra-ui/icons"
+import Search from "./search"
 
 export default function MobileNavigation() {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -42,6 +43,7 @@ export default function MobileNavigation() {
                     <DrawerHeader>Menu</DrawerHeader>
 
                     <DrawerBody>
+                        <Search></Search>
                     </DrawerBody>
 
                     <DrawerFooter>

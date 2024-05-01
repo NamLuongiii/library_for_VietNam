@@ -7,7 +7,7 @@ export default function ({ book }) {
     return (
         <Link className="group inline-block w-44 lg:w-52" href={`/books/${id}`}>
             <div 
-                className="cover overflow-hidden w-44 h-52 mb-4 lg:w-52 lg:h-60">
+                className="cover overflow-hidden w-44 h-52 mb-2 lg:w-52 lg:h-60">
                 <img
                     alt="book cover"
                     src={cover}

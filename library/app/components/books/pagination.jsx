@@ -14,9 +14,9 @@ export default function Pagination({page, pageSize, pageCount}) {
 
     return (
         <ReactPaginate
-            className="flex gap-2 items-center mt-8"
-            pageClassName="w-10 h-10 flex justify-center items-center bg-gray-100 hover:bg-gray-200 rounded-md cursor-pointer font-bold"
-            activeClassName="bg-teal-500 text-white"
+            className="flex gap-2 items-center flex-wrap mt-8"
+            pageLinkClassName="w-10 h-10 flex justify-center items-center bg-gray-100 hover:bg-gray-200 rounded-md cursor-pointer font-bold"
+            activeLinkClassName="bg-teal-500 hover:bg-teal-600 text-white"
             breakLabel="..."
             nextLabel={<ArrowRightIcon color="teal"></ArrowRightIcon>}
             onPageChange={handlePageClick}
