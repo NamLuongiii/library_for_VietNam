@@ -9,7 +9,7 @@ import { useState } from 'react'
 
 
 
-export default function FontSizeSetting({ onchange ,min = 1, max=12, defaultValue }) {
+export default function FontSizeSetting({ onchange ,min = 3, max=12, defaultValue }) {
     const [value, setValue] = useState(defaultValue)
 
     const fontSize = () => {

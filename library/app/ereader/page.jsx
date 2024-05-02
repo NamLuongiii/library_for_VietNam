@@ -86,34 +86,48 @@ export default function Ereader() {
         }
     }
 
-    function updateTheme(rendition, theme) {
-        const themes = rendition.themes
+    const caculThemeColor = theme => {
         switch (theme) {
-            case 1: {
-                themes.override('color', '#000')
-                themes.override('background', '#fff')
-                break
-            }
-            case 2: {
-                themes.override('color', '#fff')
-                themes.override('background', '#000')
-                break
-            }
-            case 3: {
-                themes.override('color', '#8B4513')
-                themes.override('background', '#FFF8DC')
-                break
-            }
-            case 4: {
-                themes.override('color', '#696969')
-                themes.override('background', '#F8F8FF')
-                break
-            }
+            case 1:
+                return "#000"
+            case 2:
+                return "#fff"
+            case 3:
+                return "#8B4513"
+            case 4:
+                return "#696969"
+
         }
     }
 
+    const caculThemeBg = theme => {
+        switch (theme) {
+            case 1:
+                return "#fff"
+            case 2:
+                return "#000"
+            case 3:
+                return "#FFF8DC"
+            case 4:
+                return "#F8F8FF"
+
+        }
+    }
+
+    function updateTheme(rendition, theme) {
+        const themes = rendition.themes
+        themes.override('color', caculThemeColor(theme))
+        themes.override('background', caculThemeBg(theme))
+    }
+
     return (
-        <div className="h-screen flex flex-col relative">
+        <div 
+            className="h-screen flex flex-col relative"
+            style={{
+                color: caculThemeColor(preference.theme),
+                background: caculThemeBg(preference.theme),
+            }}
+            >
             <header
                 className="px-4 py-2 flex flex-wrap lg:justify-end items-center gap-4"
                 style={{ display: preference.fullHeight ? "none" : "flex" }}

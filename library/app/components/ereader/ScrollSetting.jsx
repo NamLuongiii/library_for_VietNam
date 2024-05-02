@@ -1,5 +1,6 @@
 import { useState } from "react";
 import CheckIcon from "../icons/check";
+import { IconButton } from "@chakra-ui/react";
 
 export default function ScrollSetting({ onchange, mode = 1 }) {
     const [off, setOff] = useState(mode)
@@ -11,13 +12,16 @@ export default function ScrollSetting({ onchange, mode = 1 }) {
     }
 
     return (
-        <div 
+        <IconButton
             onClick={handleChange}
-            className="inline-flex flex-col justify-center items-center cursor-pointer 
-            bg-gray-100 hover:bg-gray-200 rounded-md p-1 text-teal-600">
-            {!off && <CheckIcon></CheckIcon>}
-            {!!off && <span className="text-xs">off</span>}
-            <span className="text-xs font-bold">Đọc dọc</span>
-        </div>
+            icon={(
+                <div className="flex flex-col justify-center items-center px-2">
+                    <span className="text-xs">{!!off ? "off" : "on"}</span>
+                    <span className="text-xs font-bold">Đọc dọc</span>
+                </div>
+            )}
+        >
+
+        </IconButton>
     )
 }
