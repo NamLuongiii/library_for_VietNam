@@ -14,7 +14,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const ROOT_FOLDER = process.env("CLOUD_STORAGE_ROOT")
+const ROOT_FOLDER = process.env.NEXT_PUBLIC_CLOUD_STORAGE_ROOT
 const FILE_FOLDER = ROOT_FOLDER + "/files"
 const IMAGE_FOLDER = ROOT_FOLDER + "/images"
 export async function uploadSingleImage(file) {
