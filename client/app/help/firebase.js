@@ -14,9 +14,9 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
-const FILE_FOLDER = "files"
-const IMAGE_FOLDER = "images"
+const ROOT_FOLDER = process.env("CLOUD_STORAGE_ROOT")
+const FILE_FOLDER = ROOT_FOLDER + "/files"
+const IMAGE_FOLDER = ROOT_FOLDER + "/images"
 export async function uploadSingleImage(file) {
     const storage = getStorage();
 
