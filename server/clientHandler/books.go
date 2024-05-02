@@ -90,14 +90,13 @@ func BooksIndex(c fiber.Ctx) error {
 }
 
 func BooksDiscovery(c fiber.Ctx) error {
-	p := helpers.Paginate(c)
-
+	limit := 10
 	books := []models.Book{}
 	if err := database.DB.
 		Preload(clause.Associations).
-		Scopes(p.DbHandler).
 		Where("is_show = 1").
 		Order("created_at desc").
+		Limit(limit).
 		Find(&books).Error; err != nil {
 		return helpers.StatusInternalServerResponse(c, err.Error())
 	}
@@ -175,9 +174,9 @@ func BooksDiscovery(c fiber.Ctx) error {
 	}
 
 	return c.JSON(fiber.Map{
-		"data":      res_books,
-		"page":      p.Page,
-		"page_size": p.PageSize,
+		"data": res_books,
+		// "page":      p.Page,
+		// "page_size": p.PageSize,
 	})
 }
 

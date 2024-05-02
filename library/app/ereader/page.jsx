@@ -10,6 +10,7 @@ import ScrollSetting from '../components/ereader/ScrollSetting'
 import ThemeSetting from '../components/ereader/themeSetting'
 import FontSizeSetting from '../components/ereader/fontSizeSetting'
 import PointingInIcon from '../components/icons/pointingIn'
+import { darkReaderTheme, lightReaderTheme, paperReaderTheme, sepiaReaderTheme } from '../components/ereader/theme'
 
 export default function Ereader() {
     const [page, setPage] = useState('')
@@ -44,20 +45,24 @@ export default function Ereader() {
     }
 
     useEffect(() => {
-        rendition.current?.themes.fontSize(caculFontSize())
+        const _rendition = rendition.current
+        if (_rendition) {
+            _rendition.themes.fontSize(caculFontSize())
+            updateTheme(_rendition, preference.theme)
+        }
     }, [preference])
 
     const caculFontSize = () => {
         return `${100 + 10 * (preference.fontSize - 5)}%`
     }
 
-    const caculMode =() => {
+    const caculMode = () => {
         switch (preference.mode) {
             case 0:
                 return {
                     flow: 'scrolled',
                     manager: 'continuous',
-                } 
+                }
             case 1:
                 return {
                     flow: 'paginated',
@@ -68,11 +73,50 @@ export default function Ereader() {
         }
     }
 
+    const caculStyle = () => {
+        switch (preference.theme) {
+            case 1:
+                return lightReaderTheme
+            case 2:
+                return darkReaderTheme
+            case 3:
+                return sepiaReaderTheme
+            case 4:
+                return paperReaderTheme
+        }
+    }
+
+    function updateTheme(rendition, theme) {
+        const themes = rendition.themes
+        switch (theme) {
+            case 1: {
+                themes.override('color', '#000')
+                themes.override('background', '#fff')
+                break
+            }
+            case 2: {
+                themes.override('color', '#fff')
+                themes.override('background', '#000')
+                break
+            }
+            case 3: {
+                themes.override('color', '#8B4513')
+                themes.override('background', '#FFF8DC')
+                break
+            }
+            case 4: {
+                themes.override('color', '#696969')
+                themes.override('background', '#F8F8FF')
+                break
+            }
+        }
+    }
+
     return (
         <div className="h-screen flex flex-col relative">
-            <header 
+            <header
                 className="px-4 py-2 flex flex-wrap lg:justify-end items-center gap-4"
-                style={{ display: preference.fullHeight ? "none" : "flex" }}    
+                style={{ display: preference.fullHeight ? "none" : "flex" }}
             >
                 <Link href="/">
                     <IconButton
@@ -83,8 +127,8 @@ export default function Ereader() {
 
                 <ScrollSetting onchange={v => handlePreferenceChange("mode", v)}></ScrollSetting>
                 <ThemeSetting onchange={v => handlePreferenceChange("theme", v)}></ThemeSetting>
-                <FontSizeSetting 
-                    onchange={v => handlePreferenceChange("fontSize", v)} 
+                <FontSizeSetting
+                    onchange={v => handlePreferenceChange("fontSize", v)}
                     defaultValue={preference.fontSize}></FontSizeSetting>
 
                 <IconButton
@@ -97,9 +141,9 @@ export default function Ereader() {
                 </Link>
             </header>
 
-            <div 
+            <div
                 className="fixed right-4 top-4 z-20"
-                style={{ display: preference.fullHeight ? "inline-block" : "none"}}    
+                style={{ display: preference.fullHeight ? "inline-block" : "none" }}
             >
                 <IconButton
                     onClick={handleFullHeight}
@@ -136,7 +180,8 @@ export default function Ereader() {
                     }}
                     epubOptions={caculMode()}
                     showToc={true}
-                    // swipeable={true}
+                    readerStyles={caculStyle()}
+                // swipeable={true}
                 />
             </main>
             <div className="text-center text-xs py-4">{page}</div>

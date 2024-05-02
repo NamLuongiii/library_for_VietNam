@@ -13,9 +13,10 @@ export default function ThemeSetting({ onchange, theme = 1 }) {
     return (
         <RadioGroup onChange={handleChange} value={value} colorScheme="teal">
             <Stack direction='row'>
-                <Radio value={1}>Sáng</Radio>
-                <Radio value={2}>Tối</Radio>
-                <Radio value={3}>Đất sét</Radio>
+                <Radio value={1}>Theme Sáng</Radio>
+                {/* <Radio value={2}>Theme tối</Radio> */}
+                <Radio value={3}>Theme Đất sét</Radio>
+                <Radio value={4}>Theme paper</Radio>
             </Stack>
         </RadioGroup>
     )
