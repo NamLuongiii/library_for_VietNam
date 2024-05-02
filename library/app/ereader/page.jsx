@@ -121,13 +121,13 @@ export default function Ereader() {
     }
 
     return (
-        <div 
-            className="h-screen flex flex-col relative"
+        <div
+            className={`flex flex-col relative lg:h-screen`}
             style={{
                 color: caculThemeColor(preference.theme),
                 background: caculThemeBg(preference.theme),
             }}
-            >
+        >
             <header
                 className="px-4 py-2 flex flex-wrap lg:justify-end items-center gap-4"
                 style={{ display: preference.fullHeight ? "none" : "flex" }}
@@ -165,7 +165,7 @@ export default function Ereader() {
                 ></IconButton>
             </div>
 
-            <main className="grow">
+            <main className="grow h-screen lg:h-auto">
                 <ReactReader
                     url={file}
                     location={location}
@@ -188,14 +188,29 @@ export default function Ereader() {
                                 body.oncontextmenu = () => {
                                     return false
                                 }
+
+                                var linkElement = document.createElement("link");
+                                linkElement.rel = "stylesheet";
+                                linkElement.media = "print";
+                                linkElement.onload = function () {
+                                    this.media = 'all'; 
+                                };
+                                linkElement.href = "https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400;1,700&display=swap";
+                                linkElement.type = "text/css";
+                                body.appendChild(linkElement);
+
+                                body.style.fontFamily = "Gentium Book Plus";
                             }
                         })
                         rendition.current.themes.fontSize(caculFontSize())
                     }}
-                    epubOptions={caculMode()}
+                    epubOptions={{
+                        allowPopups: true, 
+                        allowScriptedContent: true, 
+                        ...caculMode()
+                    }}
                     showToc={true}
                     readerStyles={caculStyle()}
-                // swipeable={true}
                 />
             </main>
             <div className="text-center text-xs py-4">{page}</div>
