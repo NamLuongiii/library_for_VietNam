@@ -21,6 +21,7 @@ export default function Ereader() {
     const searchParams = useSearchParams()
     const file = searchParams.get("file")
     const book = searchParams.get("book")
+    const title = searchParams.get("name")
 
     const [preference, setPreference] = useState({
         fontSize: 8,
@@ -167,6 +168,7 @@ export default function Ereader() {
 
             <main className="grow h-screen lg:h-auto">
                 <ReactReader
+                    title={title}
                     url={file}
                     location={location}
                     locationChanged={(loc) => {

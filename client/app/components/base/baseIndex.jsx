@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, TextField } from "@mui/material"
+import { Avatar, Button, IconButton, TextField } from "@mui/material"
 import Table from "@mui/material/Table"
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -11,7 +11,9 @@ import Paper from '@mui/material/Paper';
 import TablePagination from "@mui/material/TablePagination";
 import TableFooter from "@mui/material/TableFooter";
 import { useRouter, useSearchParams } from "next/navigation";
-
+import EditIcon from "../icons/edit";
+import DestroyIcon from "../icons/destroy";
+import ShowIcon from "../icons/show";
 
 export default function BaseIndex({
     columns,
@@ -30,7 +32,16 @@ export default function BaseIndex({
 
     function handleRowClick(id) {
         return router.push(`${resource}/${id}`)
+    }
 
+    function handleEditClick(e, id) {
+        e.preventDefault()
+        return router.push(`${resource}/${id}/update`)
+    }
+
+    function handleDestroyClick(e, id) {
+        e.preventDefault()
+        return router.push(`${resource}/${id}/update`)
     }
 
     function handlePageChange(e, v) {
@@ -71,7 +82,7 @@ export default function BaseIndex({
         </div>
         <div className="p-4">
             <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <Table size="small" aria-label="simple table">
                     <TableHead>
                         <TableRow>
                             {columns.map(column => (
@@ -84,14 +95,44 @@ export default function BaseIndex({
                             <TableRow
                                 key={row.id}
                                 hover={true}
-                                onClick={() => handleRowClick(row.id)}
-                                className="cursor-pointer"
                             >
-                                {columns.map(column => (
-                                    <TableCell key={column.id} component="th" scope="row">
-                                        {row[column.name]}
-                                    </TableCell>
-                                ))}
+                                {columns.map(column => {
+                                    if (column.render) {
+                                        return (
+                                            <TableCell key={column.id} component="th" scope="row">
+                                                {column.render(row)}
+                                            </TableCell>
+                                        )
+                                    }
+
+                                    if (column.type == 'actions')
+                                        return (
+                                            <TableCell key={column.id} component="th" scope="row">
+                                                <IconButton size="small" onClick={e => handleEditClick(e, row.id)}>
+                                                    <EditIcon></EditIcon>
+                                                </IconButton>
+                                                <IconButton size="small" onClick={e => handleDestroyClick(e, row.id)}>
+                                                    <DestroyIcon></DestroyIcon>
+                                                </IconButton>
+                                                <IconButton size="small" onClick={e => handleRowClick(e, row.id)}>
+                                                    <ShowIcon></ShowIcon>
+                                                </IconButton>
+                                            </TableCell>
+                                        )
+
+                                    if (column.type == 'image')
+                                        return (
+                                            <TableCell key={column.id} component="th" scope="row">
+                                                <Avatar alt="Remy Sharp" src={row[column.id]} />
+                                            </TableCell>
+                                        )
+
+                                    return (
+                                        <TableCell key={column.id} component="th" scope="row">
+                                            {!!row[column.name] ? row[column.name] : <span className="text-sm text-red-600">n/a</span>}
+                                        </TableCell>
+                                    )
+                                })}
                             </TableRow>
                         ))}
                     </TableBody>

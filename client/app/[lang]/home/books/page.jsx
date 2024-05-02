@@ -15,20 +15,27 @@ export default async function BookIndex({ searchParams }) {
             label: "ID",
         }, 
         {
-            id: "isbn",
-            name: "isbn",
-            label: "Isbn",
-        },
-        {
             id: "name",
             name: "name",
             label: "Name",
         },
         {
-            id: "en_name",
-            name: "en_name",
-            label: "English name",
-        }, 
+            id: "cover",
+            name: "cover",
+            label: "cover",
+            type: "image",
+        },
+        {
+            id: "files",
+            name: "files",
+            label: "Files",
+        },
+        {
+            id: "actions",
+            name: "actions",
+            label: "Actions",
+            type: "actions",
+        },
     ]
 
     return <section>

@@ -35,6 +35,7 @@ export default async function BookDetail({ params: { slug } }) {
                     ))}
                 </Select>
                 <input name="book" defaultValue={book.id} className="hidden"></input>
+                <input name="name" defaultValue={book.name} className="hidden"></input>
             </form>
 
         </div>

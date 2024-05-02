@@ -1,6 +1,7 @@
+"use client"
+
 import Generator from "../fields/generator";
 import Form from "../form/form";
-import Link from "next/link"
 import Destroy from "./destroy";
 import { destroy } from "@/app/help/base";
 import { redirect } from 'next/navigation'
@@ -15,7 +16,6 @@ export default function BaseShow({
 }) {
     
     async function handleDestroy() {
-        "use server"
         await destroy(resource, entity.id)
         redirect(`/home/${resource}`)
     }

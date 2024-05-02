@@ -31,7 +31,7 @@ export default function RadioGroup(props) {
     return (
         <FormControl
             variant="outlined"
-            className="px-8 py-4"
+            className="!px-8 py-4"
             disabled={isDisplay} 
             required={required}
             error={!!errorMessage}>

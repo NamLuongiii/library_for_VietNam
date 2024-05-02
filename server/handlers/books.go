@@ -97,17 +97,9 @@ func BookIndex(c fiber.Ctx) error {
 			})
 		}
 
-		files := []fiber.Map{}
+		files := ""
 		for _, file := range book.Files {
-			files = append(files, fiber.Map{
-				"id":         file.ID,
-				"name":       file.Name,
-				"url":        file.Url,
-				"extension":  file.Extension,
-				"color":      file.Color,
-				"created_at": file.CreatedAt,
-				"updated_at": file.UpdatedAt,
-			})
+			files += file.Extension + " "
 		}
 
 		res_books = append(res_books, fiber.Map{

@@ -1,11 +1,12 @@
-import { Button } from "@mui/material"
+import { redirect } from "next/navigation";
 
 export default function Home() {
+
+  redirect('home/books')
+
   return (
     <main>
       Homepage
-
-      <Button href="/home">Homepage</Button>
     </main>
   );
 }

@@ -1,4 +1,5 @@
 "use client"
+
 import Submit from "@/app/components/base/submit"
 import Generator from "@/app/components/fields/generator"
 import Form from "@/app/components/form/form"
