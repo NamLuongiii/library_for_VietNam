@@ -164,11 +164,17 @@ export default async function BookStore() {
             valueKey: "id",
             textKey: "name",
         },
+        // {
+        //     id: "files",
+        //     name: "files",
+        //     type: "bookDocuments",
+        //     label: "Documents",
+        // },
         {
             id: "files",
             name: "files",
-            type: "bookDocuments",
-            label: "Documents",
+            type: "bookFileUpload",
+            label: "Book file upload"
         }
     ]
 

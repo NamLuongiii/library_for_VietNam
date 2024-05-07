@@ -11,7 +11,7 @@ export default function ({ book }) {
                 <img
                     alt="book cover"
                     src={cover}
-                    className="group-hover:scale-105 transition-transform duration-150 object-cover"
+                    className="group-hover:scale-105 transition-transform duration-150 object-cover w-full h-full"
                 ></img>
             </div>
             <div className="text-base font-normal text-gray-600 text-wrap">{name}</div>

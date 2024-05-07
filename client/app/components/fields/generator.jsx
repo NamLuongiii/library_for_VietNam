@@ -9,6 +9,7 @@ import RadioGroup from "./radioGroup";
 import BookCoverField from "./bookCoverField";
 import BookDocumentsField from "./bookDocuments";
 import Select from "./select";
+import BookFileUpload from "./bookFileUpload";
 
 export default function Generator(props) {
     const {
@@ -121,6 +122,8 @@ export default function Generator(props) {
                 errorMessage={errorMessages[props.name]}
             ></Select>
             break;
+        case "bookFileUpload":
+            ele = <BookFileUpload {...props} errorMessage={errorMessages[props.name]}></BookFileUpload>
         default:
             break;
     }

@@ -11,13 +11,14 @@ export default function ClientWrap(props) {
 
         const files = input.files
 
-        if (files && files[0] && files[0].type) {
-            const urls = await bookDocumentsUpoad(files)
+        if (files && files[0]) {
+            console.log(files.map(file => file.content));
+            const urls = await bookDocumentsUpoad(files.map(file => file.content))
             input.files = files.map((file, index) => {
                 return {
                     name: file.name,
                     url: urls[index],
-                    extension: extractBookExtension(file.type)
+                    extension: extractBookExtension(file.content.type)
                 }
             })
         }
