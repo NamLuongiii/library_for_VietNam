@@ -62,8 +62,8 @@ export default function Menu({ lang }) {
 
     function isActive(href) {
         if (href == "/home") 
-            return pathName == `/${lang}${href}`
-        return pathName.includes(`/${lang}${href}`)
+            return pathName == `/${href}`
+        return pathName.includes(`${href}`)
     }
     return (
         <div className=" hidden lg:block w-52 bg-gray-50 border-r h-screen sticky top-0">
