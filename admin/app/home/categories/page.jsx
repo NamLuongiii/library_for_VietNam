@@ -1,35 +1,29 @@
-import { index } from '@/app/help/base'
-import Link from 'next/link'
-import addSvg from '@/public/methods/add.svg'
-import Image from 'next/image'
-import BaseIndex from '@/app/components/base/baseIndex'
-import { parseQueryString } from '@/app/help/uitilies'
+import { index } from "@/app/help/base";
+import BaseIndex from "@/app/components/base/baseIndex";
+import { parseQueryString } from "@/app/help/uitilies";
 
 export default async function BookIndex({ searchParams }) {
-  const resource = 'categories'
-  const queryString = parseQueryString(searchParams)
-  const { data, page, page_size } = await index(resource, queryString)
+  const resource = "categories";
+  const queryString = parseQueryString(searchParams);
+  const { data, page, page_size } = await index(resource, queryString);
 
   const columns = [
     {
-      id: 'id',
-      name: 'id',
-      label: 'Id',
-      type: 'text',
+      id: "id",
+      accessorKey: "id",
+      header: "Id",
     },
     {
-      id: 'name',
-      name: 'name',
-      label: 'Name',
-      type: 'text',
+      id: "name",
+      accessorKey: "name",
+      header: "Name",
     },
     {
-      id: 'des',
-      name: 'des',
-      label: 'Description',
-      type: 'text',
+      id: "des",
+      accessorKey: "des",
+      header: "Description",
     },
-  ]
+  ];
 
   return (
     <section>
@@ -42,5 +36,5 @@ export default async function BookIndex({ searchParams }) {
         page_size={page_size}
       ></BaseIndex>
     </section>
-  )
+  );
 }

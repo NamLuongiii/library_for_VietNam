@@ -29,6 +29,7 @@
     "notiflix": "^3.2.7",
     "react": "^18",
     "react-dom": "^18",
+    "react-paginate": "^8.2.0",
     "react-reader": "^2.0.9",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
