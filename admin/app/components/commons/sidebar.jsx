@@ -13,7 +13,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 
-export default function Menu({ lang }) {
+export default function Sidebar({ lang }) {
     const pathName = usePathname()
 
     const MENU = [
@@ -68,7 +68,7 @@ export default function Menu({ lang }) {
     return (
         <div className=" hidden lg:block w-52 bg-gray-50 border-r h-screen sticky top-0">
             <div className="flex items-center justify-center h-14 border-b">
-               <span className="text-lg font-bold text-teal-500">Sách việt</span>
+               <span className="text-lg font-bold text-teal-500">Sách việt </span>
             </div>
             <div className="overflow-y-auto overflow-x-hidden flex-grow">
                 <ul>
