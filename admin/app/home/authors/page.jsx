@@ -14,23 +14,23 @@ export default async function BookIndex({ searchParams }) {
   const columns = [
     {
       id: 'id',
-      name: 'id',
-      label: 'ID',
+      accessorKey: 'id',
+      header: 'ID',
     },
     {
       id: 'name',
-      name: 'name',
-      label: 'Name',
+      accessorKey: 'name',
+      header: 'Name',
     },
     {
       id: 'know_as',
-      name: 'know_as',
-      label: 'Know as',
+      accessorKey: 'know_as',
+      header: 'Know as',
     },
     {
       id: 'nation',
-      name: 'nation',
-      label: 'Nation',
+      accessorKey: 'nation',
+      header: 'Nation',
     },
   ]
 

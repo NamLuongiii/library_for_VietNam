@@ -1,19 +1,24 @@
 'use client'
 
-import { Avatar, Button, IconButton, TextField } from '@mui/material'
-import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
-import Paper from '@mui/material/Paper'
-import TablePagination from '@mui/material/TablePagination'
-import TableFooter from '@mui/material/TableFooter'
 import { useRouter, useSearchParams } from 'next/navigation'
-import EditIcon from '../icons/edit'
-import DestroyIcon from '../icons/destroy'
-import ShowIcon from '../icons/show'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
+import { Input } from '@/components/ui/input'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from '@tanstack/react-table'
 
 export default function BaseIndex({
   columns,
@@ -26,6 +31,12 @@ export default function BaseIndex({
   const searchParams = useSearchParams()
   const urlSearchParams = new URLSearchParams(searchParams)
   const router = useRouter()
+
+  const table = useReactTable({
+    data: entities,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  })
 
   const pageParamKey = 'page'
   const sizeParamKey = 'page_size'
@@ -61,108 +72,61 @@ export default function BaseIndex({
         <h1 className="text-xl">{title}</h1>
         <div className="ml-auto flex gap-4">
           <form id="search">
-            <TextField
-              size="small"
-              placeholder="Search..."
+            <Input
               id="key_word"
-              name="key_word"
+              name="key_world"
               type="text"
               form="search"
-              InputProps={{
-                endAdornment: (
-                  <button type="submit" form="search">
-                    submit
-                  </button>
-                ),
-              }}
-            ></TextField>
+              placeholder="Tìm sách"
+            ></Input>
           </form>
-          <Button size="sm" href={`${resource}/store`} variant="contained">
-            Add
-          </Button>
+          <Link href={`${resource}/store`}>
+            <Button>Thêm mới</Button>
+          </Link>
         </div>
       </div>
-      <div className="p-4">
-        <TableContainer component={Paper}>
-          <Table size="small" aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell key={column.id}>{column.label}</TableCell>
+      <Table>
+        <TableHeader>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                return (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                  </TableHead>
+                )
+              })}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && 'selected'}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
                 ))}
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {entities.map((row) => (
-                <TableRow key={row.id} hover={true}>
-                  {columns.map((column) => {
-                    if (column.render) {
-                      return (
-                        <TableCell key={column.id} component="th" scope="row">
-                          {column.render(row)}
-                        </TableCell>
-                      )
-                    }
-
-                    if (column.type == 'actions')
-                      return (
-                        <TableCell key={column.id} component="th" scope="row">
-                          <IconButton
-                            size="small"
-                            onClick={(e) => handleEditClick(e, row.id)}
-                          >
-                            <EditIcon></EditIcon>
-                          </IconButton>
-                          <IconButton
-                            size="small"
-                            onClick={(e) => handleDestroyClick(e, row.id)}
-                          >
-                            <DestroyIcon></DestroyIcon>
-                          </IconButton>
-                          <IconButton
-                            size="small"
-                            onClick={(e) => handleRowClick(e, row.id)}
-                          >
-                            <ShowIcon></ShowIcon>
-                          </IconButton>
-                        </TableCell>
-                      )
-
-                    if (column.type == 'image')
-                      return (
-                        <TableCell key={column.id} component="th" scope="row">
-                          <Avatar alt="Remy Sharp" src={row[column.id]} />
-                        </TableCell>
-                      )
-
-                    return (
-                      <TableCell key={column.id} component="th" scope="row">
-                        {!!row[column.name] ? (
-                          row[column.name]
-                        ) : (
-                          <span className="text-sm text-red-600">n/a</span>
-                        )}
-                      </TableCell>
-                    )
-                  })}
-                </TableRow>
-              ))}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TablePagination
-                  rowsPerPageOptions={[20]}
-                  count={100}
-                  rowsPerPage={page_size}
-                  page={page}
-                  onPageChange={handlePageChange}
-                  onRowsPerPageChange={handleRowPerPageChange}
-                ></TablePagination>
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </TableContainer>
-      </div>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                No results.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </section>
   )
 }
