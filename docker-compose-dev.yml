@@ -23,14 +23,14 @@ services:
       - "5432:5432"
     volumes:
       - postgres-db:/var/lib/postgresql/data
-  client:
-    build: ./client
+  admin:
+    build: ./admin 
     env_file:
-      - client/.env.dev
+      - admin/.env.dev
     ports:
       - "3000:3000"
     volumes:
-      - ./client:/client
+      - ./admin:/admin
   library:
     build: ./library
     env_file:
