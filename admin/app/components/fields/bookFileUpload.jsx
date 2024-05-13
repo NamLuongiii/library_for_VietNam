@@ -1,46 +1,46 @@
-import { formatBytes } from "@/app/help/uitilies";
-import { Button } from "@/components/ui/button";
-import { ArrowDown, ArrowUp, CircleMinus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { formatBytes } from '@/app/help/uitilies'
+import { Button } from '@/components/ui/button'
+import { ArrowDown, ArrowUp, CircleMinus } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 export default function BookFileUpload({ onchange }) {
-  const [values, setValues] = useState([]);
+  const [values, setValues] = useState([])
 
   useEffect(() => {
-    onchange(values);
-  }, [values]);
+    onchange(values)
+  }, [values])
 
   const handleChange = (e) => {
-    const files = e.target.files;
-    const _values = [...values];
+    const files = e.target.files
+    const _values = [...values]
     for (let file of files) {
       _values.push({
         name: file.name,
         file: file.name,
         size: formatBytes(file.size),
         content: file,
-      });
+      })
     }
-    setValues(_values);
-  };
+    setValues(_values)
+  }
 
   const handleRemove = (item, e) => {
-    e.preventDefault();
-    setValues(values.filter((_item) => _item != item));
-  };
+    e.preventDefault()
+    setValues(values.filter((_item) => _item != item))
+  }
 
   const handleEditable = (e, item) => {
-    const v = e.target.value;
-    const _item = values.find((_item) => item == _item);
+    const v = e.target.value
+    const _item = values.find((_item) => item == _item)
     if (_item) {
-      _item.name = v;
-      setValues([...values]);
+      _item.name = v
+      setValues([...values])
     }
-  };
+  }
 
   const handleUp = (item, e) => {
     e.preventDefault()
-    const i = values.findIndex(_item => item == _item)
+    const i = values.findIndex((_item) => item == _item)
     const up = i - 1
 
     if (i < 0 || up < 0) return
@@ -51,7 +51,7 @@ export default function BookFileUpload({ onchange }) {
 
   const handleDown = (item, e) => {
     e.preventDefault()
-    const i = values.findIndex(_item => item == _item)
+    const i = values.findIndex((_item) => item == _item)
     const up = i + 1
 
     if (i < 0 || up < 0 || up > values.length - 1) return
@@ -78,7 +78,7 @@ export default function BookFileUpload({ onchange }) {
             return (
               <tr key={index} className="text-sm">
                 <td className="border border-slate-300">
-                <Button
+                  <Button
                     variant="ghost"
                     size="icon"
                     onClick={(e) => handleUp(item, e)}
@@ -115,7 +115,7 @@ export default function BookFileUpload({ onchange }) {
                   </Button>
                 </td>
               </tr>
-            );
+            )
           })}
         </tbody>
       </table>
@@ -131,5 +131,5 @@ export default function BookFileUpload({ onchange }) {
         <div className="text-sm">Pdf, epub</div>
       </div>
     </div>
-  );
+  )
 }

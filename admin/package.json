@@ -1,12 +1,14 @@
 {
-  "name": "client",
+  "name": "admin",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --check --ignore-path .gitignore .",
+    "format:fix": "prettier --write --ignore-path .gitignore ."
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -34,6 +36,7 @@
   "devDependencies": {
     "autoprefixer": "^10.0.1",
     "postcss": "^8",
+    "prettier": "3.2.5",
     "tailwindcss": "^3.3.0"
   }
 }

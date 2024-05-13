@@ -1,7 +1,7 @@
-import Header from "@/app/components/commons/header";
-import Sidebar from "@/app/components/commons/sidebar";
+import Header from '@/app/components/commons/header'
+import Sidebar from '@/app/components/commons/sidebar'
 
-export default function HomeLayout({ children, params: {lang} }) {
+export default function HomeLayout({ children, params: { lang } }) {
   return (
     <main className="flex">
       <Sidebar lang={lang}></Sidebar>
@@ -10,5 +10,5 @@ export default function HomeLayout({ children, params: {lang} }) {
         {children}
       </div>
     </main>
-  );
+  )
 }

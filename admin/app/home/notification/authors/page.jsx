@@ -1,7 +1,3 @@
-
 export default function Login() {
-
-    return <section>
-        Login
-    </section>
+  return <section>Login</section>
 }
