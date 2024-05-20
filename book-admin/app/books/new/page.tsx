@@ -9,9 +9,14 @@ import { z } from "zod";
 export interface IBookNewProps {}
 
 const FormSchema = z.object({
-  name: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+  name: z.string().min(5, {
+    message: "Tên sách tối thiểu 5 kí tự",
   }),
+  page: z.number().min(0).max(1000),
+  chapter: z.number().min(0).max(1000),
+  preface: z.string(),
+  cover: z.instanceof(File),
+  authors: z.any(),
 });
 
 export default function BookNew(props: IBookNewProps) {
@@ -19,6 +24,11 @@ export default function BookNew(props: IBookNewProps) {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       name: "",
+      page: 0,
+      chapter: 0,
+      preface: "",
+      cover: undefined,
+      authors: [],
     },
   });
 
@@ -29,7 +39,43 @@ export default function BookNew(props: IBookNewProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
-        <InputContainer inputType="text" name="name" control={form.control} />
+        <InputContainer
+          label="Tên sách"
+          inputType="text"
+          name="name"
+          control={form.control}
+        />
+        <InputContainer
+          label="Số trang sách"
+          inputType="number"
+          name="page"
+          control={form.control}
+        />
+        <InputContainer
+          label="Số chương"
+          inputType="number"
+          name="chapter"
+          control={form.control}
+        />
+        <InputContainer
+          label="Mô tả sách"
+          inputType="richText"
+          name="preface"
+          control={form.control}
+        />
+        <InputContainer
+          label="Ảnh bìa"
+          inputType="singleImage"
+          name="cover"
+          control={form.control}
+        />
+        <InputContainer
+          label="Tác giả"
+          inputType="selectGroup"
+          name="authors"
+          options={[]}
+          control={form.control}
+        />
         <Button type="submit">Submit</Button>
       </form>
     </Form>

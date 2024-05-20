@@ -6,22 +6,11 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Text } from "@/components/ui/text";
 import { ReactNode } from "react";
-
-const Pageheader = ({ title }: { title: string }) => {
-  return (
-    <header className="flex items-center mb-4">
-      <Text variant="normal" size="sm">
-        {title}
-      </Text>
-    </header>
-  );
-};
 
 const PageBreadcrumb = () => {
   return (
-    <Breadcrumb>
+    <Breadcrumb className="mb-4">
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink href="/home">Trang chủ</BreadcrumbLink>
@@ -40,7 +29,7 @@ const PageBreadcrumb = () => {
 };
 
 const MainPage = ({ children }: { children: ReactNode }) => {
-  return <div className="p-4">{children}</div>;
+  return <div className="p-4 w-full">{children}</div>;
 };
 
-export { MainPage, PageBreadcrumb, Pageheader };
+export { MainPage, PageBreadcrumb };

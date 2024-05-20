@@ -1,6 +1,6 @@
 "use client";
 
-import { AppSidebar } from "@/components/share/app-sidebar";
+import { AppSidebar } from "@/components/ui/app-sidebar";
 import * as React from "react";
 
 export interface IMainLayoutProps {

@@ -1,5 +1,4 @@
-import * as React from "react";
-import { Sidebar, SidebarItem } from "../ui/sidebar";
+import { Sidebar, SidebarItem } from "./sidebar";
 
 export interface IAppSidebarProps {}
 
